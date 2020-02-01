@@ -1,0 +1,9 @@
+# ignore compiled code
+__pycache__
+pyrepoman/__pycache__
+
+# ignore IDE configs
+.vscode
+
+# ignore ini (configuration) files
+*.ini
