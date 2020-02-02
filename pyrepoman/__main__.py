@@ -26,24 +26,24 @@ def parse_args():
     DESC = """Description: This python application helps manage web-hosted Git repos with various actions."""
     parser = argparse.ArgumentParser(description=DESC, prog="pyrepoman.py")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-u", "--update", action="store_true", help="update Git repos in your current directory from remote repos")
-    group.add_argument("-f", "--fetch", action="store_true", help="fetch Git repos from a through an api")
-    group.add_argument("-a", "--archive", action="store_true", help="archive Git repos, done by bundling repos")
-    group.add_argument("-b", "--backup", action="store_true", help="backup Git repos, done by mirroring repos fully")
-    group.add_argument("-l", "--list", action="store_true", help="list currently supported api endpoints")
-    parser.add_argument("--api", metavar="ENDPOINT", help="specifies for -a, -f, or -b that a api endpoint will be targeted")
+    group.add_argument("-u", "--update", action="store_true", help="update all Git repos in your current directory from remote repos")
+    group.add_argument("-f", "--fetch", action="store_true", help="fetch all Git repos through a web provider")
+    group.add_argument("-a", "--archive", action="store_true", help="archive all Git repos, done by bundling repos")
+    group.add_argument("-b", "--backup", action="store_true", help="backup all Git repos, done by mirroring repos fully")
+    group.add_argument("-w", "--list-web-hosts", action="store_true", help="list currently supported web-hosts and used api")
+    parser.add_argument("--where", metavar="PROVIDER", help="specifies for -a, -f, or -b what web hosted provider to target")
     args = parser.parse_args()
 
-    if(args.fetch and args.api == None):
-        parser.error("--fetch requires --api ENDPOINT")
-    if(args.archive and args.api == None):
-        parser.error("--archive requires --api ENDPOINT")
-    if(args.backup and args.api == None):
-        parser.error("--backup requires --api ENDPOINT")
-    if(args.list):
-        list_apis()
+    if(args.fetch and args.where == None):
+        parser.error("--fetch requires --where REPO-PROVIDER")
+    if(args.archive and args.where == None):
+        parser.error("--archive requires --where REPO-PROVIDER")
+    if(args.backup and args.where == None):
+        parser.error("--backup requires --where REPO-PROVIDER")
+    if(args.list_web_hosts):
+        list_supported_hosts()
         return False
-    if(args.archive == False and args.backup == False and args.fetch == False and args.update == False and args.list == False):
+    if(args.archive == False and args.backup == False and args.fetch == False and args.update == False and args.list_web_hosts == False):
         parser.print_help()
         return False
 
@@ -53,10 +53,10 @@ def parse_args():
 
     return args
 
-def list_apis():
+def list_supported_hosts():
 
-    for api in apis.SUPPORTED_APIS:
-        print(f"{api}{apis.get_endpoint_desc(api)}")
+    for host in apis.SUPPORTED_HOSTS:
+        print(f"{host}{apis.get_hostname_desc(host)}")
 
 def task_arguments(task_name):
     

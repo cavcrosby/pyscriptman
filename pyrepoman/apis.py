@@ -5,17 +5,21 @@ import os, datetime, subprocess, requests, configparser
 
 # Local Application Imports
 
-def get_endpoint_funcs(endpoint):
+def get_hostname_funcs(hostname):
 
-    return SUPPORTED_APIS[endpoint]['funcs']
+    return SUPPORTED_HOSTS[hostname]['funcs']
 
-def get_endpoint_module_func(endpoint, module_action):
+def get_hostname_module_func(hostname, module_action):
 
-    return SUPPORTED_APIS[endpoint]['funcs'][module_action]
+    return SUPPORTED_HOSTS[hostname]['funcs'][module_action][0]
 
-def get_endpoint_desc(endpoint):
+def get_hostname_module_func_api(hostname, module_action):
 
-    return SUPPORTED_APIS[endpoint]['desc']
+    return SUPPORTED_HOSTS[hostname]['funcs'][module_action][1]
+
+def get_hostname_desc(hostname):
+
+    return SUPPORTED_HOSTS[hostname]['desc']
 
 def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
 
@@ -25,7 +29,9 @@ def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
     except Exception as e:
         print(e)
 
-SUPPORTED_APIS = {
-    "https://api.github.com/user/repos": 
-        {"funcs": {"fetch": fetch_repos_github_restapiv3}, "desc": " -- GitHub's REST API v3"}
+SUPPORTED_HOSTS = {
+    "GitHub": 
+        {"funcs": 
+            {"fetch": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"]}, 
+        "desc": " -- GitHub's REST API v3"}
 }

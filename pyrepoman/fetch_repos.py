@@ -27,7 +27,7 @@ def get_arg_value(field):
 
 def supported_endpoint():
 
-	if(API not in apis.SUPPORTED_APIS):
+	if(HOST not in apis.SUPPORTED_HOSTS):
 		return False
 
 	return True
@@ -35,17 +35,18 @@ def supported_endpoint():
 def load_args(args):
 
 
-	global USER, API_TOKEN, PAYLOAD, API
-	USER, API_TOKEN, PAYLOAD, API = [get_arg_value(arg) for arg in args]
+	global USER, API_TOKEN, PAYLOAD, HOST
+	USER, API_TOKEN, PAYLOAD, HOST = [get_arg_value(arg) for arg in args]
 
 def get_repo_names_and_urls():
 	
-	return apis.get_endpoint_module_func(API, 'fetch')(API, USER, API_TOKEN, PAYLOAD)
+	api = apis.get_hostname_module_func_api(HOST, 'fetch')
+	return apis.get_hostname_module_func(HOST, 'fetch')(api, USER, API_TOKEN, PAYLOAD)
 
 def main(args):
 	load_args(args)
 	if(not supported_endpoint()):
-		print("Error: api endpoint passed in is not currently supported")
+		print("Error: web host passed in is not currently supported")
 		return False
 	repo_names_and_urls = get_repo_names_and_urls() # key is repo name, value is repo url
 	try:
