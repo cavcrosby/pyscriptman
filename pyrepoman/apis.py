@@ -40,6 +40,7 @@ SUPPORTED_HOSTS = {
     "GitHub": 
         {"funcs": 
             {"fetch": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"],
-            "backup": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"]}, 
+            "backup": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"],
+            "archive": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"]}, 
         "desc": " -- GitHub's REST API v3"}
 }

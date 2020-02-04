@@ -1,8 +1,5 @@
 # Standard Library Imports
-try:
-	import os, datetime, subprocess, requests, configparser
-except Exception as e:
-	print(e)
+import os, datetime, subprocess, requests, configparser
 
 # Third Party Imports
 

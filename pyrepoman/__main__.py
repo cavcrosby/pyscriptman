@@ -17,9 +17,8 @@ import argparse, configparser
 
 # Local Application Imports
 import update_repos as upr
-import apis
+import apis, backup, archive
 import fetch_repos as fetchr
-import backup 
 
 def parse_args():
 
@@ -53,6 +52,9 @@ def parse_args():
 
     return args
 
+def get_task_arg_value(runtime_args):
+    return runtime_args[runtime_args['task_arg']]
+
 def list_supported_hosts():
 
     for host in apis.SUPPORTED_HOSTS:
@@ -70,7 +72,8 @@ def grab_task_func(task_name):
     TASKS = {
         'update': upr.main,
         'fetch': fetchr.main,
-        'backup': backup.main
+        'backup': backup.main,
+        'archive': archive.main
     }
 
     return TASKS[task_name]
@@ -84,7 +87,7 @@ def main():
         return 1
 
     task_args = task_arguments(runtime_args['task'])
-    task_args.append((runtime_args['task_arg'], runtime_args[runtime_args['task_arg']]))
+    task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
     #print(task_args)
 
     if(-1 in task_args):
