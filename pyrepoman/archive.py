@@ -16,7 +16,6 @@ def create_bundle(mirror_repo, archive_dir):
 
 def load_args(args):
 
-
 	global USER, API_TOKEN, PAYLOAD, BACKUP_DIR, HOST
 	USER, API_TOKEN, PAYLOAD, BACKUP_DIR, HOST = [helpers.get_arg_value(arg) for arg in args]
 
@@ -33,6 +32,9 @@ def init_backup_dir():
 
 def main(args):
     load_args(args)
+    if(not apis.supported_endpoint(HOST)):
+        print("Error: web host passed in is not currently supported")
+        return False
     init_backup_dir()
     repo_names_and_urls = helpers.get_repo_names_and_urls(HOST, 'archive', USER, API_TOKEN, PAYLOAD)
     clear_old_bundles(BACKUP_DIR)

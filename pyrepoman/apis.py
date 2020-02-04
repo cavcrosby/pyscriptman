@@ -23,10 +23,11 @@ def get_hostname_desc(hostname):
 
 def supported_endpoint(HOST):
 
-	if(HOST not in SUPPORTED_HOSTS):
-		return False
-
-	return True
+    for supported_host in SUPPORTED_HOSTS:
+        if(HOST == supported_host):
+            return True
+        
+    return False
 
 def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
 

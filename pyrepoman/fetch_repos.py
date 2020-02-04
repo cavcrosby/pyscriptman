@@ -8,7 +8,6 @@ import apis, helpers
 
 def load_args(args):
 
-
 	global USER, API_TOKEN, PAYLOAD, HOST
 	USER, API_TOKEN, PAYLOAD, HOST = [helpers.get_arg_value(arg) for arg in args]
 

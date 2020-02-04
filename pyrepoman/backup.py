@@ -31,7 +31,6 @@ def remove_from_to_delete(to_delete, repo_name):
 
 def load_args(args):
 
-
 	global USER, API_TOKEN, PAYLOAD, BACKUP_DIR, HOST
 	USER, API_TOKEN, PAYLOAD, BACKUP_DIR, HOST = [helpers.get_arg_value(arg) for arg in args]
 
@@ -42,6 +41,10 @@ def init_backup_dir():
 
 def main(args):
     load_args(args)
+    if(not apis.supported_endpoint(HOST)):
+        print("Error: web host passed in is not currently supported")
+        # TODO should this error message be put somewhere, as this string is hardcoded in 3 different places
+        return False
     init_backup_dir()
     repo_names_and_urls = helpers.get_repo_names_and_urls(HOST, 'backup', USER, API_TOKEN, PAYLOAD)
     to_delete = os.listdir(BACKUP_DIR)

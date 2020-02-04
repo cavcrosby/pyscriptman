@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-#######################################################################################
-#
-#       Author: Conner Crosby
-#       Description:
-#       The purpose of this script is to automate the mirroring (backing up) of Git
-#       repos of a GitHub account, both full mirroring and bundling of the full mirror 
-#       are done. All via the GitHub API.
-#
-#
-#######################################################################################
-
 # Standard Library Imports
 import argparse, configparser
 
@@ -21,6 +10,8 @@ import apis, backup, archive
 import fetch_repos as fetchr
 
 def parse_args():
+
+    """ APPLICATION DESC AT THE PROMPT INCLUDING HELPFUL DOCUMENTATION """
 
     DESC = """Description: This python application helps manage web-hosted Git repos with various actions."""
     parser = argparse.ArgumentParser(description=DESC, prog="pyrepoman.py")
@@ -57,10 +48,14 @@ def get_task_arg_value(runtime_args):
 
 def list_supported_hosts():
 
+    """ THIS IS DRIVEN BY THE -w SWITCH, ONLY TASK NOT IN A MODULE """
+
     for host in apis.SUPPORTED_HOSTS:
         print(f"{host}{apis.get_hostname_desc(host)}")
 
 def task_arguments(task_name):
+
+    """ TASKS ARGUMENTS ARE BASED IN THE CONFIG.INI FILE """
     
     config_app = configparser.ConfigParser()
     config_app.read('pyrepoman/config.ini')
@@ -68,6 +63,8 @@ def task_arguments(task_name):
     return script_configs
 
 def grab_task_func(task_name):
+
+    """ BASED ON THE TASK, ITS ENTRY POINT IS RETURNED """
 
     TASKS = {
         'update': upr.main,
@@ -93,11 +90,9 @@ def main():
     if(-1 in task_args):
         print(f"Error: missing values in configuration file for {runtime_args['task']}")
         return 0
-
+    
     task = grab_task_func(runtime_args['task'])
     run_task(task, task_args)
-
-#TODO add function descriptions
 
 if(__name__ == '__main__'):
     main()
