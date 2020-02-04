@@ -1,13 +1,3 @@
-#######################################################################################
-#
-#       Author: Conner Crosby
-#       Description:
-#       The purpose of this script is to automate cloning all repos (public and private)
-#       to a user's computer. The script should be one level higher from repos.
-#		TODO WORK ON DESCRIPTION
-#
-#######################################################################################
-
 # Standard Library Imports
 import os, datetime, subprocess
 

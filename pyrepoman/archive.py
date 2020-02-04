@@ -1,14 +1,3 @@
-#######################################################################################
-#
-#       Author: Conner Crosby
-#       Description:
-#       The purpose of this script is to automate the mirroring (backing up) of Git
-#       repos of a GitHub account, both full mirroring and bundling of the full mirror 
-#       are done. All via the GitHub API.
-#       TODO WORK ON DESCRIPTION
-#
-#######################################################################################
-
 # Standard Library Imports
 try:
 	import os, datetime, subprocess, requests, smtplib, configparser, collections

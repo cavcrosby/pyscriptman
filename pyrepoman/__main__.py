@@ -19,7 +19,7 @@ import argparse, configparser
 import update_repos as upr
 import apis
 import fetch_repos as fetchr
-#import git_backup as gitbak
+import backup 
 
 def parse_args():
 
@@ -30,7 +30,7 @@ def parse_args():
     group.add_argument("-f", "--fetch", action="store_true", help="fetch all Git repos through a web provider")
     group.add_argument("-a", "--archive", action="store_true", help="archive all Git repos, done by bundling repos")
     group.add_argument("-b", "--backup", action="store_true", help="backup all Git repos, done by mirroring repos fully")
-    group.add_argument("-w", "--list-web-hosts", action="store_true", help="list currently supported web-hosts and used api")
+    group.add_argument("-w", "--list-web-hosts", action="store_true", help="list currently supported web-hosts and api used")
     parser.add_argument("--where", metavar="PROVIDER", help="specifies for -a, -f, or -b what web hosted provider to target")
     args = parser.parse_args()
 
@@ -61,16 +61,16 @@ def list_supported_hosts():
 def task_arguments(task_name):
     
     config_app = configparser.ConfigParser()
-    config_app.read('config.ini')
+    config_app.read('pyrepoman/config.ini')
     script_configs = [item if item[1] != '' else -1 for item in config_app.items(task_name)]
-    # TODO No section for action, is this due to file permissions?
     return script_configs
 
 def grab_task_func(task_name):
 
     TASKS = {
         'update': upr.main,
-        'fetch': fetchr.main
+        'fetch': fetchr.main,
+        'backup': backup.main
     }
 
     return TASKS[task_name]

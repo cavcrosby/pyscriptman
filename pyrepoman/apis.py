@@ -21,6 +21,13 @@ def get_hostname_desc(hostname):
 
     return SUPPORTED_HOSTS[hostname]['desc']
 
+def supported_endpoint(HOST):
+
+	if(HOST not in SUPPORTED_HOSTS):
+		return False
+
+	return True
+
 def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
 
     try:
@@ -32,6 +39,7 @@ def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
 SUPPORTED_HOSTS = {
     "GitHub": 
         {"funcs": 
-            {"fetch": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"]}, 
+            {"fetch": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"],
+            "backup": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"]}, 
         "desc": " -- GitHub's REST API v3"}
 }
