@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Standard Library Imports
-import argparse, configparser
+import argparse, configparser, os
 
 # Third Party Imports
 
@@ -62,7 +62,7 @@ def task_arguments(task_name):
     """ TASKS ARGUMENTS ARE BASED IN THE CONFIG.INI FILE """
     
     config_app = configparser.ConfigParser()
-    config_app.read('pyrepoman/config.ini')
+    config_app.read('config.ini')
     script_configs = [item if item[1] != '' else -1 for item in config_app.items(task_name)]
     return script_configs
 
