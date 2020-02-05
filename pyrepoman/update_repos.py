@@ -20,7 +20,7 @@ def main(args):
 			subprocess.call(["git",  "pull"])
 			os.chdir("..")
 		print('\nand finished...!')
-		input()
+		return 1
 	except Exception as e:
 		print(e)
-		input()
+		return -1

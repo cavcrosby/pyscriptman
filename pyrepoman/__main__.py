@@ -81,7 +81,7 @@ def run_task(task_obj, args):
 def main():
     runtime_args = parse_args()
     if(not runtime_args):
-        return 1
+        return -1
 
     task_args = task_arguments(runtime_args['task'])
     task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
@@ -89,10 +89,11 @@ def main():
 
     if(-1 in task_args):
         print(f"Error: missing values in configuration file for {runtime_args['task']}")
-        return 0
+        return -1
     
     task = grab_task_func(runtime_args['task'])
     run_task(task, task_args)
+    return 1
 
 if(__name__ == '__main__'):
     main()
