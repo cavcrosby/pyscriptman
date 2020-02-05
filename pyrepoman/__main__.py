@@ -33,6 +33,8 @@ def parse_args():
     if(args.list_web_hosts):
         list_supported_hosts()
         return False
+    if(args.update and args.where):
+        parser.error("-u, --update does not need --where")
     if(args.archive == False and args.backup == False and args.fetch == False and args.update == False and args.list_web_hosts == False):
         parser.print_help()
         return False
