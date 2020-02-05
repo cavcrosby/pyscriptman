@@ -19,7 +19,7 @@ def main(args):
 			os.chdir(repo_name)
 			subprocess.call(["git",  "pull"])
 			os.chdir("..")
-		print('\nand finished...!')
+		print('\nand finished...!\n')
 		return 1
 	except Exception as e:
 		print(e)

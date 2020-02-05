@@ -20,7 +20,7 @@ def main(args):
 	try:
 		for repo_name in repo_names_and_urls:
 			subprocess.run("git clone {0} {1}".format(repo_names_and_urls[repo_name], repo_name), shell=True)
-		print('\nand finished...!')
+		print('\nand finished...!\n')
 		return 1
 	except Exception as e:
 		print(e)
