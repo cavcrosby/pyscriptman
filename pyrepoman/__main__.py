@@ -88,7 +88,7 @@ def main():
     if(not runtime_args['task'] in EXCLUDE and helpers.not_supported_host(runtime_args['where'])):
         return False
 
-    task_args = task_arguments(runtime_args['task'])
+    task_args = task_arguments(runtime_args['task'], runtime_args['where'].lower())
     task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
     #print(task_args)
 
