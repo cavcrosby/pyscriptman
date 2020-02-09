@@ -7,19 +7,24 @@ import os, datetime, subprocess, requests, smtplib, configparser, collections
 import apis, helpers
 
 def dir_exist(dir_name):
+
     dir_contents = os.listdir()
     return dir_name in dir_contents
 
 def create_dir(dir_name):
+
     subprocess.run(["mkdir", dir_name])
 
 def create_mirror(url, loc):
+
     subprocess.run(["git", "clone", "--mirror", url, loc])
 
 def update_mirror(loc):
+
     subprocess.run(["git", "--git-dir", loc, "remote", "update"])
 
 def clear_old_repos(to_delete):
+
     collections.deque(
         map(lambda repo: subprocess.run(["rm", "-rf", f"{BACKUP_DIR}/{repo}"]), to_delete),
         maxlen=0
@@ -27,6 +32,7 @@ def clear_old_repos(to_delete):
     # collections.deque is used to prevent overhead when executing the map iterator (that is, no output should be recorded/saved).
 
 def remove_from_to_delete(to_delete, repo_name):
+
     to_delete.remove(repo_name)
 
 def load_args(args):
@@ -40,20 +46,20 @@ def init_backup_dir():
         create_dir(BACKUP_DIR)
 
 def main(args):
+
     load_args(args)
-    if(not apis.supported_endpoint(HOST)):
-        print("Error: web host passed in is not currently supported")
-        # TODO should this error message be put somewhere, as this string is hardcoded in 3 different places
-        return False
     init_backup_dir()
     repo_names_and_urls = helpers.get_repo_names_and_urls(HOST, 'backup', USER, API_TOKEN, PAYLOAD)
     to_delete = os.listdir(BACKUP_DIR)
-    for repo_name in repo_names_and_urls:
-        backup_content = os.listdir(BACKUP_DIR)
-        backup_repo_location = f"{BACKUP_DIR}/{repo_name}"
-        if(not repo_name in backup_content):
-            create_mirror(repo_names_and_urls[repo_name], backup_repo_location)
-        else:
-            update_mirror(backup_repo_location)
-            remove_from_to_delete(to_delete, repo_name)
-    clear_old_repos(to_delete) # TODO should error handling be added?
+    try:
+        for repo_name in repo_names_and_urls:
+            backup_content = os.listdir(BACKUP_DIR)
+            backup_repo_location = f"{BACKUP_DIR}/{repo_name}"
+            if(not repo_name in backup_content):
+                create_mirror(repo_names_and_urls[repo_name], backup_repo_location)
+            else:
+                update_mirror(backup_repo_location)
+                remove_from_to_delete(to_delete, repo_name)
+        clear_old_repos(to_delete)
+    except Exception as e:
+        print(e)

@@ -5,13 +5,14 @@ import argparse, configparser, os
 # Third Party Imports
 
 # Local Application Imports
-import update_repos as upr
-import apis, backup, archive
-import fetch_repos as fetchr
+import backup, archive, update, fetch, load_apis, helpers, list_web_hosts
 
 def parse_args():
 
     """ APPLICATION DESC AT THE PROMPT INCLUDING HELPFUL DOCUMENTATION """
+
+    global EXCLUDE 
+    EXCLUDE = ['update', 'list_web_hosts']
 
     def good_arg_values():
         exclude = ['update', 'list_web_hosts']
@@ -48,21 +49,15 @@ def parse_args():
     return args
 
 def get_task_arg_value(runtime_args):
+
     return runtime_args[runtime_args['task_arg']]
 
-def list_supported_hosts(args):
-
-    """ THIS IS DRIVEN BY THE -w SWITCH, ONLY TASK NOT IN A MODULE """
-
-    for host in apis.SUPPORTED_HOSTS:
-        print(f"{host}{apis.get_hostname_desc(host)}")
-
-def task_arguments(task_name):
+def task_arguments(task_name, host = 'github'): # default host name is incase an EXCLUDE action is executed 
 
     """ TASKS ARGUMENTS ARE BASED IN THE CONFIG.INI FILE """
     
     config_app = configparser.ConfigParser()
-    config_app.read('config.ini')
+    config_app.read(f"config_{host}.ini")
     script_configs = [item if item[1] != '' else -1 for item in config_app.items(task_name)]
     return script_configs
 
@@ -71,22 +66,27 @@ def grab_task_func(task_name):
     """ BASED ON THE TASK, ITS ENTRY POINT IS RETURNED """
 
     TASKS = {
-        'update': upr.main,
-        'fetch': fetchr.main,
+        'update': update.main,
+        'fetch': fetch.main,
         'backup': backup.main,
         'archive': archive.main,
-        'list_web_hosts': list_supported_hosts
+        'list_web_hosts': list_web_hosts.main
     }
 
     return TASKS[task_name]
 
 def run_task(task_obj, args):
+
     task_obj(args)
 
 def main():
+
     runtime_args = parse_args()
     if(not runtime_args):
         return -1
+
+    if(not runtime_args['task'] in EXCLUDE and helpers.not_supported_host(runtime_args['where'])):
+        return False
 
     task_args = task_arguments(runtime_args['task'])
     task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))

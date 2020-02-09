@@ -1,5 +1,5 @@
 # Standard Library Imports
-import os, datetime, subprocess, requests, configparser
+import os, datetime, subprocess, configparser
 
 # Third Party Imports
 
@@ -9,39 +9,34 @@ def get_hostname_funcs(hostname):
 
     return SUPPORTED_HOSTS[hostname]['funcs']
 
-def get_hostname_module_func(hostname, module_action):
+def get_hostname_func_obj(hostname, func_action):
 
-    return SUPPORTED_HOSTS[hostname]['funcs'][module_action][0]
+    return SUPPORTED_HOSTS[hostname]['funcs'][func_action][0]
 
-def get_hostname_module_func_api(hostname, module_action):
+def get_hostname_func_endpoint(hostname, func_action):
 
-    return SUPPORTED_HOSTS[hostname]['funcs'][module_action][1]
+    return SUPPORTED_HOSTS[hostname]['funcs'][func_action][1]
 
 def get_hostname_desc(hostname):
 
     return SUPPORTED_HOSTS[hostname]['desc']
 
-def supported_endpoint(HOST):
+def add_supported_api(hostname, desc):
+
+    SUPPORTED_HOSTS[hostname] = {
+        "funcs": {}, "desc": desc 
+    }
+
+def add_host_func(hostname, action, func_obj, endpoint):
+
+    get_hostname_funcs(hostname)[action] = [func_obj, endpoint]
+
+def supported_endpoint(host):
 
     for supported_host in SUPPORTED_HOSTS:
-        if(HOST == supported_host):
+        if(host == supported_host):
             return True
         
     return False
 
-def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
-
-    try:
-        repos = requests.get(endpoint, auth=(user, api_token), params=payload)
-        return {repo['name']:repo['svn_url'] for repo in repos.json()}
-    except Exception as e:
-        print(e)
-
-SUPPORTED_HOSTS = {
-    "GitHub": 
-        {"funcs": 
-            {"fetch": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"],
-            "backup": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"],
-            "archive": [fetch_repos_github_restapiv3, "https://api.github.com/user/repos"]}, 
-        "desc": " -- GitHub's REST API v3"}
-}
+SUPPORTED_HOSTS = {}

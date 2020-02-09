@@ -6,6 +6,7 @@ import os, datetime, subprocess
 # Local Application Imports
 
 def get_repo_names():
+
 	try:
 		repos = os.listdir(os.getcwd())
 		return [repo for repo in repos if repo.find('.') == -1]
@@ -13,6 +14,7 @@ def get_repo_names():
 		print(e)
 
 def main(args):
+	
 	repo_names = get_repo_names()
 	try:
 		for repo_name in repo_names:

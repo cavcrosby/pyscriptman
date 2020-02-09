@@ -9,7 +9,13 @@ def get_arg_value(field):
 
 	return field[1]
 
-def get_repo_names_and_urls(HOST, action, USER, API_TOKEN, PAYLOAD):
+def get_repo_names_and_urls(host, action, user = '', api_token = '', payload = ''):
 	
-	api = apis.get_hostname_module_func_api(HOST, action)
-	return apis.get_hostname_module_func(HOST, action)(api, USER, API_TOKEN, PAYLOAD)
+	endpoint = apis.get_hostname_func_endpoint(host, action)
+	return apis.get_hostname_func_obj(host, action)(endpoint, user, api_token, payload)
+
+def not_supported_host(host):
+	
+	if(not apis.supported_endpoint(host)):
+		print("Error: web host passed in is not currently supported")
+		return True
