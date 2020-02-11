@@ -8,9 +8,13 @@ sys.path.append("/home/reap2sow1/dev/pyrepoman/test/")
 
 # Local Application Imports
 import apis, load_local
+from helpers import load_args, get_value
 
-def fetch_repos_github_restapiv3(endpoint, user, api_token, payload):
+def fetch_repos_github_restapiv3(endpoint, other_args):
 
+    SELECT_ARGS = ['user', 'api_token', 'payload']
+    data_store = load_args(SELECT_ARGS, other_args)
+    user, api_token, payload = get_value(data_store, 'user'), get_value(data_store, 'api_token'), get_value(data_store, 'payload')
     try:
         repos = requests.get(endpoint, auth=(user, api_token), params=payload)
         return {repo['name']:repo['svn_url'] for repo in repos.json()}

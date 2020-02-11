@@ -5,7 +5,7 @@ import argparse, configparser, os
 # Third Party Imports
 
 # Local Application Imports
-import backup, archive, update, fetch, load_apis, helpers, list_web_hosts
+import actions, load_apis, helpers
 
 def parse_args():
 
@@ -52,10 +52,11 @@ def get_task_arg_value(runtime_args):
 
     return runtime_args[runtime_args['task_arg']]
 
-def task_arguments(task_name, host = 'github'): # default host name is incase an EXCLUDE action is executed 
+def task_arguments(task_name, host):
 
     """ TASKS ARGUMENTS ARE BASED IN THE CONFIG.INI FILE """
-    
+    if(task_name in EXCLUDE): # EXCLUDE action passes in none, default is placed in for host (e.g. github)
+        host = 'github'
     config_app = configparser.ConfigParser()
     config_app.read(f"config_{host}.ini")
     script_configs = [item if item[1] != '' else -1 for item in config_app.items(task_name)]
@@ -66,11 +67,11 @@ def grab_task_func(task_name):
     """ BASED ON THE TASK, ITS ENTRY POINT IS RETURNED """
 
     TASKS = {
-        'update': update.main,
-        'fetch': fetch.main,
-        'backup': backup.main,
-        'archive': archive.main,
-        'list_web_hosts': list_web_hosts.main
+        'update': actions.update,
+        'fetch': actions.fetch,
+        'backup': actions.backup,
+        'archive': actions.archive,
+        'list_web_hosts': actions.list_web_hosts
     }
 
     return TASKS[task_name]
@@ -88,7 +89,7 @@ def main():
     if(not runtime_args['task'] in EXCLUDE and helpers.not_supported_host(runtime_args['where'])):
         return False
 
-    task_args = task_arguments(runtime_args['task'], runtime_args['where'].lower())
+    task_args = task_arguments(runtime_args['task'], str(runtime_args['where']).lower()) # casting as string incase of None
     task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
     #print(task_args)
 
