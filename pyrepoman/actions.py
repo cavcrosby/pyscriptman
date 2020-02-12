@@ -5,7 +5,7 @@ import os, datetime, subprocess, requests, configparser
 
 # Local Application Imports
 import apis, helpers
-from helpers import load_args, get_value, get_repo_names_and_urls, init_backup_dir
+from helpers import load_args, get_arg_value, get_repo_names_and_urls, create_dir
 
 def update(args):
 
@@ -25,9 +25,9 @@ def backup(args):
 
     SELECT_ARGS = ['where', 'backup_dir']
     data_store = load_args(SELECT_ARGS, args)
-    BACKUP_DIR = get_value(data_store, 'backup_dir')
-    init_backup_dir(BACKUP_DIR)
-    repo_names_and_urls = get_repo_names_and_urls(get_value(data_store, 'where'), 'fetch', args)
+    BACKUP_DIR = get_arg_value(data_store, 'backup_dir')
+    create_dir(BACKUP_DIR)
+    repo_names_and_urls = get_repo_names_and_urls(get_arg_value(data_store, 'where'), 'fetch', args)
     to_delete = os.listdir(BACKUP_DIR)
     try:
         for repo_name in repo_names_and_urls:
@@ -46,11 +46,11 @@ def archive(args):
 
     SELECT_ARGS = ['where', 'backup_dir', 'tmp_dir']
     data_store = load_args(SELECT_ARGS, args)
-    BACKUP_DIR, TMP_DIR = get_value(data_store, 'backup_dir'), get_value(data_store, 'tmp_dir')
-    init_backup_dir(BACKUP_DIR)
-    init_backup_dir(TMP_DIR)
-    repo_names_and_urls = get_repo_names_and_urls(get_value(data_store, 'where'), 'fetch', args)
-    helpers.clear_old_bundles(BACKUP_DIR)
+    BACKUP_DIR, TMP_DIR = get_arg_value(data_store, 'backup_dir'), get_arg_value(data_store, 'tmp_dir')
+    create_dir(BACKUP_DIR)
+    create_dir(TMP_DIR)
+    repo_names_and_urls = get_repo_names_and_urls(get_arg_value(data_store, 'where'), 'fetch', args)
+    helpers.clearing_folder_contents(BACKUP_DIR)
     try:
         for repo_name in repo_names_and_urls:
             backup_repo_location = f"{BACKUP_DIR}/{repo_name}"
@@ -70,7 +70,7 @@ def fetch(args):
     SELECT_ARGS = ['where']
     print(args)
     data_store = load_args(SELECT_ARGS, args)
-    repo_names_and_urls = get_repo_names_and_urls(get_value(data_store, 'where'), 'fetch', args)
+    repo_names_and_urls = get_repo_names_and_urls(get_arg_value(data_store, 'where'), 'fetch', args)
     try:
         for repo_name in repo_names_and_urls:
             subprocess.run("git clone {0} {1}".format(repo_names_and_urls[repo_name], repo_name), shell=True)

@@ -7,14 +7,21 @@ import os, subprocess, collections
 import apis
 
 def get_repo_names():
+    
+    try:
+        repos = list()
+        dirs = os.listdir(os.getcwd())
+        dirs = [dir for dir in dirs if dir.find('.') == -1]
+        for dir in dirs:
+            os.chdir(dir)
+            if('.git' in os.listdir()):
+                repos.append(dir)
+            os.chdir('..')
+        return repos
+    except Exception as e:
+        print(e)
 
-	try:
-		repos = os.listdir(os.getcwd())
-		return [repo for repo in repos if repo.find('.') == -1]
-	except Exception as e:
-		print(e)
-
-def get_value(store, arg):
+def get_arg_value(store, arg):
 
     return store[arg]
 
@@ -32,18 +39,13 @@ def get_repo_names_and_urls(host, action, other_args):
 	endpoint = apis.get_hostname_func_endpoint(host, action)
 	return apis.get_hostname_func_obj(host, action)(endpoint, other_args)
 
-def clear_old_bundles(loc):
+def clearing_folder_contents(loc):
 
     subprocess.run(["rm", "-rf", "{0}/*".format(loc)])
 
 def remove_dir(dir):
 
     subprocess.run(["rm", "-rf", dir])
-
-def init_backup_dir(directory):
-
-    if(not dir_exist(directory)):
-        create_dir(directory)
 
 def dir_exist(dir_name):
 
@@ -52,7 +54,8 @@ def dir_exist(dir_name):
 
 def create_dir(dir_name):
 
-    subprocess.run(["mkdir", dir_name])
+    if(not dir_exist(dir_name)):
+        subprocess.run(["mkdir", dir_name])
 
 def create_mirror(url, loc):
 
