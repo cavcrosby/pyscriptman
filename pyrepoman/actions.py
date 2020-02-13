@@ -4,8 +4,9 @@ import os, datetime, subprocess, requests, configparser
 # Third Party Imports
 
 # Local Application Imports
-import apis, helpers
-from helpers import load_args, get_arg_value, get_repo_names_and_urls, create_dir
+import helpers
+from helpers import load_args, get_arg_value, create_dir
+from apis import get_repo_names_and_locations, SUPPORTED_HOSTS, get_hostname_desc
 
 def update(args):
 
@@ -27,7 +28,7 @@ def backup(args):
     data_store = load_args(SELECT_ARGS, args)
     BACKUP_DIR = get_arg_value(data_store, 'backup_dir')
     create_dir(BACKUP_DIR)
-    repo_names_and_urls = get_repo_names_and_urls(get_arg_value(data_store, 'where'), 'fetch', args)
+    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
     to_delete = os.listdir(BACKUP_DIR)
     try:
         for repo_name in repo_names_and_urls:
@@ -49,7 +50,7 @@ def archive(args):
     BACKUP_DIR, TMP_DIR = get_arg_value(data_store, 'backup_dir'), get_arg_value(data_store, 'tmp_dir')
     create_dir(BACKUP_DIR)
     create_dir(TMP_DIR)
-    repo_names_and_urls = get_repo_names_and_urls(get_arg_value(data_store, 'where'), 'fetch', args)
+    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
     helpers.clearing_folder_contents(BACKUP_DIR)
     try:
         for repo_name in repo_names_and_urls:
@@ -62,15 +63,15 @@ def archive(args):
 
 def list_web_hosts(args):
 
-    for host in apis.SUPPORTED_HOSTS:
-        print(f"{host}{apis.get_hostname_desc(host)}")
+    for host in SUPPORTED_HOSTS:
+        print(f"{host}{get_hostname_desc(host)}")
 
 def fetch(args):
     
     SELECT_ARGS = ['where']
     print(args)
     data_store = load_args(SELECT_ARGS, args)
-    repo_names_and_urls = get_repo_names_and_urls(get_arg_value(data_store, 'where'), 'fetch', args)
+    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
     try:
         for repo_name in repo_names_and_urls:
             subprocess.run("git clone {0} {1}".format(repo_names_and_urls[repo_name], repo_name), shell=True)

@@ -39,4 +39,10 @@ def supported_endpoint(host):
         
     return False
 
+def get_repo_names_and_locations(host, other_args):
+    
+    action = 'get_repos_and_locations'
+    endpoint = get_hostname_func_endpoint(host, action)
+    return get_hostname_func_obj(host, action)(endpoint, other_args)
+
 SUPPORTED_HOSTS = {}

@@ -22,6 +22,4 @@ def get_repos_github_restapiv3(endpoint, other_args):
         print(e)
 
 apis.add_supported_api("GitHub", " -- GitHub's REST API v3")
-apis.add_host_func("GitHub", 'archive', get_repos_github_restapiv3, "https://api.github.com/user/repos")
-apis.add_host_func("GitHub", 'backup', get_repos_github_restapiv3, "https://api.github.com/user/repos")
-apis.add_host_func("GitHub", 'fetch', get_repos_github_restapiv3, "https://api.github.com/user/repos")
+apis.add_host_func("GitHub", 'get_repos_and_locations', get_repos_github_restapiv3, "https://api.github.com/user/repos")
