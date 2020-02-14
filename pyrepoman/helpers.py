@@ -1,5 +1,5 @@
 # Standard Library Imports
-import os, subprocess, collections
+import os, subprocess, collections, shutil
 
 # Third Party Imports
 
@@ -36,11 +36,22 @@ def load_args(select_args, args):
     
 def clearing_folder_contents(loc):
     
-    subprocess.run(["rm", "-rf", "{0}/*".format(loc)])
+    os.chdir(loc)
+    file = os.scandir()
+    try:
+        while(next(file)):
+            if(file.is_dir()):
+                shutil.rmtree(file)
+            else:
+                os.remove(file)
+    except StopIteration as e:
+        pass
+    finally:
+        os.chdir('..')
 
 def remove_dir(dir):
     
-    subprocess.run(["rm", "-rf", dir])
+    shutil.rmtree(dir)
 
 def dir_exist(dir_name):
     
@@ -50,7 +61,7 @@ def dir_exist(dir_name):
 def create_dir(dir_name):
 
     if(not dir_exist(dir_name)):
-        subprocess.run(["mkdir", dir_name])
+        os.mkdir(dir_name)
 
 def create_mirror(url, loc):
     

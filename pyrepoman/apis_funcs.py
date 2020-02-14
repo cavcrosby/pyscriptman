@@ -1,13 +1,11 @@
 # Standard Library Imports
-import requests, sys # TODO REMOVE SYS WHEN NOT TESTING
+import requests
 import subprocess as sp
-
-sys.path.append("/home/reap2sow1/dev/pyrepoman/test/")
 
 # Third Party Imports
 
 # Local Application Imports
-import apis, load_local
+import apis
 from helpers import load_args, get_arg_value
 
 def get_repos_github_restapiv3(endpoint, other_args):
@@ -20,6 +18,3 @@ def get_repos_github_restapiv3(endpoint, other_args):
         return {repo['name']:repo['svn_url'] for repo in repos.json()}
     except Exception as e:
         print(e)
-
-apis.add_supported_api("GitHub", " -- GitHub's REST API v3")
-apis.add_host_func("GitHub", 'get_repos_and_locations', get_repos_github_restapiv3, "https://api.github.com/user/repos")

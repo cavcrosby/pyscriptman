@@ -4,6 +4,7 @@ import os, datetime, subprocess, configparser
 # Third Party Imports
 
 # Local Application Imports
+import apis_funcs
 
 def get_hostname_funcs(hostname):
 
@@ -46,3 +47,6 @@ def get_repo_names_and_locations(host, other_args):
     return get_hostname_func_obj(host, action)(endpoint, other_args)
 
 SUPPORTED_HOSTS = {}
+
+add_supported_api("GitHub", " -- GitHub's REST API v3")
+add_host_func("GitHub", 'get_repos_and_locations', apis_funcs.get_repos_github_restapiv3, "https://api.github.com/user/repos")
