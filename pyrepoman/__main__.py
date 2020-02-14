@@ -12,7 +12,7 @@ def parse_args():
     """ APPLICATION DESC AT THE PROMPT INCLUDING HELPFUL DOCUMENTATION """
 
     global EXCLUDE 
-    EXCLUDE = ['update', 'list_web_hosts']
+    EXCLUDE = ['update', 'list_web_hosts'] # to denote no need for --where arg
 
     def good_arg_values():
         exclude = ['update', 'list_web_hosts']
@@ -87,7 +87,7 @@ def main():
         return -1
 
     if(not runtime_args['task'] in EXCLUDE and helpers.not_supported_host(runtime_args['where'])):
-        return False
+        return -1
 
     task_args = task_arguments(runtime_args['task'], str(runtime_args['where']).lower()) # casting as string incase of None
     task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
