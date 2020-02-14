@@ -32,7 +32,7 @@ def add_host_func(hostname, action, func_obj, endpoint):
 
     get_hostname_funcs(hostname)[action] = [func_obj, endpoint]
 
-def supported_endpoint(host):
+def supported_host(host):
 
     for supported_host in SUPPORTED_HOSTS:
         if(host == supported_host):
@@ -46,6 +46,7 @@ def get_repo_names_and_locations(host, other_args):
     if(host not in SUPPORTED_HOSTS):
         endpoint = host
         host = 'local_computer'
+        add_host_func("local_computer", 'get_repos_and_locations', apis_funcs.get_repos_local_computers, endpoint)
     else:
         endpoint = get_hostname_func_endpoint(host, action)
     return get_hostname_func_obj(host, action)(endpoint, other_args)

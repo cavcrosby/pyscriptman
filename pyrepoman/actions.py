@@ -25,6 +25,7 @@ def update(args):
 def backup(args):
 
     SELECT_ARGS = ['where', 'backup_dir']
+    # TODO, HOW TO DEAL WITH EXTRA ARGS FOR LOCAL COMPUTERS?
     data_store = load_args(SELECT_ARGS, args)
     BACKUP_DIR = get_arg_value(data_store, 'backup_dir')
     create_dir(BACKUP_DIR)
@@ -46,6 +47,7 @@ def backup(args):
 def archive(args):
 
     SELECT_ARGS = ['where', 'backup_dir', 'tmp_dir']
+    # TODO, HOW TO DEAL WITH EXTRA ARGS FOR LOCAL COMPUTERS?
     data_store = load_args(SELECT_ARGS, args)
     BACKUP_DIR, TMP_DIR = get_arg_value(data_store, 'backup_dir'), get_arg_value(data_store, 'tmp_dir')
     create_dir(BACKUP_DIR)
@@ -69,7 +71,6 @@ def list_web_hosts(args):
 def fetch(args):
     
     SELECT_ARGS = ['where']
-    print(args)
     data_store = load_args(SELECT_ARGS, args)
     repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
     try:

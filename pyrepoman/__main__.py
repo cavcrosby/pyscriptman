@@ -5,7 +5,7 @@ import argparse, configparser, os
 # Third Party Imports
 
 # Local Application Imports
-import actions, helpers
+import actions, apis
 
 def parse_args():
 
@@ -86,7 +86,7 @@ def main():
     if(not runtime_args):
         return -1
 
-    if(helpers.not_supported_host(runtime_args['where'])):
+    if(not apis.supported_host(runtime_args['where'])):
         task_args = [(runtime_args['task_arg'], get_task_arg_value(runtime_args))]
     else:
         task_args = task_arguments(runtime_args['task'], str(runtime_args['where']).lower()) # casting as string incase of None

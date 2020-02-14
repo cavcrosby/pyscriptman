@@ -4,7 +4,6 @@ import os, subprocess, collections, shutil
 # Third Party Imports
 
 # Local Application Imports
-import apis
 
 def get_repo_names():
     
@@ -82,9 +81,3 @@ def clear_old_repos(backup_dir, to_delete):
 def create_bundle(mirror_repo, archive_dir):
     
     subprocess.run(["git", "--git-dir", mirror_repo, "bundle", "create", f"{archive_dir}.bundle", "--all"])
-
-def not_supported_host(host):
-    
-    if(not apis.supported_endpoint(host)):
-        print("Error: web host passed in is not currently supported")
-        return True
