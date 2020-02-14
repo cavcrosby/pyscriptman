@@ -86,11 +86,11 @@ def main():
     if(not runtime_args):
         return -1
 
-    if(not runtime_args['task'] in EXCLUDE and helpers.not_supported_host(runtime_args['where'])):
-        return -1
-
-    task_args = task_arguments(runtime_args['task'], str(runtime_args['where']).lower()) # casting as string incase of None
-    task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
+    if(helpers.not_supported_host(runtime_args['where'])):
+        task_args = [(runtime_args['task_arg'], get_task_arg_value(runtime_args))]
+    else:
+        task_args = task_arguments(runtime_args['task'], str(runtime_args['where']).lower()) # casting as string incase of None
+        task_args.append((runtime_args['task_arg'], get_task_arg_value(runtime_args)))
     #print(task_args)
 
     if(-1 in task_args):

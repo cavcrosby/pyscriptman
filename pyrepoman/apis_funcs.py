@@ -18,3 +18,13 @@ def get_repos_github_restapiv3(endpoint, other_args):
         return {repo['name']:repo['svn_url'] for repo in repos.json()}
     except Exception as e:
         print(e)
+
+def get_repos_local_computers(endpoint, other_args):
+
+    # SSH Server needs to be setup for any local computer
+    # FORMAT OF ENDPOINT: Username@IP_ADDR:/c/Users/xxx/Desktop/foo <-- under assumption default shell for windows is git bash
+    # also means git needs to be installed...
+    # TODO FIGURE OUT IF CAN RUN PYTHON CODE ON REMOTE SERVERS, TO FIND OUT WHAT DIRS ARE GIT DIRS
+    # https://stackoverflow.com/questions/53834304/how-do-i-git-clone-from-a-windows-machine-over-ssh
+    # https://winscp.net/eng/docs/guide_windows_openssh_server
+
