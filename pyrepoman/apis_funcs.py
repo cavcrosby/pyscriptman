@@ -21,28 +21,28 @@ def get_repos_github_restapiv3(endpoint, other_args):
 
 def get_repos_local_computers(endpoint, other_args):
 
-    # SSH Server needs to be setup for any local computer
-    # FORMAT OF ENDPOINT: Username@IP_ADDR <-- under assumption default shell for windows is git bash
-    # also means git needs to be installed...
-    # https://stackoverflow.com/questions/53834304/how-do-i-git-clone-from-a-windows-machine-over-ssh
+    # FORMAT OF ENDPOINT: Username@IP_ADDR <-- under assumption default shell for windows is git bash, pretty sure I mean the
+    # shell that openssh uses.
+    # https://stackoverflow.com/questions/53834304/how-do-i-git-clone-from-a-windows-machine-over-ssh <-- setting openssh shell to bash
     # https://winscp.net/eng/docs/guide_windows_openssh_server
     # WILL USE SCRIPT TO ASSIST IN GETTING REPO NAMES AT ENDPOINT, COPY OVER SCRIPT VIA SCP
+
     # TODO WHAT IF USER WANTS TO DO A ENTIRELY DIFFERENT DIRECTORY? ALLOW THIS AS ANOTHER ARG TO SCRIPT?
-    # TODO LIST REQUIREMENTS FOR EACH MACHINE TO PULL REPOS OFF OF
-    
+    # TODO LIST REQUIREMENTS FOR EACH MACHINE TO PULL REPOS OFF OF, TEST THIS TO
+
     # OPENSSH SERVER, FIREWALL SHOULD ALLOW PORT 22
+    # GIT SHOULD BE INSTALLED
     # PUBLIC KEY AUTHENTICATION ENABLED AND SET (KEYS ARE IN THE PROPER PLACE, WITH CORRECT PERMISSIONS), PASSWORD AUTH DISABLED
     # ENDS FOR LINUX
 
     # OPENSSH SERVER, FIREWALL SHOULD ALLOW PORT 22
+    # GIT SHOULD BE INSTALLED
     # PUBLIC KEY AUTHENTICATION ENABLED AND SET (KEYS ARE IN THE PROPER PLACE, WITH CORRECT PERMISSIONS), PASSWORD AUTH DISABLED
     # IF THE USER ACCOUNT IS AN ADMIN, WILL NEED TO ADD KEY TO GLOBAL ADMIN_AUTHORIZED_KEYS
     #https://superuser.com/questions/1407020/logging-into-windows-10-openssh-server-with-administrator-account-and-public-key
     # IF USER NOT AN ADMIN, JUST NORMAL LOCATION AT HOME DIRECTORY OR DISABLE LINES IN SSHD_CONFIG FILE
     # SET OPENSSH SHELL TO BE BASH
-
-
-    # ENDS FOR LINUX
+    # ENDS FOR WINDOWS
     # TODO FOR WINDOWS, DOES ALIAS NEED TO BE ASSIGNED TO USE COMMAND?
 
     HOST = endpoint
