@@ -32,7 +32,7 @@ def load_args(select_args, args):
             to_return[arg[0]] = arg[1]
     
     return to_return
-    
+
 def clearing_folder_contents(loc):
     
     os.chdir(loc)

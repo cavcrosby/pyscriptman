@@ -32,32 +32,33 @@ def get_repos_local_computers(endpoint, other_args):
 
     # OPENSSH SERVER, FIREWALL SHOULD ALLOW PORT 22
     # GIT SHOULD BE INSTALLED
+    # PYTHON 3 SHOULD BE INSTALLED
     # PUBLIC KEY AUTHENTICATION ENABLED AND SET (KEYS ARE IN THE PROPER PLACE, WITH CORRECT PERMISSIONS), PASSWORD AUTH DISABLED
     # ENDS FOR LINUX
 
     # OPENSSH SERVER, FIREWALL SHOULD ALLOW PORT 22
     # GIT SHOULD BE INSTALLED
+    # PYTHON 3 SHOULD BE INSTALLED
     # PUBLIC KEY AUTHENTICATION ENABLED AND SET (KEYS ARE IN THE PROPER PLACE, WITH CORRECT PERMISSIONS), PASSWORD AUTH DISABLED
     # IF THE USER ACCOUNT IS AN ADMIN, WILL NEED TO ADD KEY TO GLOBAL ADMIN_AUTHORIZED_KEYS
     #https://superuser.com/questions/1407020/logging-into-windows-10-openssh-server-with-administrator-account-and-public-key
     # IF USER NOT AN ADMIN, JUST NORMAL LOCATION AT HOME DIRECTORY OR DISABLE LINES IN SSHD_CONFIG FILE
     # SET OPENSSH SHELL TO BE BASH
     # ENDS FOR WINDOWS
-    # TODO FOR WINDOWS, DOES ALIAS NEED TO BE ASSIGNED TO USE COMMAND?
 
-    HOST = endpoint
     #COMMAND = "cd Desktop; python remote_get_repos.py;"
     REMOTE_SCRIPT = 'remote_get_repos.py'
+    PATH = other_args['path']
 
-    sp.run(['scp', 'remote_get_repos.py', f"{HOST}:"])
-    what_os = sp.run(['ssh', HOST, '-i', '~/.ssh/id_rsa', 'uname'], stdout=sp.PIPE, encoding='utf-8').stdout.strip('\n')
+    sp.run(['scp', 'remote_get_repos.py', f"{endpoint}:{PATH}"])
+    what_os = sp.run(['ssh', endpoint, '-i', '~/.ssh/id_rsa', 'uname'], stdout=sp.PIPE, encoding='utf-8').stdout.strip('\n')
     if(what_os != 'Linux'):
-        results = sp.run(['ssh', HOST, f"python {REMOTE_SCRIPT}"], stdout=sp.PIPE, encoding='utf-8')
+        results = sp.run(['ssh', endpoint, fr"python {PATH}\{REMOTE_SCRIPT}"], stdout=sp.PIPE, encoding='utf-8')
     else:
-        results = sp.run(['ssh', HOST, f"python3 {REMOTE_SCRIPT}"], stdout=sp.PIPE, encoding='utf-8')
-    #results = sp.run(['ssh', HOST, '-i', '~/.ssh/id_rsa', COMMAND], stdout=sp.PIPE, encoding='utf-8')
+        results = sp.run(['ssh', endpoint, f"python3 {PATH}/{REMOTE_SCRIPT}"], stdout=sp.PIPE, encoding='utf-8')
+    #results = sp.run(['ssh', endpoint, '-i', '~/.ssh/id_rsa', COMMAND], stdout=sp.PIPE, encoding='utf-8')
     results = results.stdout.split(',') # 'cs61a_2011,cs61a_2011 - Copy\n' e.g.
     results[-1] = results[-1].strip()
-    return {f"'{dir}'":f"'{HOST}:{dir}'" for dir in results}
+    return {f"'{dir}'":f"'{endpoint}:{dir}'" for dir in results}
 
 

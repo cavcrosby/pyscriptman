@@ -53,7 +53,7 @@ def get_repo_names_and_locations(host, other_args):
 
 SUPPORTED_HOSTS = {}
 
-add_supported_api("GitHub", " -- GitHub's REST API v3")
-add_host_func("GitHub", 'get_repos_and_locations', apis_funcs.get_repos_github_restapiv3, "https://api.github.com/user/repos")
+add_supported_api("github", " -- github's REST API v3")
+add_host_func("github", 'get_repos_and_locations', apis_funcs.get_repos_github_restapiv3, "https://api.github.com/user/repos")
 
 add_supported_api("local_computer", " -- linux and windows directories are supported for actions, see docs")

@@ -70,9 +70,9 @@ def list_web_hosts(args):
 
 def fetch(args):
     
-    SELECT_ARGS = ['where']
+    SELECT_ARGS = ['host']
     data_store = load_args(SELECT_ARGS, args)
-    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
+    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'host'), args)
     try:
         for repo_name in repo_names_and_urls:
             subprocess.run("git clone {0} {1}".format(repo_names_and_urls[repo_name], repo_name), shell=True)
