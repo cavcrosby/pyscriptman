@@ -7,8 +7,9 @@ import os, datetime, subprocess, requests, configparser
 import helpers
 from helpers import load_args, get_arg_value, create_dir
 from apis import get_repo_names_and_locations, SUPPORTED_HOSTS, get_hostname_desc
+from pyrepoman_configs import PYREPOMAN_CONFIGS, pyrepoman_configs_select_config_value
 
-def update(args):
+def update():
 
 	repo_names = helpers.get_repo_names()
 	try:
@@ -22,14 +23,11 @@ def update(args):
 		print(e)
 		return -1
 
-def backup(args):
+def backup():
 
-    SELECT_ARGS = ['where', 'backup_dir']
-    # TODO, HOW TO DEAL WITH EXTRA ARGS FOR LOCAL COMPUTERS?
-    data_store = load_args(SELECT_ARGS, args)
-    BACKUP_DIR = get_arg_value(data_store, 'backup_dir')
+    BACKUP_DIR = pyrepoman_configs_select_config_value('backup_dir')
     create_dir(BACKUP_DIR)
-    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
+    repo_names_and_urls = get_repo_names_and_locations()
     to_delete = os.listdir(BACKUP_DIR)
     try:
         for repo_name in repo_names_and_urls:
@@ -44,15 +42,12 @@ def backup(args):
     except Exception as e:
         print(e)
 
-def archive(args):
+def archive():
 
-    SELECT_ARGS = ['where', 'backup_dir', 'tmp_dir']
-    # TODO, HOW TO DEAL WITH EXTRA ARGS FOR LOCAL COMPUTERS?
-    data_store = load_args(SELECT_ARGS, args)
-    BACKUP_DIR, TMP_DIR = get_arg_value(data_store, 'backup_dir'), get_arg_value(data_store, 'tmp_dir')
+    BACKUP_DIR, TMP_DIR = pyrepoman_configs_select_config_value('archive_dir'), "archive_tmp"
     create_dir(BACKUP_DIR)
     create_dir(TMP_DIR)
-    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'where'), args)
+    repo_names_and_urls = get_repo_names_and_locations()
     helpers.clearing_folder_contents(BACKUP_DIR)
     try:
         for repo_name in repo_names_and_urls:
@@ -63,19 +58,17 @@ def archive(args):
     except Exception as e:
         print(e)
 
-def list_web_hosts(args):
+def list_web_hosts():
 
     for host in SUPPORTED_HOSTS:
         print(f"{host}{get_hostname_desc(host)}")
 
-def fetch(args):
+def fetch():
     
-    SELECT_ARGS = ['host']
-    data_store = load_args(SELECT_ARGS, args)
-    repo_names_and_urls = get_repo_names_and_locations(get_arg_value(data_store, 'host'), args)
+    repo_names_and_urls = get_repo_names_and_locations()
     try:
         for repo_name in repo_names_and_urls:
-            subprocess.run("git clone {0} {1}".format(repo_names_and_urls[repo_name], repo_name), shell=True)
+            subprocess.run(f"git clone {repo_names_and_urls[repo_name]} {repo_name}", shell=True)
         print('\nand finished...!\n')
         return 1
     except Exception as e:

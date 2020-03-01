@@ -7,12 +7,13 @@ import subprocess as sp
 # Local Application Imports
 import apis
 from helpers import load_args, get_arg_value
+from pyrepoman_configs import pyrepoman_configs_select_config_value
 
-def get_repos_github_restapiv3(endpoint, other_args):
+def get_repos_github_restapiv3(endpoint):
 
-    SELECT_ARGS = ['user', 'api_token', 'payload']
-    data_store = load_args(SELECT_ARGS, other_args)
-    user, api_token, payload = get_arg_value(data_store, 'user'), get_arg_value(data_store, 'api_token'), get_arg_value(data_store, 'payload')
+    user, api_token, payload = pyrepoman_configs_select_config_value('user'), \
+        pyrepoman_configs_select_config_value('api_token'), \
+        pyrepoman_configs_select_config_value('payload')
     try:
         repos = requests.get(endpoint, auth=(user, api_token), params=payload)
         return {repo['name']:repo['svn_url'] for repo in repos.json()}
@@ -48,7 +49,7 @@ def get_repos_local_computers(endpoint, other_args):
 
     #COMMAND = "cd Desktop; python remote_get_repos.py;"
     REMOTE_SCRIPT = 'remote_get_repos.py'
-    PATH = other_args['path']
+    PATH = pyrepoman_configs_select_config_value('path')
 
     sp.run(['scp', 'remote_get_repos.py', f"{endpoint}:{PATH}"])
     what_os = sp.run(['ssh', endpoint, '-i', '~/.ssh/id_rsa', 'uname'], stdout=sp.PIPE, encoding='utf-8').stdout.strip('\n')

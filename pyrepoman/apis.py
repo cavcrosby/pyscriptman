@@ -5,6 +5,7 @@ import os, datetime, subprocess, configparser
 
 # Local Application Imports
 import apis_funcs
+from pyrepoman_configs import pyrepoman_configs_select_config_value, PYREPOMAN_CONFIGS
 
 def get_hostname_funcs(hostname):
 
@@ -40,16 +41,17 @@ def supported_host(host):
         
     return False
 
-def get_repo_names_and_locations(host, other_args):
+def get_repo_names_and_locations():
     
-    action = 'get_repos_and_locations'
+    func = 'get_repos_and_locations'
+    host = pyrepoman_configs_select_config_value('host')
     if(host not in SUPPORTED_HOSTS):
         endpoint = host
         host = 'local_computer'
         add_host_func("local_computer", 'get_repos_and_locations', apis_funcs.get_repos_local_computers, endpoint)
     else:
-        endpoint = get_hostname_func_endpoint(host, action)
-    return get_hostname_func_obj(host, action)(endpoint, other_args)
+        endpoint = get_hostname_func_endpoint(host, func)
+    return get_hostname_func_obj(host, func)(endpoint)
 
 SUPPORTED_HOSTS = {}
 

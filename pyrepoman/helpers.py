@@ -19,19 +19,6 @@ def get_repo_names():
         return repos
     except Exception as e:
         print(e)
-        
-def get_arg_value(store, arg):
-
-    return store[arg]
-
-def load_args(select_args, args):
-
-    to_return = dict()
-    for arg in args:
-        if arg[0] in select_args:
-            to_return[arg[0]] = arg[1]
-    
-    return to_return
 
 def clearing_folder_contents(loc):
     

@@ -6,6 +6,7 @@ import argparse, configparser, os
 
 # Local Application Imports
 import actions, apis
+from pyrepoman_configs import pyrepoman_configs_add, PYREPOMAN_CONFIGS, pyrepoman_configs_config_exist, pyrepoman_configs_merge
 
 def parse_args():
 
@@ -14,22 +15,7 @@ def parse_args():
     global EXCLUDE 
     EXCLUDE = ['update', 'list_web_hosts'] # to denote no need for --where arg
 
-    # def good_arg_values():
-    #     exclude = ['update', 'list_web_hosts']
-    #     if(not args[exclude[0]] and not args[exclude[1]]):
-    #         for arg in args:
-    #             if(args[arg] and args['where'] == None and arg not in exclude):
-    #                 parser.error(f"--{arg} requires --where REPO-PROVIDER")
-    #                 return False
-    #     if(args['update'] and args['where']):
-    #         parser.error("-u, --update does not need --where")
-    #         return False
-    #     if(True not in args.values()): # no action was selected, even if help was selected
-    #         parser.print_help()
-    #         return False
-    #     return True
-
-    DESC = """Description: This python application helps manage web-hosted Git repos with various actions."""
+    DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
     parser = argparse.ArgumentParser(description=DESC, prog="pyrepoman.py")
     subparsers = parser.add_subparsers(title="available commands", metavar="command [options ...]")
 
@@ -41,20 +27,25 @@ def parse_args():
 
     parser_fetch = subparsers.add_parser('fetch', help='fetch all Git repos through a web provider')
     parser_fetch.add_argument('host', help='specifies what host to target')
-    parser_fetch.add_argument('--path', metavar="path", default="", help='specifies what directory on the host to target for repos')
+    parser_fetch.add_argument('--host-path', metavar="path", default="", help='specifies what directory on the host to target for repos')
     parser_fetch.set_defaults(func='fetch')
     
     parser_archive = subparsers.add_parser('archive', help='archive all Git repos, done by bundling repos')
     parser_archive.add_argument('host', help='specifies what host to target')
-    parser_archive.add_argument('--path', metavar="path", default="", help='specifies what directory on the host to target for repos')
+    parser_archive.add_argument('archive_dir', help='what are you wanting to call the archive directory')
+    parser_archive.add_argument('--host-path', metavar="path", default="", help='specifies what directory on the host to target for repos')
     parser_archive.set_defaults(func='archive')
 
     parser_backup = subparsers.add_parser('backup', help='backup all Git repos, done by mirroring repos fully')
     parser_backup.add_argument('host', help='specifies what host to target')
-    parser_backup.add_argument('--path', metavar="path", default="", help='specifies what directory on the host to target for repos')
+    parser_backup.add_argument('backup_dir', help='what are you wanting to call the backup directory')
+    parser_backup.add_argument('--host-path', metavar="path", default="", help='specifies what directory on the host to target for repos')
     parser_backup.set_defaults(func='backup')
 
     args = vars(parser.parse_args()) # converts the Namespace object to a dict
+
+    if('host' in args):
+        args['host'] = args['host'].lower()
 
     return args
 
@@ -66,6 +57,8 @@ def task_arguments(task_name, host):
     config_app = configparser.ConfigParser()
     config_app.read(f"config_{host}.ini")
     script_configs = [item if item[1] != '' else -1 for item in config_app.items(task_name)]
+    for pair in script_configs:
+        pyrepoman_configs_merge(pair)
     return script_configs
 
 def grab_task_func(task_name):
@@ -82,9 +75,10 @@ def grab_task_func(task_name):
 
     return TASKS[task_name]
 
-def run_task(task_obj, args):
+def add_runtime_to_pyrepoman_configs(runtime_args):
 
-    task_obj(args)
+    for arg in runtime_args:
+        pyrepoman_configs_add(arg, runtime_args[arg])
 
 def main():
 
@@ -92,23 +86,18 @@ def main():
     if(not runtime_args):
         return -1
 
-    if(runtime_args['func'] in EXCLUDE):
-        task_args = list()
-        pass
-    elif(not apis.supported_host(runtime_args['host'].lower())):
-        task_args = [(runtime_args['func'], runtime_args['host'], runtime_args['path'])]
+    if(not apis.supported_host(runtime_args['host'].lower())):
+        add_runtime_to_pyrepoman_configs(runtime_args)
     else:
-        task_args = task_arguments(runtime_args['func'], str(runtime_args['host']).lower()) # casting as string incase of None
-        task_args.append(('host', runtime_args['host'].lower()))
-        task_args.append(('path', runtime_args['path']))
-    #print(task_args)
+        task_arguments(runtime_args['func'], str(runtime_args['host']).lower()) # casting as string incase of None
+        add_runtime_to_pyrepoman_configs(runtime_args)
 
-    if(-1 in task_args):
+    if(pyrepoman_configs_config_exist(-1)):
         print(f"Error: missing values in configuration file for {runtime_args['func']}")
         return -1
     
     task = grab_task_func(runtime_args['func'])
-    run_task(task, task_args)
+    task()
     return 1
 
 if(__name__ == '__main__'):
