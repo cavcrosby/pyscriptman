@@ -21,6 +21,7 @@ def parse_args():
 
     parser_update = subparsers.add_parser('update', help='update all Git repos in your current directory from remote repos')
     parser_update.set_defaults(func='update')
+    parser_update.set_defaults(host='')
 
     parser_list_web_hosts = subparsers.add_parser('list-web-hosts', help='list currently supported web-hosts and api used')
     parser_list_web_hosts.set_defaults(func='list_web_hosts')

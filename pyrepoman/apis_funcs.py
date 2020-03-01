@@ -6,7 +6,6 @@ import subprocess as sp
 
 # Local Application Imports
 import apis
-from helpers import load_args, get_arg_value
 from pyrepoman_configs import pyrepoman_configs_select_config_value
 
 def get_repos_github_restapiv3(endpoint):
@@ -20,7 +19,7 @@ def get_repos_github_restapiv3(endpoint):
     except Exception as e:
         print(e)
 
-def get_repos_local_computers(endpoint, other_args):
+def get_repos_local_computers(endpoint):
 
     # FORMAT OF ENDPOINT: Username@IP_ADDR <-- under assumption default shell for windows is git bash, pretty sure I mean the
     # shell that openssh uses.
@@ -50,6 +49,8 @@ def get_repos_local_computers(endpoint, other_args):
     #COMMAND = "cd Desktop; python remote_get_repos.py;"
     REMOTE_SCRIPT = 'remote_get_repos.py'
     PATH = pyrepoman_configs_select_config_value('path')
+    if(PATH == None):
+        PATH = '~' # default behavior is to look at user's home directory
 
     sp.run(['scp', 'remote_get_repos.py', f"{endpoint}:{PATH}"])
     what_os = sp.run(['ssh', endpoint, '-i', '~/.ssh/id_rsa', 'uname'], stdout=sp.PIPE, encoding='utf-8').stdout.strip('\n')

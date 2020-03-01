@@ -5,7 +5,6 @@ import os, datetime, subprocess, requests, configparser
 
 # Local Application Imports
 import helpers
-from helpers import load_args, get_arg_value, create_dir
 from apis import get_repo_names_and_locations, SUPPORTED_HOSTS, get_hostname_desc
 from pyrepoman_configs import PYREPOMAN_CONFIGS, pyrepoman_configs_select_config_value
 
@@ -26,7 +25,7 @@ def update():
 def backup():
 
     BACKUP_DIR = pyrepoman_configs_select_config_value('backup_dir')
-    create_dir(BACKUP_DIR)
+    helpers.create_dir(BACKUP_DIR)
     repo_names_and_urls = get_repo_names_and_locations()
     to_delete = os.listdir(BACKUP_DIR)
     try:
@@ -45,8 +44,8 @@ def backup():
 def archive():
 
     BACKUP_DIR, TMP_DIR = pyrepoman_configs_select_config_value('archive_dir'), "archive_tmp"
-    create_dir(BACKUP_DIR)
-    create_dir(TMP_DIR)
+    helpers.create_dir(BACKUP_DIR)
+    helpers.create_dir(TMP_DIR)
     repo_names_and_urls = get_repo_names_and_locations()
     helpers.clearing_folder_contents(BACKUP_DIR)
     try:
