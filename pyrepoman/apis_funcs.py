@@ -50,7 +50,13 @@ def get_repos_local_computers(endpoint):
     REMOTE_SCRIPT = 'remote_get_repos.py'
     PATH = pyrepoman_configs_select_config_value('path')
     if(PATH == None):
-        PATH = '~' # default behavior is to look at user's home directory
+        PATH = '' # default behavior is to look at user's home directory
+
+    # WINDOWS PATH SHOULD BE LIKE SO \\ for root, same as c:\, default is user's home directory
+    # LINUX PATH SHOULD BE LIKE /usr/local/... default behavior is the same
+
+    # HAVE NO DEPENDENCIES ON WHAT OS IS RUNNING, SO TRY WITH DIFFERENT POSSIBLE PYTHON INTERP NAMES (e.g. py, python3, python)
+    # NO ERROR? COOL IT WORKED! SHOULD BE ABLE TO RECONGNIZE ERRORS
 
     sp.run(['scp', 'remote_get_repos.py', f"{endpoint}:{PATH}"])
     what_os = sp.run(['ssh', endpoint, '-i', '~/.ssh/id_rsa', 'uname'], stdout=sp.PIPE, encoding='utf-8').stdout.strip('\n')
