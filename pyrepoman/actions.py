@@ -5,7 +5,7 @@ import os, datetime, subprocess, requests, configparser
 
 # Local Application Imports
 import helpers
-from apis import get_repo_names_and_locations, SUPPORTED_HOSTS, get_hostname_desc
+from apis import get_repo_names_and_locations, SUPPORTED_APIS, get_hostname_desc
 from pyrepoman_configs import PYREPOMAN_CONFIGS, pyrepoman_configs_select_config_value
 
 def update():
@@ -43,23 +43,23 @@ def backup():
 
 def archive():
 
-    BACKUP_DIR, TMP_DIR = pyrepoman_configs_select_config_value('archive_dir'), "archive_tmp"
-    helpers.create_dir(BACKUP_DIR)
+    ARCHIVE_DIR, TMP_DIR = pyrepoman_configs_select_config_value('archive_dir'), "archive_tmp"
+    helpers.create_dir(ARCHIVE_DIR)
     helpers.create_dir(TMP_DIR)
     repo_names_and_urls = get_repo_names_and_locations()
-    helpers.clearing_folder_contents(BACKUP_DIR)
+    helpers.clearing_folder_contents(ARCHIVE_DIR)
     try:
         for repo_name in repo_names_and_urls:
-            backup_repo_location = f"{BACKUP_DIR}/{repo_name}"
+            backup_repo_location = f"{TMP_DIR}/{repo_name}"
             helpers.create_mirror(repo_names_and_urls[repo_name], f"{TMP_DIR}/{repo_name}")
-            helpers.create_bundle(f"{TMP_DIR}/{repo_name}", backup_repo_location)
+            helpers.create_bundle(f"{ARCHIVE_DIR}/{repo_name}", backup_repo_location)
         helpers.remove_dir(TMP_DIR)
     except Exception as e:
         print(e)
 
 def list_web_hosts():
 
-    for host in SUPPORTED_HOSTS:
+    for host in SUPPORTED_APIS:
         print(f"{host}{get_hostname_desc(host)}")
 
 def fetch():

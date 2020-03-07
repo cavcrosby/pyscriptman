@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Standard Library Imports
-import argparse, configparser, os
+import argparse, configparser, os, re
 
 # Third Party Imports
 
@@ -13,7 +13,7 @@ def parse_args():
     """ APPLICATION DESC AT THE PROMPT INCLUDING HELPFUL DOCUMENTATION """
 
     global EXCLUDE 
-    EXCLUDE = ['update', 'list_web_hosts'] # to denote no need for --where arg
+    EXCLUDE = ['update', 'list_web_hosts'] # to denote no need for host
 
     DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
     parser = argparse.ArgumentParser(description=DESC, prog="pyrepoman.py")
@@ -62,7 +62,11 @@ def task_arguments(task_name, host):
         pyrepoman_configs_merge(pair)
     return script_configs
 
-def grab_task_func(task_name):
+def supported_host(host):
+
+    apis.supported_host(host)
+
+def grab_task(task_name):
 
     """ BASED ON THE TASK, ITS ENTRY POINT IS RETURNED """
 
@@ -87,17 +91,25 @@ def main():
     if(not runtime_args):
         return -1
 
-    if(not apis.supported_host(runtime_args['host'].lower())):
+    host = runtime_args['host'].lower()
+    action = runtime_args['func']
+
+    valid_endpoint = re.search('.+@.+', host) # e.g. user@1.1.1.1
+
+    if(valid_endpoint == None and not supported_host(host) and action not in EXCLUDE):
+        print(f"Error: {host} is not a supported api nor a valid endpoint")
+        return -1
+    elif(not supported_host(host)):
         add_runtime_to_pyrepoman_configs(runtime_args)
     else:
-        task_arguments(runtime_args['func'], str(runtime_args['host']).lower()) # casting as string incase of None
+        task_arguments(runtime_args['func'], str(host)) # casting as string incase of None
         add_runtime_to_pyrepoman_configs(runtime_args)
 
     if(pyrepoman_configs_config_exist(-1)):
-        print(f"Error: missing values in configuration file for {runtime_args['func']}")
+        print(f"Error: missing values in configuration file config_{host} for {action}")
         return -1
     
-    task = grab_task_func(runtime_args['func'])
+    task = grab_task(action)
     task()
     return 1
 
