@@ -65,6 +65,6 @@ def clear_old_repos(backup_dir, to_delete):
     )
     # collections.deque is used to prevent overhead when executing the map iterator (that is, no output should be recorded/saved).
 
-def create_bundle(mirror_repo, archive_dir):
+def create_bundle(archive_dir, mirror_repo):
     
     subprocess.run(["git", "--git-dir", mirror_repo, "bundle", "create", f"{archive_dir}.bundle", "--all"])

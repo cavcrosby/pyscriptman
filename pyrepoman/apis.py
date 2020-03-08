@@ -90,6 +90,7 @@ def get_repos_local_endpoint(endpoint):
     # ENDS FOR WINDOWS
 
     #COMMAND = "cd Desktop; python remote_get_repos.py;"
+    POSSIBLE_PY3_INTERPRETER_NAMES = ["python", "py", "python3"]
     REMOTE_SCRIPT = 'remote_get_repos.py'
     PATH = pyrepoman_configs_select_config_value('host_path')
     if(PATH == None):
@@ -101,11 +102,22 @@ def get_repos_local_endpoint(endpoint):
     # HAVE NO DEPENDENCIES ON WHAT OS IS RUNNING, SO TRY WITH DIFFERENT POSSIBLE PYTHON INTERP NAMES (e.g. py, python3, python)
     # NO ERROR? COOL IT WORKED! SHOULD BE ABLE TO RECONGNIZE ERRORS
 
-    subprocess.run(['scp', 'remote_get_repos.py', f"{endpoint}:{PATH}"])
-    results = subprocess.run(['ssh', endpoint, '-i', '~/.ssh/id_rsa', f"python3 {PATH}/{REMOTE_SCRIPT}"], stdout=subprocess.PIPE, encoding='utf-8')
-    results = results.stdout.split(',') # 'cs61a_2011,cs61a_2011 - Copy\n' e.g.
-    results[-1] = results[-1].strip()
-    return {f"'{dir}'":f"'{endpoint}:{PATH}{dir}'" for dir in results}
+    scp_results = subprocess.run(['scp', REMOTE_SCRIPT, f"{endpoint}:{PATH}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+    for interpreter_name in POSSIBLE_PY3_INTERPRETER_NAMES:
+        interpreter_string = f'{interpreter_name} -c "import os; print(os.path.join(\\"{PATH}\\", \\"{REMOTE_SCRIPT}\\"))"'
+        path_on_endpoint = subprocess.run(['ssh', endpoint, interpreter_string], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+        path_on_endpoint = path_on_endpoint.stdout.rstrip('\n')
+        results_running_script = subprocess.run(['ssh', endpoint, f"{interpreter_name} {path_on_endpoint}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+        if(results_running_script.stderr != ''):
+            continue # TODO SHOULD OTHER ERRORS BE ACCOUNTED FOR?, WRITE TO LOG?
+        break
+    if(scp_results.stderr != '' or results_running_script.stderr != ''):
+        print("Error: check logs, something went wrong with communicating with the endpoint")
+        return list()
+
+    results_running_script = results_running_script.stdout.split(',') # e.g. 'cs61a_2011,cs61a_2011 - Copy\n'
+    results_running_script[-1] = results_running_script[-1].strip()
+    return {f"{dir}":f"{endpoint}:{os.path.join(PATH, dir)}" for dir in results_running_script}
 
 SUPPORTED_APIS = {}
 
