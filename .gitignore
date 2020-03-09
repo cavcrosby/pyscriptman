@@ -7,6 +7,3 @@ pyrepoman/__pycache__
 
 # ignore ini (configuration) files
 *.ini
-
-# ignore test files
-test/*

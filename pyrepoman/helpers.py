@@ -51,7 +51,8 @@ def create_dir(dir_name):
 
 def create_mirror(url, loc):
     
-    subprocess.run(["git", "clone", "--mirror", url, loc])
+    results = subprocess.run(["git", "clone", "--mirror", url, loc], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+    print(results.stderr.strip('\n'))
 
 def update_mirror(loc):
     
@@ -67,4 +68,4 @@ def clear_old_repos(backup_dir, to_delete):
 
 def create_bundle(archive_dir, mirror_repo):
     
-    subprocess.run(["git", "--git-dir", mirror_repo, "bundle", "create", f"{archive_dir}.bundle", "--all"])
+    subprocess.run(["git", "--git-dir", mirror_repo, "bundle", "create", f"{archive_dir}.bundle", "--all"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')

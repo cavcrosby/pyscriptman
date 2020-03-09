@@ -104,20 +104,26 @@ def get_repos_local_endpoint(endpoint):
 
     scp_results = subprocess.run(['scp', REMOTE_SCRIPT, f"{endpoint}:{PATH}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
     for interpreter_name in POSSIBLE_PY3_INTERPRETER_NAMES:
-        interpreter_string = f'{interpreter_name} -c "import os; print(os.path.join(\\"{PATH}\\", \\"{REMOTE_SCRIPT}\\"))"'
-        path_on_endpoint = subprocess.run(['ssh', endpoint, interpreter_string], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-        path_on_endpoint = path_on_endpoint.stdout.rstrip('\n')
+        subprocess_OS = subprocess.run(['ssh', endpoint, f'{interpreter_name} -c "import platform; print(platform.system())"'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+        OS = subprocess_OS.stdout.strip('\n')
+        if(OS == 'Windows'):
+            path_on_endpoint = f"{PATH}\\{REMOTE_SCRIPT}"
+        else:
+            path_on_endpoint = f"{PATH}/{REMOTE_SCRIPT}"
         results_running_script = subprocess.run(['ssh', endpoint, f"{interpreter_name} {path_on_endpoint}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
         if(results_running_script.stderr != ''):
             continue # TODO SHOULD OTHER ERRORS BE ACCOUNTED FOR?, WRITE TO LOG?
         break
     if(scp_results.stderr != '' or results_running_script.stderr != ''):
         print("Error: check logs, something went wrong with communicating with the endpoint")
-        return list()
+        return dict() # currently, a dict is returned for correct input, empty dict is returned to gracefully exit 
 
     results_running_script = results_running_script.stdout.split(',') # e.g. 'cs61a_2011,cs61a_2011 - Copy\n'
     results_running_script[-1] = results_running_script[-1].strip()
-    return {f"{dir}":f"{endpoint}:{os.path.join(PATH, dir)}" for dir in results_running_script}
+    if(OS == 'Windows'):
+        return {f"{dir}":f"{endpoint}:{PATH}\\{dir}" for dir in results_running_script}
+    else:
+        return {f"{dir}":f"{endpoint}:{PATH}/{dir}" for dir in results_running_script}
 
 SUPPORTED_APIS = {}
 
