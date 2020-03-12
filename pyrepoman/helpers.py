@@ -51,8 +51,7 @@ def create_dir(dir_name):
 
 def create_mirror(url, loc):
     
-    results = subprocess.run(["git", "clone", "--mirror", url, loc], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-    print(results.stderr.strip('\n'))
+    subprocess.run(["git", "clone", "--mirror", url, loc], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
 
 def update_mirror(loc):
     

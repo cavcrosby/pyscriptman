@@ -5,17 +5,18 @@ import os
 
 # Local Application Imports
 
-def get_repo_names():
+def get_dir_names():
     
     try:
         scripts_dir = os.path.dirname(os.path.realpath(__file__))
-        dirs = os.listdir(scripts_dir)
+        os.chdir(scripts_dir)
+        nodes = os.listdir()
         is_a_dir = list()
-        for dir in dirs:
-            if(os.path.isdir(f"{scripts_dir}/{dir}")):
-                is_a_dir.append(dir)
+        for node in nodes:
+            if(os.path.isdir(node)):
+                is_a_dir.append(node)
         return ','.join(is_a_dir)
     except Exception as e:
         print(e)
 
-print(get_repo_names())
+print(get_dir_names())
