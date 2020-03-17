@@ -64,44 +64,27 @@ def get_repos_github_restapiv3(endpoint):
 
 def get_repos_local_endpoint(endpoint):
 
-    # TODO LIST REQUIREMENTS FOR EACH MACHINE TO PULL REPOS OFF OF, TEST THIS TO
-
-    # OPENSSH SERVER, FIREWALL SHOULD ALLOW PORT 22
-    # GIT SHOULD BE INSTALLED
-    # PYTHON 3 SHOULD BE INSTALLED
-    # PUBLIC KEY AUTHENTICATION ENABLED AND SET (KEYS ARE IN THE PROPER PLACE, WITH CORRECT PERMISSIONS), PASSWORD AUTH DISABLED
-    # ENDS FOR LINUX
-
-    POSSIBLE_PY3_INTERPRETER_NAMES = ["python", "py", "python3"]
-    results = subprocess.run(['git', 'rev-parse', '--show-toplevel'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-    REPO_DIR = results.stdout.rstrip()
-    REMOTE_SCRIPT_AND_PACKAGE = 'pyrepoman/remote_get_dirs.py' # currently in the pyrepoman
+    REPO_ROOT = subprocess.run(['git', 'rev-parse', '--show-toplevel'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stdout.rstrip()
     REMOTE_SCRIPT = 'remote_get_dirs.py'
-    ENDPOINT_PATH = pyrepoman_configs_select_config_value('host_path')
-    if(ENDPOINT_PATH == ""):
-        ENDPOINT_PATH = '~/' # default behavior is to look at user's home directory
-    REMOTE_SCRIPT_REPO_PATH = os.path.join(REPO_DIR, REMOTE_SCRIPT_AND_PACKAGE)
-    REMOTE_SCRIPT_ENDPOINT_PATH = f"{ENDPOINT_PATH}{REMOTE_SCRIPT}"
+    PACKAGE_AND_REMOTE_SCRIPT = f'pyrepoman/{REMOTE_SCRIPT}' # currently in the pyrepoman package
+    endpoint_path = pyrepoman_configs_select_config_value('host_path') # host_path really is endpoint path we are looking to manipulate repos from
+    if(endpoint_path == ""):
+        endpoint_path = '~/' # default behavior is to look at user's home directory
+    REMOTE_SCRIPT_PATH = os.path.join(REPO_ROOT, PACKAGE_AND_REMOTE_SCRIPT)
+    REMOTE_SCRIPT_ENDPOINT_PATH = f"{endpoint_path}{REMOTE_SCRIPT}"
+    endpoint_path = subprocess.run(['ssh', endpoint, f'python3 -c "import os; print(os.path.expanduser(\\"{endpoint_path}\\"));"'], \
+                        stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stdout.rstrip()
 
-    # LINUX PATH SHOULD BE LIKE /usr/local/... default behavior is the same
-
-    # HAVE NO DEPENDENCIES ON WHAT OS IS RUNNING, SO TRY WITH DIFFERENT POSSIBLE PYTHON INTERP NAMES (e.g. py, python3, python)
-    # NO ERROR? COOL IT WORKED! SHOULD BE ABLE TO RECONGNIZE ERRORS
-
-    scp_results = subprocess.run(['scp', REMOTE_SCRIPT_REPO_PATH, f"{endpoint}:{ENDPOINT_PATH}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-    for interpreter_name in POSSIBLE_PY3_INTERPRETER_NAMES:
-        results_running_script = subprocess.run(['ssh', endpoint, f"{interpreter_name} {REMOTE_SCRIPT_ENDPOINT_PATH}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-        if(results_running_script.stderr != ''):
-            continue
-        break
+    scp_results = subprocess.run(['scp', REMOTE_SCRIPT_PATH, f"{endpoint}:{endpoint_path}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+    results_running_script = subprocess.run(['ssh', endpoint, f"python3 {REMOTE_SCRIPT_ENDPOINT_PATH}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
     if(scp_results.stderr != '' or results_running_script.stderr != ''):
         print("Error apis stderr:\n" + scp_results.stderr + "\n" + results_running_script.stderr)
         return dict() # currently, a dict is returned for correct input, empty dict is returned to gracefully exit 
 
-    subprocess.run(['ssh', endpoint, f'{interpreter_name} -c "import os; path = os.path.expanduser(\\"{REMOTE_SCRIPT_ENDPOINT_PATH}\\"); os.remove(path)"'])
+    subprocess.run(['ssh', endpoint, f'python3 -c "import os; path = os.path.expanduser(\\"{REMOTE_SCRIPT_ENDPOINT_PATH}\\"); os.remove(path)"'])
     results_running_script = results_running_script.stdout.split(',') # e.g. 'cs61a_2011,cs61a_2011 - Copy\n'
     results_running_script[-1] = results_running_script[-1].strip()
-    return {f"{dir}":f"{endpoint}:{ENDPOINT_PATH}{dir}" for dir in results_running_script}
+    return {f"{dir}":f"{endpoint}:{endpoint_path}{dir}" for dir in results_running_script}
 
 SUPPORTED_APIS = {}
 
