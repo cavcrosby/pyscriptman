@@ -5,20 +5,36 @@ import os, subprocess, collections, shutil
 
 # Local Application Imports
 
+def get_dir_names():
+    dirs = list()
+    nodes = os.scandir(os.getcwd())
+    dir_entry = nodes.__next__()
+    try:
+        while(dir_entry):
+            if(dir_entry.is_dir()):
+                dirs.append(dir_entry)
+                dir_entry = nodes.__next__()
+            else:
+                dir_entry = nodes.__next__()
+    except Exception as e:
+        print(e)
+    finally:
+        return dirs
+
 def get_repo_names():
     
+    repos = list()
     try:
-        repos = list()
-        dirs = os.listdir(os.getcwd())
-        dirs = [dir for dir in dirs if dir.find('.') == -1]
+        dirs = get_dir_names()
+    except Exception as e:
+        print(e)
+    finally:
         for dir in dirs:
             os.chdir(dir)
             if('.git' in os.listdir()):
                 repos.append(dir)
             os.chdir('..')
         return repos
-    except Exception as e:
-        print(e)
 
 def clearing_folder_contents(loc):
     
