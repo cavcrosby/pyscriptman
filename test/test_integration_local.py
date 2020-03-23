@@ -31,9 +31,9 @@ def diff(dcmp):
         return diff(dcmp.subdirs[sub_dcmp])
     return False
 
-def delete_folder_and_contents(loc):
+def delete_folder_and_contents(dir):
     
-    os.chdir(loc)
+    os.chdir(dir)
     nodes = os.scandir()
     dir_entry = nodes.__next__()
     try:
@@ -49,7 +49,7 @@ def delete_folder_and_contents(loc):
         #print(e)
     finally:
         os.chdir('..')
-        os.rmdir(loc)
+        os.rmdir(dir)
 
 def test_success_update():
     
