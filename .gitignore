@@ -5,7 +5,8 @@ pyrepoman/__pycache__
 # ignore IDE configs
 .vscode
 
-# ignore ini (configuration) files
+# ignore (configuration) files
+*.toml
 *.ini
 
 # ignore README.md at the moment

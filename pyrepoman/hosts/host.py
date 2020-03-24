@@ -8,8 +8,6 @@ import os, subprocess, shutil
 
 class Host(ABC):
 
-    REMOTE_SCRIPT = 'pyrepoman_get_brepos.py'
-
     @staticmethod
     def _get_pwd_local_dir_names():
 

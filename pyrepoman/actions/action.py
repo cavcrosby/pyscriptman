@@ -1,5 +1,4 @@
 # Standard Library Imports
-#TODO FIGURE WHATS THIRD PARTY AND WHATS NOT
 from abc import ABC, abstractclassmethod
 import os, subprocess, shutil
 

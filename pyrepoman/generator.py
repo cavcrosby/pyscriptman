@@ -34,6 +34,7 @@ class Generator:
         identifier = configholder.get_config_value('host')
 
         if(github.GitHub.is_host_type(identifier, configholder)):
+            github.GitHub.load_config_defaults(configholder)
             return github.GitHub(configholder)
         elif(localhost.LocalHost.is_host_type(identifier, configholder)):
             return localhost.LocalHost(configholder)

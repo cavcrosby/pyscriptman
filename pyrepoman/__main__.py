@@ -11,6 +11,7 @@ def main():
 
     try:
         CONFIGHOLDER = Cmd.retrieve_args()
+        CONFIGHOLDER.load_toml()
         action = Generator.generate_action(CONFIGHOLDER)
         action.run()
     except SystemExit:
