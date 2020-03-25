@@ -42,9 +42,9 @@ class ConfigHolder:
         WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
         WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
         if(func_name not in WBHOST_ENTRIES):
-            pass
+            return type(WEBHOSTS_ENTRIES)()
         elif (len(WBHOST_ENTRIES[func_name]) == 0): # empty [func_name] ... [another_func_name] key: value
-            pass
+            return type(WEBHOSTS_ENTRIES)()
         else:
             return WBHOST_ENTRIES[func_name]
 

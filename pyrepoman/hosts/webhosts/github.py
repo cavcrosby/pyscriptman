@@ -10,7 +10,7 @@ class GitHub(WebHost):
 
     def __init__(self, configholder):
 
-        super().__init__()
+        super().__init__(configholder)
 
     @classmethod
     def is_host_type(cls, identifier, configholder):

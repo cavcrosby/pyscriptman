@@ -15,8 +15,7 @@ class Archive(Action):
         self.archive_dir = configholder.get_config_value('archive_dir')
         self.tmp_dir = 'archive_tmp'
 
-    def run(self): # TODO GOING ABOUT PASSING CONFIGHOLDER OBJECT TO PUBLIC INTERFACE OF WEBHOST
-                   # MAYBE SAVE A REFERENCE TO THE CONFIGHOLDER OBJECT, BASICALLY REDUCING THE PASSING OF THE OBJECT
+    def run(self):
 
         repo_names_and_urls = self.host.get_repo_names_and_locations()
         ARCHIVE_DIR, TMP_DIR = self.archive_dir, self.tmp_dir

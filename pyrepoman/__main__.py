@@ -8,6 +8,7 @@ from .cmd import Cmd
 from .generator import Generator
 
 #TODO, ABSTRACT PAYLOAD AWAY SEE TOML FILE
+#TODO, OR MAKE GITHUB A SUBCOMMAND TO EACH ACTION? (E.G. FETCH GITHUB --public, BACKUP GITHUB --private)
 
 def main():
 

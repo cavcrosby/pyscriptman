@@ -21,10 +21,10 @@ class Generator:
             return fetch.Fetch(host)
         elif (archive.Archive.is_action_type(identifier)):
             host = cls._generate_host(configholder)
-            return archive.Archive(host)
+            return archive.Archive(host, configholder)
         elif (backup.Backup.is_action_type(identifier)):
             host = cls._generate_host(configholder)
-            return backup.Backup(host)
+            return backup.Backup(host, configholder)
         else:
             #TODO CREATE CUSTOM EXCEPTION
             raise GeneratorError(f"Error: No action called {identifier}")
@@ -36,7 +36,7 @@ class Generator:
 
         if(github.GitHub.is_host_type(identifier, configholder)):
             github_host = github.GitHub(configholder)
-            github_host.load_config_defaults(configholder)
+            github_host.load_config_defaults()
             return github_host
         elif(localhost.LocalHost.is_host_type(identifier, configholder)):
             return localhost.LocalHost(configholder)
@@ -45,3 +45,5 @@ class Generator:
         else:
             #TODO CREATE CUSTOM EXCEPTION
             raise GeneratorError(f"Error: Host, {identifier} is not supported")
+
+print(dir())

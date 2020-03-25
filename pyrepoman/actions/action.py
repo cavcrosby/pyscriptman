@@ -59,10 +59,10 @@ class Action(ABC):
         
         os.chdir(dir_name)
         nodes = os.scandir()
-        dir_entry = nodes.__next__()
-        if(exclude == None):
-            exclude = list()
         try:
+            dir_entry = nodes.__next__()
+            if(exclude == None):
+                exclude = list()
             while(dir_entry):
                 if(dir_entry.name in exclude):
                     continue
