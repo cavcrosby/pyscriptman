@@ -9,6 +9,8 @@ from ..host import Host
 
 class WebHost(Host):
 
+    # TODO ADD INIT METHOD TO ADD CONFIGHOLDER (PERHAPS EACH METHOD WILL NO LONGER NEED TO PASS IT IN?)
+
     def load_config_defaults(self, configholder):
 
         DEFAULT_CONFIGS = configholder.load_webhost_defaults(type(self).__name__.lower())
