@@ -6,6 +6,8 @@ import argparse, sys
 # Local Application Imports
 from .configholder import ConfigHolder
 
+# TODO, USE EACH CREATED SUBPARSER (ADD_PARSER) TO CREATE ANOTHER SUBPARSER GROUP (e.g. container = parser_fetch.add_subparsers(); container.add_parser())
+
 class Cmd():
 
     _DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
