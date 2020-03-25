@@ -7,6 +7,8 @@
 from .cmd import Cmd
 from .generator import Generator
 
+#TODO, ABSTRACT PAYLOAD AWAY SEE TOML FILE
+
 def main():
 
     try:
@@ -16,8 +18,8 @@ def main():
         action.run()
     except SystemExit:
         pass
-    except:
-        print("OH NO")
+    except Exception as e:
+        print(e)
 
 if(__name__ == '__main__'):
     main()

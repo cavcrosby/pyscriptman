@@ -3,6 +3,7 @@
 # Third Party Imports
 
 # Local Application Imports
+from .hosts.webhosts import *
 from .hosts import *
 from .actions import *
 
@@ -34,8 +35,9 @@ class Generator:
         identifier = configholder.get_config_value('host')
 
         if(github.GitHub.is_host_type(identifier, configholder)):
-            github.GitHub.load_config_defaults(configholder)
-            return github.GitHub(configholder)
+            github_host = github.GitHub(configholder)
+            github_host.load_config_defaults(configholder)
+            return github_host
         elif(localhost.LocalHost.is_host_type(identifier, configholder)):
             return localhost.LocalHost(configholder)
         elif(lanserver.LanServer.is_host_type(identifier, configholder)):

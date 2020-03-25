@@ -11,9 +11,6 @@ class GitHub(WebHost):
     def __init__(self, configholder):
 
         super().__init__()
-        self.user = configholder.get_config_value('user')
-        self.api_token = configholder.get_config_value('api_token')
-        self.payload = configholder.get_config_value('payload')
 
     @classmethod
     def is_host_type(cls, identifier, configholder):
@@ -23,9 +20,9 @@ class GitHub(WebHost):
 
         return False
 
-    def _get_repo_names_and_locations(self, configholder):
+    def _get_repo_names_and_locations(self):
 
         """ CURRENTLY FUNCS WILL USE GITHUB's REST API v3"""
 
-        repos = requests.get("https://api.github.com/user/repos", auth=(self.user, self.api_token), params=self.payload)
+        repos = requests.get("https://api.github.com/user/repos", auth=(getattr(self, 'user'), getattr(self, 'api_token')), params=getattr(self, 'payload'))
         return {repo['name']:repo['svn_url'] for repo in repos.json()}

@@ -27,15 +27,15 @@ class ConfigHolder:
 
     def load_toml(self):
 
+        # TODO EXCEPTION HANDLING WHEN FAIL TO LOAD TOML FILE?
+
         self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
 
     def load_webhost_defaults(self, webhost_name):
 
         WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
         WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
-        DEFAULT_CONFIGS = self._get_toml_table_entrys(WBHOST_ENTRIES, "defaults")
-        for default_config in DEFAULT_CONFIGS:
-            self.add_config(default_config, DEFAULT_CONFIGS[default_config])
+        return self._get_toml_table_entrys(WBHOST_ENTRIES, "defaults")
 
     def webhost_func_load_additional_configs(self, webhost_name, func_name):
 
@@ -46,8 +46,7 @@ class ConfigHolder:
         elif (len(WBHOST_ENTRIES[func_name]) == 0): # empty [func_name] ... [another_func_name] key: value
             pass
         else:
-            FUNC_CONFIGS = WBHOST_ENTRIES[func_name]
-            [self.add_config(config, FUNC_CONFIGS[config]) for config in FUNC_CONFIGS]
+            return WBHOST_ENTRIES[func_name]
 
     def config_exist(self, config):
 
