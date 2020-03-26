@@ -16,7 +16,8 @@ class LocalHost(Host):
     @classmethod
     def is_host_type(cls, identifier, configholder):
 
-        if(pathlib.Path(identifier).exists() and configholder.get_config_value('local')):
+        path = configholder.get_config_value(identifier)
+        if(pathlib.Path(path).exists()):
             return True
 
         return False

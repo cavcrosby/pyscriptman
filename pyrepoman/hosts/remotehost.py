@@ -7,7 +7,7 @@ import os, subprocess
 from .host import Host
 from ..global_variables import REMOTE_SCRIPT_GET_BARE_REPOS_NAME, REMOTE_SCRIPT_GET_BARE_REPOS_PATH
 
-class LanServer(Host):
+class RemoteHost(Host):
 
     def __init__(self, configholder):
 

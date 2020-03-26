@@ -40,8 +40,8 @@ class Generator:
             return github_host
         elif(localhost.LocalHost.is_host_type(identifier, configholder)):
             return localhost.LocalHost(configholder)
-        elif(lanserver.LanServer.is_host_type(identifier, configholder)):
-            return lanserver.LanServer(configholder)
+        elif(remotehost.RemoteHost.is_host_type(identifier, configholder)):
+            return remotehost.RemoteHost(configholder)
         else:
             #TODO CREATE CUSTOM EXCEPTION
             raise GeneratorError(f"Error: Host, {identifier} is not supported")
