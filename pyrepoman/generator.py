@@ -45,5 +45,4 @@ class Generator:
         else:
             #TODO CREATE CUSTOM EXCEPTION
             raise GeneratorError(f"Error: Host, {identifier} is not supported")
-
-print(dir())
+    

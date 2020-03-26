@@ -65,6 +65,7 @@ class Action(ABC):
                 exclude = list()
             while(dir_entry):
                 if(dir_entry.name in exclude):
+                    dir_entry = nodes.__next__()
                     continue
                 if(dir_entry.is_dir()):
                     cls._remove_dir(dir_entry.name)

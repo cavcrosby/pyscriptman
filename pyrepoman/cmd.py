@@ -116,9 +116,3 @@ class Cmd():
     def _strlower(cls, s):
 
         return s.lower()
-
-try:
-    c = Cmd()
-    print(c.retrieve_args())
-except SystemExit:
-    pass
