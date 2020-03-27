@@ -32,8 +32,6 @@ class ConfigHolder:
 
     def load_toml(self):
 
-        # TODO EXCEPTION HANDLING WHEN FAIL TO LOAD TOML FILE?
-
         self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
 
     def load_webhost_defaults(self, webhost_name):
