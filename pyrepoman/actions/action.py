@@ -11,6 +11,7 @@ class Action(ABC):
     @staticmethod
     def _get_pwd_local_dir_names():
 
+        #TODO os.listdir() CAN RETURN PERMISSION DENIED (e.g. if directory is not readable, but can be executable), SHOULD WE LOG THIS? (AN EXCEPTION HANDLER IS ALREADY IN PLACE)
         root = os.getcwd()
         return [item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))]
 

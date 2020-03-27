@@ -6,6 +6,8 @@
 from .hosts.webhosts import *
 from .hosts import *
 from .actions import *
+from .exceptions.hostgeneratorerror import HostGeneratorError
+from .exceptions.actiongeneratorerror import ActionGeneratorError
 
 class Generator:
 
@@ -26,8 +28,7 @@ class Generator:
             host = cls._generate_host(configholder)
             return backup.Backup(host, configholder)
         else:
-            #TODO CREATE CUSTOM EXCEPTION
-            raise GeneratorError(f"Error: No action called {identifier}")
+            raise ActionGeneratorError(f"ActionGeneratorError: Invalid action target; action {configholder.get_config_value('action')}", configholder)
 
     @classmethod
     def _generate_host(cls, configholder):
@@ -35,6 +36,7 @@ class Generator:
         identifier = configholder.get_config_value('host')
 
         if(github.GitHub.is_host_type(identifier, configholder)):
+            configholder.load_toml()
             github_host = github.GitHub(configholder)
             github_host.load_config_defaults()
             return github_host
@@ -43,6 +45,11 @@ class Generator:
         elif(remotehost.RemoteHost.is_host_type(identifier, configholder)):
             return remotehost.RemoteHost(configholder)
         else:
-            #TODO CREATE CUSTOM EXCEPTION
-            raise GeneratorError(f"Error: Host, {identifier} is not supported")
+            configs = ['path', 'host', 'host_path']
+            error_string = "HostGeneratorError: Invalid host target;"
+            for config in configs:
+                config_value = configholder.get_config_value(config)
+                if(config_value != configholder.EMPTY_CONFIG):
+                    error_string += f" {config} {config_value};"
+            raise HostGeneratorError(error_string, configholder)   
     

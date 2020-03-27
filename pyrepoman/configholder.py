@@ -8,6 +8,11 @@ from .global_variables import TOML_FILE_NAME, TOML_FILE_PATH
 
 class ConfigHolder:
 
+    @property
+    def EMPTY_CONFIG(self):
+
+        return ""
+
     def __init__(self, args):
 
         self.configs = list()
@@ -50,7 +55,7 @@ class ConfigHolder:
 
     def config_exist(self, config):
 
-        if(self.get_config_value(config) != ""):
+        if(self.get_config_value(config) != self.EMPTY_CONFIG):
             return True
 
         return False
@@ -61,7 +66,7 @@ class ConfigHolder:
             if(pair[0] == config):
                 return pair[1]
 
-        return ""
+        return self.EMPTY_CONFIG
 
     def __str__(self):
         
