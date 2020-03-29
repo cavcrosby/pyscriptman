@@ -46,7 +46,7 @@ class Generator:
             return remotehost.RemoteHost(configholder)
         else:
             configs = ['path', 'host', 'host_path']
-            error_string = "HostGeneratorError: Invalid host target;"
+            error_string = 'HostGeneratorError: Invalid host target;'
             for config in configs:
                 config_value = configholder.get_config_value(config)
                 if(config_value != configholder.EMPTY_CONFIG):

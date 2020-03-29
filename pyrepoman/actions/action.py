@@ -1,6 +1,6 @@
 # Standard Library Imports
 from abc import ABC, abstractclassmethod
-import os, subprocess, shutil
+import os, subprocess, shutil, re
 
 # Third Party Imports
 
@@ -11,7 +11,6 @@ class Action(ABC):
     @staticmethod
     def _get_pwd_local_dir_names():
 
-        #TODO os.listdir() CAN RETURN PERMISSION DENIED (e.g. if directory is not readable, but can be executable), SHOULD WE LOG THIS? (AN EXCEPTION HANDLER IS ALREADY IN PLACE)
         root = os.getcwd()
         return [item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))]
 
@@ -27,19 +26,28 @@ class Action(ABC):
         return dir_name in dir_contents
 
     @staticmethod
-    def _create_mirror(url, destination_dir_name):
-        
-        subprocess.run(["git", "clone", "--mirror", url, destination_dir_name], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-
-    @staticmethod
     def _update_mirror(dir_name):
         
-        subprocess.run(["git", "--git-dir", dir_name, "remote", "update"])
+        subprocess.run(['git', '--git-dir', dir_name, 'remote', 'update'])
 
     @staticmethod
-    def _create_bundle(repo_bundle_name, mirror_repo):
+    def _permission_error(stderr):
+
+        return re.search(r'\bpermission\s*denied\b', stderr, flags=re.IGNORECASE) != None
+
+    @classmethod
+    def _create_bundle(cls, repo_bundle_name, mirror_repo):
         
-        subprocess.run(["git", "--git-dir", mirror_repo, "bundle", "create", f"{repo_bundle_name}.bundle", "--all"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+        stderr = subprocess.run(['git', '--git-dir', mirror_repo, 'bundle', 'create', f"{repo_bundle_name}.bundle", '--all'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+        if(cls._permission_error(stderr)):
+            raise OSError(13, 'Permission denied', os.getcwd())
+
+    @classmethod
+    def _create_mirror(cls, url, destination_dir_name):
+        
+        stderr = subprocess.run(['git', 'clone', '--mirror', url, destination_dir_name], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+        if(cls._permission_error(stderr)):
+            raise OSError(13, 'Permission denied', os.getcwd())
 
     @classmethod
     def _get_pwd_local_nonbare_repo_names(cls):
@@ -76,6 +84,8 @@ class Action(ABC):
                     dir_entry = nodes.__next__()
         except StopIteration as e:
             pass
+        except PermissionError as e:
+            raise
         finally:
             os.chdir('..')
 

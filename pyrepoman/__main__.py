@@ -27,9 +27,10 @@ def main():
     except HostGeneratorError as e:
         print(e)
     except toml.decoder.TomlDecodeError as e: # thrown in: load_toml() if configuration file has bad syntax error
-        print("Error: the configuration file contains syntax error(s), more details below")
+        print('Error: the configuration file contains syntax error(s), more details below')
         print(e)
     except Exception as e:
+        print('Error: an unknown error occured, please report the following below:\n')
         print(e)
 
 if(__name__ == '__main__'):

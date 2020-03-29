@@ -32,13 +32,16 @@ class ConfigHolder:
 
     def load_toml(self):
 
-        self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
+        try:
+            self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
+        except PermissionError:
+            raise OSError(13, 'Permission denied, cannot read configuration file', TOML_FILE_PATH)
 
     def load_webhost_defaults(self, webhost_name):
 
         WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
         WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
-        return self._get_toml_table_entrys(WBHOST_ENTRIES, "defaults")
+        return self._get_toml_table_entrys(WBHOST_ENTRIES, 'defaults')
 
     def webhost_func_load_additional_configs(self, webhost_name, func_name):
 

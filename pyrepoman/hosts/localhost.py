@@ -18,10 +18,14 @@ class LocalHost(Host):
 
         path = configholder.get_config_value(identifier)
         expanded_path = os.path.expanduser(path)
-        if(expanded_path != '' and pathlib.Path(expanded_path).exists()):
-            return True
 
-        return False
+        try:
+            if(expanded_path != '' and pathlib.Path(expanded_path).exists()):
+                return True
+
+            return False
+        except PermissionError:
+            raise OSError(13, 'Permission denied', expanded_path)
 
     def get_repo_names_and_locations(self):
 
