@@ -8,6 +8,14 @@ import os, subprocess, shutil
 
 class Host(ABC):
 
+    @property
+    def repo_names_and_locations(self):
+
+        return self._repo_names_and_locations
+
+    def __init__(self):
+        self._repo_names_and_locations = dict()
+
     @staticmethod
     def _get_pwd_local_dir_names():
 
@@ -30,6 +38,14 @@ class Host(ABC):
                 os.chdir('..')
             os.chdir(pwd)
             return repos
+
+    def add_repo_name_and_location(self, repo_name, location):
+
+        self.repo_names_and_locations[repo_name] = location
+
+    def get_location_from_repo_name(self, repo_name):
+
+        self.repo_names_and_locations[repo_name]
 
     @abstractclassmethod
     def is_host_type(cls, identifier):

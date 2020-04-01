@@ -26,4 +26,6 @@ class GitHub(WebHost):
         """ CURRENTLY FUNCS WILL USE GITHUB's REST API v3"""
 
         repos = requests.get("https://api.github.com/user/repos", auth=(getattr(self, 'user'), getattr(self, 'api_token')), params={"type": self.payload})
-        return {repo['name']:repo['svn_url'] for repo in repos.json()}
+        for repo in repos.json():
+            self.add_repo_name_and_location(repo['name'], repo['svn_url'])
+        return self.repo_names_and_locations

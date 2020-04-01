@@ -16,14 +16,14 @@ class Backup(Action):
 
     def run(self):
 
-        repo_names_and_urls = self.host.get_repo_names_and_locations()
+        repo_names_and_locations = self.host.get_repo_names_and_locations()
         DEST = self.dest
         super()._create_dir(DEST)
         not_delete = list()
         backup_content = os.listdir(DEST)
-        for repo_name in repo_names_and_urls:
+        for repo_name in repo_names_and_locations:
             backup_repo_location = os.path.join(DEST, repo_name)
             if(not repo_name in backup_content):
-                super()._create_mirror(repo_names_and_urls[repo_name], backup_repo_location)
+                super()._create_mirror(self.host.get_location_from_repo_name(repo_name), backup_repo_location)
             not_delete.append(repo_name)
         super()._remove_all_dir_content(DEST, not_delete)

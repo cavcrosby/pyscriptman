@@ -60,4 +60,6 @@ class RemoteHost(Host):
         remove_script_on_host(HOST, REMOTE_SCRIPT_HOST_PATH)
         repos = repos.stdout.split(',') # e.g. 'repo1,repo1 - Copy\n'
         repos[-1] = repos[-1].strip()
-        return {f"{repo}":f"{HOST}:{host_path}{repo}" for repo in repos}
+        for repo in repos:
+            self.add_repo_name_and_location(repo, f"{HOST}:{host_path}{repo}")
+        return self.get_repo_names_and_locations
