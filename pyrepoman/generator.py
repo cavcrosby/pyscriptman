@@ -28,7 +28,8 @@ class Generator:
             host = cls._generate_host(configholder)
             return backup.Backup(host, configholder)
         else:
-            raise ActionGeneratorError(f"ActionGeneratorError: Invalid action target; action {configholder.get_config_value('action')}", configholder)
+            print(f"Error: Invalid action target; action {configholder.get_config_value('action')}")
+            raise SystemExit()
 
     @classmethod
     def _generate_host(cls, configholder):
@@ -46,10 +47,11 @@ class Generator:
             return remotehost.RemoteHost(configholder)
         else:
             configs = ['path', 'host', 'host_path']
-            error_string = 'HostGeneratorError: Invalid host target;'
+            error_string = 'Error: Invalid host target;'
             for config in configs:
                 config_value = configholder.get_config_value(config)
                 if(config_value != configholder.EMPTY_CONFIG):
                     error_string += f" {config} {config_value};"
-            raise HostGeneratorError(error_string, configholder)   
+            print(error_string)
+            raise SystemExit()
     

@@ -30,24 +30,17 @@ class Action(ABC):
         
         subprocess.run(['git', '--git-dir', dir_name, 'remote', 'update'])
 
-    @staticmethod
-    def _permission_error(stderr):
-
-        return re.search(r'\bpermission\s*denied\b', stderr, flags=re.IGNORECASE) != None
-
     @classmethod
     def _create_bundle(cls, repo_bundle_name, mirror_repo):
         
-        stderr = subprocess.run(['git', '--git-dir', mirror_repo, 'bundle', 'create', f"{repo_bundle_name}.bundle", '--all'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
-        if(cls._permission_error(stderr)):
-            raise OSError(13, 'Permission denied', os.getcwd())
+        completed_process = subprocess.run(['git', '--git-dir', mirror_repo, 'bundle', 'create', f"{repo_bundle_name}.bundle", '--all'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+        completed_process.check_returncode()
 
     @classmethod
     def _create_mirror(cls, url, destination_dir_name):
         
-        stderr = subprocess.run(['git', 'clone', '--mirror', url, destination_dir_name], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
-        if(cls._permission_error(stderr)):
-            raise OSError(13, 'Permission denied', os.getcwd())
+        completed_process = subprocess.run(['git', 'clone', '--mirror', url, destination_dir_name], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+        completed_process.check_returncode()
 
     @classmethod
     def _get_pwd_local_nonbare_repo_names(cls):

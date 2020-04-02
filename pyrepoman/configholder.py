@@ -36,17 +36,34 @@ class ConfigHolder:
             self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
         except PermissionError:
             raise OSError(13, 'Permission denied, cannot read configuration file', TOML_FILE_PATH)
+        except toml.decoder.TomlDecodeError as e: # thrown in: load_toml() if configuration file has bad syntax error
+            print('Error: the configuration file contains syntax error(s), more details below')
+            print(e)
+            raise SystemExit()
 
     def load_webhost_defaults(self, webhost_name):
 
         WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
-        WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
-        return self._get_toml_table_entrys(WBHOST_ENTRIES, 'defaults')
+        try:
+            WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
+        except KeyError:
+            print(f"{webhost_name} table does not exist in the configuration file")
+            raise SystemExit()
+        
+        try:
+            return self._get_toml_table_entrys(WBHOST_ENTRIES, 'defaults')
+        except KeyError:
+            print(f"defaults table does not exist in the {webhost_name} table")
+            raise SystemExit()
 
     def webhost_func_load_additional_configs(self, webhost_name, func_name):
 
         WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
-        WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
+        try:
+            WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
+        except KeyError:
+            print(f"{webhost_name} table does not exist in the configuration file")
+            raise SystemExit()
         if(func_name not in WBHOST_ENTRIES):
             return type(WEBHOSTS_ENTRIES)()
         elif (len(WBHOST_ENTRIES[func_name]) == 0): # empty [func_name] ... [another_func_name] key: value

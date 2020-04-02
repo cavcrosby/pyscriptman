@@ -18,15 +18,19 @@ class RemoteHost(Host):
     @staticmethod
     def expand_user_on_host(host, host_path):
 
-        return subprocess.run(['ssh', host, f'python3 -c "import os; print(os.path.join(os.path.expanduser(\\"{host_path}\\"), \\"\\"));"'], \
-                        stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stdout.rstrip()
+        completed_process = subprocess.run(['ssh', host, f'python3 -c "import os; print(os.path.join(os.path.expanduser(\\"{host_path}\\"), \\"\\"));"'], \
+                        stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+        completed_process.check_returncode()
+        return completed_process.stdout.rstrip()
 
     @classmethod
     def is_host_type(cls, identifier, configholder):
 
         def can_reach_remote_dir(host_path):
             
-            if(subprocess.run(['ssh', identifier, f'python3 -c "import os; print(os.path.exists(\\"{host_path}\\"));"'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stdout.strip() == 'True'):
+            completed_process = subprocess.run(['ssh', identifier, f'python3 -c "import os; print(os.path.exists(\\"{host_path}\\"));"'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+            completed_process.check_returncode()
+            if(completed_process.stdout.strip() == 'True'):
 
                 return True
 
@@ -42,15 +46,18 @@ class RemoteHost(Host):
 
         def copy_script_to_host(host, host_path, script):
             
-            return subprocess.run(['scp', script, f"{host}:{host_path}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+            subprocess.run(['scp', script, f"{host}:{host_path}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
 
         def execute_script_on_host(host, script):
 
-            return subprocess.run(['ssh', host, f"cd {host_path}; python3 {script}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+            completed_process = subprocess.run(['ssh', host, f"cd {host_path}; python3 {script}"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+            completed_process.check_returncode()
+            return completed_process
 
         def remove_script_on_host(host, script):
 
-            return subprocess.run(['ssh', host, f'python3 -c "import os; path = os.path.expanduser(\\"{script}\\"); os.remove(path)"'])
+            completed_process = subprocess.run(['ssh', host, f'python3 -c "import os; path = os.path.expanduser(\\"{script}\\"); os.remove(path)"'])
+            completed_process.check_returncode()
 
         HOST = self.host
         host_path = self.expand_user_on_host(HOST, self.host_path) # host_path really is endpoint path we are looking to manipulate repos from
@@ -62,4 +69,4 @@ class RemoteHost(Host):
         repos[-1] = repos[-1].strip()
         for repo in repos:
             self.add_repo_name_and_location(repo, f"{HOST}:{host_path}{repo}")
-        return self.get_repo_names_and_locations
+        return self.repo_names_and_locations
