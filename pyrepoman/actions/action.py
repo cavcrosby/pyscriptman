@@ -33,13 +33,13 @@ class Action(ABC):
     @classmethod
     def _create_bundle(cls, repo_bundle_name, mirror_repo):
         
-        completed_process = subprocess.run(['git', '--git-dir', mirror_repo, 'bundle', 'create', f"{repo_bundle_name}.bundle", '--all'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+        completed_process = subprocess.run(['git', '--git-dir', mirror_repo, 'bundle', 'create', f"{repo_bundle_name}.bundle", '--all'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
         completed_process.check_returncode()
 
     @classmethod
-    def _create_mirror(cls, url, destination_dir_name):
+    def _create_mirror(cls, location, destination_dir_name):
         
-        completed_process = subprocess.run(['git', 'clone', '--mirror', url, destination_dir_name], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+        completed_process = subprocess.run(['git', 'clone', '--mirror', location, destination_dir_name], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
         completed_process.check_returncode()
 
     @classmethod

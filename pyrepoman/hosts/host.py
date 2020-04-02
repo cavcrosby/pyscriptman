@@ -45,7 +45,7 @@ class Host(ABC):
 
     def get_location_from_repo_name(self, repo_name):
 
-        self.repo_names_and_locations[repo_name]
+        return self.repo_names_and_locations[repo_name]
 
     @abstractclassmethod
     def is_host_type(cls, identifier):
