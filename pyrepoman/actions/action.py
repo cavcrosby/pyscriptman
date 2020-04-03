@@ -104,6 +104,11 @@ class Action(ABC):
         return cls.__name__.lower()
     
     @abstractclassmethod
+    def add_parser(cls):
+
+        pass
+
+    @abstractclassmethod
     def run(cls):
 
         """ HOW EACH ACTION IS TO PERFORM ITS FUNCTIONALITY """

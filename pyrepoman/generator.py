@@ -1,13 +1,55 @@
 # Standard Library Imports
+import argparse
 
 # Third Party Imports
 
 # Local Application Imports
+from .configholder import ConfigHolder
 from .hosts.webhosts import *
 from .hosts import *
 from .actions import *
 
 class Generator:
+
+    _DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
+    _parser = argparse.ArgumentParser(description=_DESC, prog='pyrepoman.py', allow_abbrev=False)
+    _require_subcommands = True
+
+    @classmethod
+    def generate_cmd_args(cls):
+
+        host_title = 'available hosts'
+        host_metavar = 'host [options ...]'
+        
+        _action_subparsers = cls._parser.add_subparsers(title='available actions', metavar='action [options ...]')
+        _action_subparsers.required = cls._require_subcommands
+        parser_update = update.Update.add_parser(_action_subparsers)
+
+        parser_fetch = fetch.Fetch.add_parser(_action_subparsers)
+        fetch_host_subparsers = parser_fetch.add_subparsers(title=host_title, metavar=host_metavar)
+        fetch_host_subparsers.required = cls._require_subcommands
+        github.GitHub.add_parser(fetch_host_subparsers)
+        remotehost.RemoteHost.add_parser(fetch_host_subparsers)
+        localhost.LocalHost.add_parser(fetch_host_subparsers)
+
+        parser_backup = backup.Backup.add_parser(_action_subparsers)
+        backup_host_subparsers = parser_backup.add_subparsers(title=host_title, metavar=host_metavar)
+        backup_host_subparsers.required = cls._require_subcommands
+        github.GitHub.add_parser(backup_host_subparsers)
+        remotehost.RemoteHost.add_parser(backup_host_subparsers)
+        localhost.LocalHost.add_parser(backup_host_subparsers)
+
+        parser_archive = archive.Archive.add_parser(_action_subparsers)
+        archive_host_subparsers = parser_archive.add_subparsers(title=host_title, metavar=host_metavar)
+        archive_host_subparsers.required = cls._require_subcommands
+        github.GitHub.add_parser(archive_host_subparsers)
+        remotehost.RemoteHost.add_parser(archive_host_subparsers)
+        localhost.LocalHost.add_parser(archive_host_subparsers)
+
+        args = cls._parser.parse_args()
+
+        return ConfigHolder(args)
+
 
     @classmethod
     def generate_action(cls, configholder):
@@ -52,4 +94,3 @@ class Generator:
                     error_string += f" {config} {config_value};"
             print(error_string)
             raise SystemExit()
-    

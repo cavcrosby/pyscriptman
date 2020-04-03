@@ -12,6 +12,14 @@ class Update(Action):
 
         super().__init__()
 
+    @classmethod
+    def add_parser(cls, subparser_container):
+
+        parser_update = subparser_container.add_parser('update', help='update all Git repos in your current directory from remote repos')
+        parser_update.set_defaults(action='update')
+        parser_update.set_defaults(host='')
+        return parser_update
+
     def run(self):
 
         nonbare_repo_names = super()._get_pwd_local_nonbare_repo_names()

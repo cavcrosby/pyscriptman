@@ -15,6 +15,14 @@ class Archive(Action):
         self.dest = configholder.get_config_value('dest')
         self.tmp_dir = 'archive_tmp'
 
+    @classmethod
+    def add_parser(cls, subparser_container):
+
+        parser_archive = subparser_container.add_parser('archive', help='archive all Git repos, done by bundling repos', allow_abbrev=False)
+        parser_archive.add_argument('dest', help='where to store archives (destination)')
+        parser_archive.set_defaults(action='archive')
+        return parser_archive
+
     def run(self):
 
         repo_names_and_locations = self.host.get_repo_names_and_locations()

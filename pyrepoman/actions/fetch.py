@@ -13,6 +13,13 @@ class Fetch(Action):
         super().__init__()
         self.host = host
 
+    @classmethod    
+    def add_parser(cls, subparser_container):
+
+        parser_fetch = subparser_container.add_parser('fetch', help='fetch all Git repos through a web provider', allow_abbrev=False)
+        parser_fetch.set_defaults(action='fetch')
+        return parser_fetch
+
     def run(self):
 
         repo_names_and_locations = self.host.get_repo_names_and_locations()

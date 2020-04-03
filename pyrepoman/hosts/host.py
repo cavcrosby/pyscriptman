@@ -54,6 +54,11 @@ class Host(ABC):
         
         pass
 
+    @abstractclassmethod
+    def add_parser(cls):
+
+        pass
+
     @abstractmethod
     def get_repo_names_and_locations(self):
 

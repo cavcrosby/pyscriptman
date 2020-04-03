@@ -14,6 +14,14 @@ class Backup(Action):
         self.host = host
         self.dest = configholder.get_config_value('dest')
 
+    @classmethod
+    def add_parser(cls, subparser_container):
+
+        parser_backup = subparser_container.add_parser('backup', help='backup all Git repos, done by mirroring repos fully', allow_abbrev=False)
+        parser_backup.add_argument('dest', help='where to store backups (destination)')
+        parser_backup.set_defaults(action='backup')
+        return parser_backup
+
     def run(self):
 
         repo_names_and_locations = self.host.get_repo_names_and_locations()

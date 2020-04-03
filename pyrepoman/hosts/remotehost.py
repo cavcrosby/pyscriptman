@@ -42,6 +42,16 @@ class RemoteHost(Host):
 
         return False
 
+    @classmethod
+    def add_parser(cls, subparser_container):
+
+        DEFAULT_HOST_PATH = '$HOME'
+
+        parser_remotehost = subparser_container.add_parser('remotehost', help='can target directories on remote hosts', allow_abbrev=False)
+        parser_remotehost.add_argument('host', help='specifies what host you wish to target, host format is the format of hostname in ssh')
+        parser_remotehost.add_argument('--host-path', metavar="path", default=DEFAULT_HOST_PATH, help=f'specifies what directory on the host to target for repos (default: {DEFAULT_HOST_PATH}).')
+        return parser_remotehost
+
     def get_repo_names_and_locations(self):
 
         def copy_script_to_host(host, host_path, script):

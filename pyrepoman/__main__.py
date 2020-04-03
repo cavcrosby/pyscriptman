@@ -4,14 +4,13 @@
 # Third Party Imports
 
 # Local Application Imports
-from .cmd import Cmd
 from .generator import Generator
 from subprocess import CalledProcessError
 
 def main():
 
     try:
-        configholder = Cmd.retrieve_args()
+        configholder = Generator.generate_cmd_args()
         action = Generator.generate_action(configholder)
         action.run()
     except SystemExit:
