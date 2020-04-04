@@ -18,20 +18,21 @@ class Archive(Action):
     @classmethod
     def add_parser(cls, subparser_container):
 
-        parser_archive = subparser_container.add_parser('archive', help='archive all Git repos, done by bundling repos', allow_abbrev=False)
-        parser_archive.add_argument('dest', help='where to store archives (destination)')
-        parser_archive.set_defaults(action='archive')
-        return parser_archive
+        subcommand = cls.__name__.lower()
+        archive = subparser_container.add_parser(subcommand, help='archive all Git repos, done by bundling repos', allow_abbrev=False)
+        archive.add_argument('dest', help='where to store archives (destination)')
+        archive.set_defaults(action=subcommand)
+        return archive
 
     def run(self):
 
-        repo_names_and_locations = self.host.get_repo_names_and_locations()
-        DEST, TMP_DIR = self.dest, self.tmp_dir
-        super()._create_dir(DEST)
-        super()._create_dir(TMP_DIR)
-        super()._remove_all_dir_content(DEST)
+        repo_names_and_locations = self.host.get_user_repo_names_and_locations()
+        dest, tmp_dir = self.dest, self.tmp_dir
+        super()._create_dir(dest)
+        super()._create_dir(tmp_dir)
+        super()._remove_all_dir_content(dest)
         for repo_name in repo_names_and_locations:
-            backup_repo_location = os.path.join(TMP_DIR, repo_name)
+            backup_repo_location = os.path.join(tmp_dir, repo_name)
             super()._create_mirror(self.host.get_location_from_repo_name(repo_name), backup_repo_location)
-            super()._create_bundle(os.path.join(DEST, repo_name), backup_repo_location)
-        super()._remove_dir(TMP_DIR)
+            super()._create_bundle(os.path.join(dest, repo_name), backup_repo_location)
+        super()._remove_dir(tmp_dir)

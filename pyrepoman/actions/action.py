@@ -91,10 +91,7 @@ class Action(ABC):
     @classmethod
     def is_action_type(cls, identifier):
 
-        if(identifier == cls._get_identifier()):
-            return True
-
-        return False
+        return (identifier == cls._get_identifier())
 
     @classmethod
     def _get_identifier(cls):

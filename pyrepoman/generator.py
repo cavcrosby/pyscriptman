@@ -50,7 +50,6 @@ class Generator:
 
         return ConfigHolder(args)
 
-
     @classmethod
     def generate_action(cls, configholder):
 

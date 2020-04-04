@@ -18,31 +18,31 @@ class GitHub(WebHost):
     @classmethod
     def is_host_type(cls, identifier, configholder):
 
-        if(identifier == cls.__name__.lower()):
-            return True
-
-        return False
+        return (identifier == cls.__name__.lower())
 
     @classmethod
     def add_parser(cls, subparser_container):
 
-        REPO_TYPES_OWN = ['all', 'public', 'private']
-        DEFAULT_OWN = 'all'
-        REPO_TYPES_OTHER = ['all', 'owner', 'member']
-        DEFAULT_OTHER = 'owner'
+        repo_types_own = ['all', 'public', 'private']
+        default_own = 'all'
+        repo_types_other = ['all', 'owner', 'member']
+        default_other = 'owner'
 
-        parser_github = subparser_container.add_parser('github', help='a popular web hosting for git repos', allow_abbrev=False)
-        subparser_github_container = parser_github.add_subparsers(title='available repo-owner-types', metavar='repo-owner-type [options ...]', dest='repo_owner_type')
+        github = subparser_container.add_parser('github', help='a popular web hosting for git repos', allow_abbrev=False)
+        subparser_github_container = github.add_subparsers(title='available repo-owner-types', metavar='repo-owner-type [options ...]', dest='repo_owner_type')
         subparser_github_container.required = True
-        subparser_github_own = subparser_github_container.add_parser('own', help='interact with your own git repo(s)', allow_abbrev=False)
-        subparser_github_own.add_argument('--repo-type', metavar="TYPE", default=DEFAULT_OWN, choices=REPO_TYPES_OWN, help=f'specifies the type of repos to work on, choices are (default: {DEFAULT_OWN}): ' + ', '.join(REPO_TYPES_OWN))
-        subparser_github_other = subparser_github_container.add_parser('other', help="interact with another user's public git repo(s)", allow_abbrev=False)
-        subparser_github_other.add_argument('username', help='name of user whos repos you wish to interact with')
-        subparser_github_other.add_argument('--repo-type', metavar="TYPE", default=DEFAULT_OTHER, choices=REPO_TYPES_OTHER, help=f'specifies the type of repos to work on, choices are (default: {DEFAULT_OTHER}): ' + ', '.join(REPO_TYPES_OTHER))
-        parser_github.set_defaults(host='github')
-        return parser_github
 
-    def _get_repo_names_and_locations(self):
+        own = subparser_github_container.add_parser('own', help='interact with your own git repo(s)', allow_abbrev=False)
+        own.add_argument('--repo-type', metavar="TYPE", default=default_own, choices=repo_types_own, help=f'specifies the type of repos to work on, choices are (default: {default_own}): ' + ', '.join(repo_types_own))
+
+        other = subparser_github_container.add_parser('other', help="interact with another user's public git repo(s)", allow_abbrev=False)
+        other.add_argument('username', help='name of user whos repos you wish to interact with')
+        other.add_argument('--repo-type', metavar="TYPE", default=default_other, choices=repo_types_other, help=f'specifies the type of repos to work on, choices are (default: {default_other}): ' + ', '.join(repo_types_other))
+
+        github.set_defaults(host=cls.__name__.lower())
+        return github
+
+    def _get_user_repo_names_and_locations(self):
 
         """ CURRENTLY FUNCS WILL USE GITHUB's REST API v3"""
         try:

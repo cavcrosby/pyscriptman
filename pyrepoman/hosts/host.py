@@ -60,7 +60,7 @@ class Host(ABC):
         pass
 
     @abstractmethod
-    def get_repo_names_and_locations(self):
+    def get_user_repo_names_and_locations(self):
 
         """ RANGE OF THIS FUNCTION IS REPO_NAME (KEY) --> REPO_LOCATION (VALUE) DATA STRUCTURE """
 

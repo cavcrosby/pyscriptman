@@ -20,22 +20,19 @@ class LocalHost(Host):
         expanded_path = os.path.expanduser(path)
 
         try:
-            if(expanded_path != '' and pathlib.Path(expanded_path).exists()):
-                return True
-
-            return False
+            return (expanded_path != '' and pathlib.Path(expanded_path).exists())
         except PermissionError:
             raise OSError(13, 'Permission denied', expanded_path)
     
     @classmethod
     def add_parser(cls, subparser_container):
 
-        parser_localhost = subparser_container.add_parser('localhost', help='can manipulate directories containing git repos', allow_abbrev=False)
-        parser_localhost.add_argument('path', help='specifies what directory you wish to target')
-        parser_localhost.set_defaults(host='path')
-        return parser_localhost
+        localhost = subparser_container.add_parser('localhost', help='can manipulate directories containing git repos', allow_abbrev=False)
+        localhost.add_argument('path', help='specifies what directory you wish to target')
+        localhost.set_defaults(host='path')
+        return localhost
 
-    def get_repo_names_and_locations(self):
+    def get_user_repo_names_and_locations(self):
 
         local_path = os.path.expanduser(self.path)
         repos = self._get_pwd_bare_repo_names(local_path)

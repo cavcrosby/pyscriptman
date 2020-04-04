@@ -43,40 +43,37 @@ class ConfigHolder:
 
     def load_webhost_defaults(self, webhost_name):
 
-        WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
+        webhost_entries = self.get_config_value(TOML_FILE_NAME)
         try:
-            WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
+            wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
         except KeyError:
             print(f"{webhost_name} table does not exist in the configuration file")
             raise SystemExit()
         
         try:
-            return self._get_toml_table_entrys(WBHOST_ENTRIES, 'defaults')
+            return self._get_toml_table_entrys(wbhost_entries, 'defaults')
         except KeyError:
             print(f"defaults table does not exist in the {webhost_name} table")
             raise SystemExit()
 
     def webhost_func_load_additional_configs(self, webhost_name, func_name):
 
-        WEBHOSTS_ENTRIES = self.get_config_value(TOML_FILE_NAME)
+        webhost_entries = self.get_config_value(TOML_FILE_NAME)
         try:
-            WBHOST_ENTRIES = self._get_toml_table_entrys(WEBHOSTS_ENTRIES, webhost_name)
+            wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
         except KeyError:
             print(f"{webhost_name} table does not exist in the configuration file")
             raise SystemExit()
-        if(func_name not in WBHOST_ENTRIES):
-            return type(WEBHOSTS_ENTRIES)()
-        elif (len(WBHOST_ENTRIES[func_name]) == 0): # empty [func_name] ... [another_func_name] key: value
-            return type(WEBHOSTS_ENTRIES)()
+        if(func_name not in wbhost_entries):
+            return type(webhost_entries)()
+        elif (len(wbhost_entries[func_name]) == 0): # empty [func_name] ... [another_func_name] key: value
+            return type(webhost_entries)()
         else:
-            return WBHOST_ENTRIES[func_name]
+            return wbhost_entries[func_name]
 
     def config_exist(self, config):
 
-        if(self.get_config_value(config) != self.EMPTY_CONFIG):
-            return True
-
-        return False
+        return self.get_config_value(config) != self.EMPTY_CONFIG
 
     def get_config_value(self, config):
 

@@ -15,10 +15,11 @@ class Update(Action):
     @classmethod
     def add_parser(cls, subparser_container):
 
-        parser_update = subparser_container.add_parser('update', help='update all Git repos in your current directory from remote repos')
-        parser_update.set_defaults(action='update')
-        parser_update.set_defaults(host='')
-        return parser_update
+        subcommand = cls.__name__.lower()
+        update = subparser_container.add_parser(subcommand, help='update all Git repos in your current directory from remote repos')
+        update.set_defaults(action=subcommand)
+        update.set_defaults(host='')
+        return update
 
     def run(self):
 
