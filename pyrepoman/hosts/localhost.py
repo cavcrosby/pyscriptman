@@ -16,20 +16,20 @@ class LocalHost(Host):
     @classmethod
     def is_host_type(cls, identifier, configholder):
 
-        path = configholder.get_config_value(identifier)
-        expanded_path = os.path.expanduser(path)
+        path = os.path.expanduser(configholder.get_config_value('path'))
 
         try:
-            return (expanded_path != '' and pathlib.Path(expanded_path).exists())
+            return (identifier == cls.__name__.lower() and pathlib.Path(path).exists())
         except PermissionError:
-            raise OSError(13, 'Permission denied', expanded_path)
+            raise OSError(13, 'Error: Permission denied', path)
     
     @classmethod
     def add_parser(cls, subparser_container):
 
         localhost = subparser_container.add_parser('localhost', help='can manipulate directories containing git repos', allow_abbrev=False)
         localhost.add_argument('path', help='specifies what directory you wish to target')
-        localhost.set_defaults(host='path')
+
+        localhost.set_defaults(host=cls.__name__.lower())
         return localhost
 
     def get_user_repo_names_and_locations(self):

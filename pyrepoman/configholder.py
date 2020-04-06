@@ -35,7 +35,7 @@ class ConfigHolder:
         try:
             self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
         except PermissionError:
-            raise OSError(13, 'Permission denied, cannot read configuration file', TOML_FILE_PATH)
+            raise OSError(13, 'Error: Permission denied, cannot read configuration file', TOML_FILE_PATH)
         except toml.decoder.TomlDecodeError as e: # thrown in: load_toml() if configuration file has bad syntax error
             print('Error: the configuration file contains syntax error(s), more details below')
             print(e)
@@ -47,13 +47,13 @@ class ConfigHolder:
         try:
             wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
         except KeyError:
-            print(f"{webhost_name} table does not exist in the configuration file")
+            print(f"Error: {webhost_name} table does not exist in the configuration file")
             raise SystemExit()
         
         try:
             return self._get_toml_table_entrys(wbhost_entries, 'defaults')
         except KeyError:
-            print(f"defaults table does not exist in the {webhost_name} table")
+            print(f"Error: defaults table does not exist in the {webhost_name} table, check the configuration file")
             raise SystemExit()
 
     def webhost_func_load_additional_configs(self, webhost_name, func_name):
@@ -62,7 +62,7 @@ class ConfigHolder:
         try:
             wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
         except KeyError:
-            print(f"{webhost_name} table does not exist in the configuration file")
+            print(f"Error: {webhost_name} table does not exist in the configuration file")
             raise SystemExit()
         if(func_name not in wbhost_entries):
             return type(webhost_entries)()
@@ -84,5 +84,7 @@ class ConfigHolder:
         return self.EMPTY_CONFIG
 
     def __str__(self):
+
+        debug_configs = ['path', 'host', 'host_path']
         
-        return str(self.configs)
+        return str({debug_config:self.get_config_value(debug_config) for debug_config in debug_configs if self.get_config_value(debug_config) != self.EMPTY_CONFIG})

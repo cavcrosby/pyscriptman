@@ -10,7 +10,7 @@ from subprocess import CalledProcessError
 def main():
 
     try:
-        configholder = Generator.generate_cmd_args()
+        configholder = Generator.generate_cli_args()
         action = Generator.generate_action(configholder)
         action.run()
     except SystemExit:

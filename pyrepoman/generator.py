@@ -16,7 +16,7 @@ class Generator:
     _require_subcommands = True
 
     @classmethod
-    def generate_cmd_args(cls):
+    def generate_cli_args(cls):
 
         host_title = 'available hosts'
         host_metavar = 'host [options ...]'
@@ -75,7 +75,7 @@ class Generator:
 
         identifier = configholder.get_config_value('host')
 
-        if(github.GitHub.is_host_type(identifier, configholder)):
+        if(github.GitHub.is_host_type(identifier)):
             configholder.load_toml()
             github_host = github.GitHub(configholder)
             github_host.load_config_defaults() # TODO, TEST THIS PART OF THE CODE BY GIVING WACKY (BUT VALID) CONFIGS IN CONFIG FILE
@@ -85,11 +85,5 @@ class Generator:
         elif(remotehost.RemoteHost.is_host_type(identifier, configholder)):
             return remotehost.RemoteHost(configholder)
         else:
-            configs = ['path', 'host', 'host_path']
-            error_string = 'Error: Invalid host target;'
-            for config in configs:
-                config_value = configholder.get_config_value(config)
-                if(config_value != configholder.EMPTY_CONFIG):
-                    error_string += f" {config} {config_value};"
-            print(error_string)
+            print(f"Error: Invalid host target; Configs passed in: {configholder}")
             raise SystemExit()
