@@ -9,6 +9,7 @@ import os, subprocess, shutil, re
 class Action(ABC):
 
     _HELP_DESC = NotImplemented
+
     _HOST_SUBPARSER_TITLE = 'available hosts'
     _HOST_SUBPARSER_METAVAR = 'host [options ...]'
     _REQUIRE_SUBCOMMANDS = True

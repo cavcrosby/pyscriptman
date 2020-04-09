@@ -9,8 +9,6 @@ from ..host import Host
 
 class WebHost(Host):
 
-    _HELP_DESC = ""
-
     def __init__(self, configholder):
         super().__init__()
         self.configholder = configholder
