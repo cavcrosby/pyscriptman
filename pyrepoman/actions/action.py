@@ -8,6 +8,18 @@ import os, subprocess, shutil, re
 
 class Action(ABC):
 
+    _HELP_DESC = NotImplemented
+    _HOST_SUBPARSER_TITLE = 'available hosts'
+    _HOST_SUBPARSER_METAVAR = 'host [options ...]'
+    _REQUIRE_SUBCOMMANDS = True
+
+    def __init_subclass__(cls, *args, **kwargs):
+
+        super().__init_subclass__(*args, **kwargs)
+
+        if cls._HELP_DESC is NotImplemented:
+            raise NotImplementedError(f'Error: _HELP_DESC not defined in {cls.__name__}')
+
     @staticmethod
     def _get_pwd_local_dir_names():
 
@@ -100,8 +112,17 @@ class Action(ABC):
         
         return cls.__name__.lower()
     
+    @classmethod
+    def add_parser(cls, subparser_container, help_desc):
+
+        subcommand = cls.__name__.lower()
+        parser = subparser_container.add_parser(subcommand, help=cls._HELP_DESC, allow_abbrev=False)
+        parser = cls._modify_parser(parser)
+        parser.set_defaults(action=subcommand)
+        return parser
+
     @abstractclassmethod
-    def add_parser(cls):
+    def _modify_parser(cls, parser):
 
         pass
 

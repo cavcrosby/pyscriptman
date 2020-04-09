@@ -8,6 +8,8 @@ from .host import Host
 
 class LocalHost(Host):
 
+    _HELP_DESC = 'can manipulate local directories containing git repos'
+
     def __init__(self, configholder):
 
         super().__init__()
@@ -24,13 +26,11 @@ class LocalHost(Host):
             raise OSError(13, 'Error: Permission denied', path)
     
     @classmethod
-    def add_parser(cls, subparser_container):
+    def _modify_parser(cls, parser):
 
-        localhost = subparser_container.add_parser('localhost', help='can manipulate directories containing git repos', allow_abbrev=False)
-        localhost.add_argument('path', help='specifies what directory you wish to target')
+        parser.add_argument('path', help='specifies what directory you wish to target')
 
-        localhost.set_defaults(host=cls.__name__.lower())
-        return localhost
+        return parser
 
     def get_user_repo_names_and_locations(self):
 

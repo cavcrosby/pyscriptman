@@ -4,9 +4,13 @@ import subprocess, os
 # Third Party Imports
 
 # Local Application Imports
+from ..hosts import *
+from ..hosts.webhosts import *
 from .action import Action
 
 class Fetch(Action):
+    
+    _HELP_DESC = 'fetch all Git repos through a web provider'
 
     def __init__(self, host):
 
@@ -14,12 +18,14 @@ class Fetch(Action):
         self.host = host
 
     @classmethod    
-    def add_parser(cls, subparser_container):
+    def _modify_parser(cls, parser):
 
-        subcommand = cls.__name__.lower()
-        fetch = subparser_container.add_parser(subcommand, help='fetch all Git repos through a web provider', allow_abbrev=False)
-        fetch.set_defaults(action=subcommand)
-        return fetch
+        fetch_host_subparsers = parser.add_subparsers(title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_TITLE)
+        fetch_host_subparsers.required = cls._REQUIRE_SUBCOMMANDS
+        github.GitHub.add_parser(fetch_host_subparsers, github.GitHub._HELP_DESC)
+        remotehost.RemoteHost.add_parser(fetch_host_subparsers, remotehost.RemoteHost._HELP_DESC)
+        localhost.LocalHost.add_parser(fetch_host_subparsers, localhost.LocalHost._HELP_DESC)
+        return parser
 
     def run(self):
 

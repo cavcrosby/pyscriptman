@@ -4,9 +4,13 @@ import os
 # Third Party Imports
 
 # Local Application Imports
+from ..hosts import *
+from ..hosts.webhosts import *
 from .action import Action
 
 class Archive(Action):
+
+    _HELP_DESC = 'archive all Git repos, done by bundling repos'
 
     def __init__(self, host, configholder):
 
@@ -16,13 +20,15 @@ class Archive(Action):
         self.tmp_dir = 'archive_tmp'
 
     @classmethod
-    def add_parser(cls, subparser_container):
+    def _modify_parser(cls, parser):
 
-        subcommand = cls.__name__.lower()
-        archive = subparser_container.add_parser(subcommand, help='archive all Git repos, done by bundling repos', allow_abbrev=False)
-        archive.add_argument('dest', help='where to store archives (destination)')
-        archive.set_defaults(action=subcommand)
-        return archive
+        parser.add_argument('dest', help='where to store archives (destination)')
+        archive_host_subparsers = parser.add_subparsers(title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_TITLE)
+        archive_host_subparsers.required = cls._REQUIRE_SUBCOMMANDS
+        github.GitHub.add_parser(archive_host_subparsers, github.GitHub._HELP_DESC)
+        remotehost.RemoteHost.add_parser(archive_host_subparsers, remotehost.RemoteHost._HELP_DESC)
+        localhost.LocalHost.add_parser(archive_host_subparsers, localhost.LocalHost._HELP_DESC)
+        return parser
 
     def run(self):
 

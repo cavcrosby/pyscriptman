@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 # Standard Library Imports
+from subprocess import CalledProcessError
 
 # Third Party Imports
 
 # Local Application Imports
 from .generator import Generator
-from subprocess import CalledProcessError
+from .cmd import Cmd
 
 def main():
 
     try:
-        configholder = Generator.generate_cli_args()
+        configholder = Cmd.retrieve_args()
         action = Generator.generate_action(configholder)
         action.run()
     except SystemExit:

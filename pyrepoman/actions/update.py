@@ -8,18 +8,16 @@ from .action import Action
 
 class Update(Action):
 
+    _HELP_DESC = 'update all Git repos in your current directory from remote repos'
+
     def __init__(self):
 
         super().__init__()
 
     @classmethod
-    def add_parser(cls, subparser_container):
+    def _modify_parser(cls, parser):
 
-        subcommand = cls.__name__.lower()
-        update = subparser_container.add_parser(subcommand, help='update all Git repos in your current directory from remote repos')
-        update.set_defaults(action=subcommand)
-        update.set_defaults(host='')
-        return update
+        return parser
 
     def run(self):
 

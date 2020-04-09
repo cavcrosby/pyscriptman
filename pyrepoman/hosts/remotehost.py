@@ -9,6 +9,8 @@ from ..global_variables import REMOTE_SCRIPT_GET_BARE_REPOS_NAME, REMOTE_SCRIPT_
 
 class RemoteHost(Host):
 
+    _HELP_DESC = 'can target directories on remote hosts'
+
     def __init__(self, configholder):
 
         super().__init__()
@@ -36,20 +38,18 @@ class RemoteHost(Host):
         if(identifier != cls.__name__.lower()):
             return False
         target = configholder.get_config_value('target')
-        expanded_path = cls.expand_user_on_host(identifier, configholder.get_config_value('target_path'))
+        expanded_path = cls.expand_user_on_host(target, configholder.get_config_value('target_path'))
         return can_reach_remote_dir(target, expanded_path)
 
     @classmethod
-    def add_parser(cls, subparser_container):
+    def _modify_parser(cls, parser):
 
         default_target_path = '$HOME'
 
-        remotehost = subparser_container.add_parser('remotehost', help='can target directories on remote hosts', allow_abbrev=False)
-        remotehost.add_argument('target', help='specifies what host you wish to target, host format is the format of hostname in ssh')
-        remotehost.add_argument('--target-path', metavar="path", default=default_target_path, help=f'specifies what directory on the host to target for repos (default: {default_target_path}).')
+        parser.add_argument('target', help='specifies what host you wish to target, host format is the format of hostname in ssh')
+        parser.add_argument('--target-path', metavar="path", default=default_target_path, help=f'specifies what directory on the host to target for repos (default: {default_target_path}).')
 
-        remotehost.set_defaults(host=cls.__name__.lower())
-        return remotehost
+        return parser
 
     def get_user_repo_names_and_locations(self):
 
