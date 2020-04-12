@@ -6,9 +6,10 @@ import os, subprocess, sys, re
 # Local Application Imports
 from .action import Action
 
+
 class Update(Action):
 
-    _HELP_DESC = 'update all Git repos in your current directory from remote repos'
+    HELP_DESC = "update all Git repos in your current directory from remote repos"
 
     def __init__(self):
 
@@ -24,6 +25,11 @@ class Update(Action):
         nonbare_repo_names = super()._get_pwd_local_nonbare_repo_names()
         for nonbare_repo_name in nonbare_repo_names:
             os.chdir(nonbare_repo_name)
-            completed_process = subprocess.run(['git',  'pull'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8').stderr.rstrip()
+            completed_process = subprocess.run(
+                ["git", "pull"],
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                encoding="utf-8",
+            ).stderr.rstrip()
             completed_process.check_returncode()
             os.chdir("..")

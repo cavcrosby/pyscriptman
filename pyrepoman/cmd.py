@@ -18,13 +18,13 @@ class Cmd():
         _action_subparsers = cls._parser.add_subparsers(title='available actions', metavar='action [options ...]')
         _action_subparsers.required = True
 
-        update.Update.add_parser(_action_subparsers, help_desc=update.Update._HELP_DESC)
+        update.Update.add_parser(_action_subparsers, help_desc=update.Update.HELP_DESC)
 
-        fetch.Fetch.add_parser(_action_subparsers, help_desc=fetch.Fetch._HELP_DESC)
+        fetch.Fetch.add_parser(_action_subparsers, help_desc=fetch.Fetch.HELP_DESC)
 
-        backup.Backup.add_parser(_action_subparsers, help_desc=backup.Backup._HELP_DESC)
+        backup.Backup.add_parser(_action_subparsers, help_desc=backup.Backup.HELP_DESC)
 
-        archive.Archive.add_parser(_action_subparsers, help_desc=archive.Archive._HELP_DESC)
+        archive.Archive.add_parser(_action_subparsers, help_desc=archive.Archive.HELP_DESC)
 
         args = cls._parser.parse_args()
 

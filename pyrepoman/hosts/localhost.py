@@ -6,29 +6,30 @@ import os, subprocess, platform, pathlib, sys
 # Local Application Imports
 from .host import Host
 
+
 class LocalHost(Host):
 
-    _HELP_DESC = 'can manipulate local directories containing git repos'
+    HELP_DESC = "can manipulate local directories containing git repos"
 
     def __init__(self, configholder):
 
         super().__init__()
-        self.path = configholder.get_config_value('path')
+        self.path = configholder.get_config_value("path")
 
     @classmethod
     def is_host_type(cls, identifier, configholder):
 
-        path = os.path.expanduser(configholder.get_config_value('path'))
+        path = os.path.expanduser(configholder.get_config_value("path"))
 
         try:
-            return (identifier == cls.__name__.lower() and pathlib.Path(path).exists())
+            return identifier == cls.__name__.lower() and pathlib.Path(path).exists()
         except PermissionError:
-            raise OSError(13, 'Error: Permission denied', path)
-    
+            raise OSError(13, "Error: Permission denied", path)
+
     @classmethod
     def _modify_parser(cls, parser):
 
-        parser.add_argument('path', help='specifies what directory you wish to target')
+        parser.add_argument("path", help="specifies what directory you wish to target")
 
         return parser
 

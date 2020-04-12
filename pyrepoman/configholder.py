@@ -4,12 +4,15 @@
 import toml
 
 # Local Application Imports
-from .global_variables import TOML_FILE_NAME, TOML_FILE_PATH
+from .global_variables import (
+    TOML_FILE_NAME,
+    TOML_FILE_PATH,
+)
+
 
 class ConfigHolder:
-
     @property
-    def EMPTY_CONFIG(self):
+    def _EMPTY_CONFIG(self):
 
         return ""
 
@@ -35,9 +38,15 @@ class ConfigHolder:
         try:
             self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
         except PermissionError:
-            raise OSError(13, 'Error: Permission denied, cannot read configuration file', TOML_FILE_PATH)
-        except toml.decoder.TomlDecodeError as e: # thrown in: load_toml() if configuration file has bad syntax error
-            print('Error: the configuration file contains syntax error(s), more details below')
+            raise OSError(
+                13,
+                "Error: Permission denied, cannot read configuration file",
+                TOML_FILE_PATH,
+            )
+        except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has bad syntax error
+            print(
+                "Error: the configuration file contains syntax error(s), more details below"
+            )
             print(e)
             raise SystemExit()
 
@@ -47,13 +56,17 @@ class ConfigHolder:
         try:
             wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
         except KeyError:
-            print(f"Error: {webhost_name} table does not exist in the configuration file")
+            print(
+                f"Error: {webhost_name} table does not exist in the configuration file"
+            )
             raise SystemExit()
-        
+
         try:
-            return self._get_toml_table_entrys(wbhost_entries, 'defaults')
+            return self._get_toml_table_entrys(wbhost_entries, "defaults")
         except KeyError:
-            print(f"Error: defaults table does not exist in the {webhost_name} table, check the configuration file")
+            print(
+                f"Error: defaults table does not exist in the {webhost_name} table, check the configuration file"
+            )
             raise SystemExit()
 
     def webhost_func_load_additional_configs(self, webhost_name, func_name):
@@ -62,29 +75,38 @@ class ConfigHolder:
         try:
             wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
         except KeyError:
-            print(f"Error: {webhost_name} table does not exist in the configuration file")
+            print(
+                f"Error: {webhost_name} table does not exist in the configuration file"
+            )
             raise SystemExit()
-        if(func_name not in wbhost_entries):
+        if func_name not in wbhost_entries:
             return type(webhost_entries)()
-        elif (len(wbhost_entries[func_name]) == 0): # empty [func_name] ... [another_func_name] key: value
+        elif (
+            len(wbhost_entries[func_name]) == 0
+        ):  # empty [func_name] ... [another_func_name] key: value
             return type(webhost_entries)()
         else:
             return wbhost_entries[func_name]
 
     def config_exist(self, config):
 
-        return self.get_config_value(config) != self.EMPTY_CONFIG
+        return self.get_config_value(config) != self._EMPTY_CONFIG
 
     def get_config_value(self, config):
 
         for pair in self.configs:
-            if(pair[0] == config):
+            if pair[0] == config:
                 return pair[1]
 
-        return self.EMPTY_CONFIG
+        return self._EMPTY_CONFIG
 
     def __str__(self):
 
-        debug_configs = ['path', 'host', 'host_path']
-        
-        return str({debug_config:self.get_config_value(debug_config) for debug_config in debug_configs if self.get_config_value(debug_config) != self.EMPTY_CONFIG})
+        debug_configs = ["path", "host", "host_path"]
+        return str(
+            {
+                debug_config: self.get_config_value(debug_config)
+                for debug_config in debug_configs
+                if self.get_config_value(debug_config) != self._EMPTY_CONFIG
+            }
+        )
