@@ -1,5 +1,6 @@
 # Standard Library Imports
 import subprocess, os, shutil
+from os.path import join, dirname
 
 # Third Party Imports
 
@@ -22,6 +23,18 @@ def delete_folder_and_contents(dir):
     finally:
         os.chdir('..')
         os.rmdir(dir)
+
+def change_target_filemode_recursive(target, permissions):
+
+    walk_root = dirname(os.path.realpath(target))
+
+    for root, dirs, files in os.walk(target):
+        walk_parent_dir = join(walk_root, root)
+        for name in files:
+            os.chmod(join(walk_parent_dir, name), permissions)
+        for name in dirs:
+            os.chmod(join(walk_parent_dir, name), permissions)
+    os.chmod(target, permissions)
 
 def git_add_commit_push(message):
     subprocess.run(['git', 'add', '.'])
