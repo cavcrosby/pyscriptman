@@ -5,7 +5,7 @@ import os, subprocess, shutil, inspect
 # Third Party Imports
 
 # Local Application Imports
-from ..host import Host
+from pyrepoman.hosts.host import Host
 
 
 class WebHost(Host):
@@ -15,7 +15,7 @@ class WebHost(Host):
 
     def load_config_defaults(self):
 
-        DEFAULT_CONFIGS = self.configholder.load_webhost_defaults(
+        DEFAULT_CONFIGS = self.configholder.retrieve_table_defaults(
             type(self).__name__.lower()
         )
         for default_config in DEFAULT_CONFIGS:
@@ -23,7 +23,7 @@ class WebHost(Host):
 
     def get_user_repo_names_and_locations(self):
 
-        FUNC_CONFIGS = self.configholder.webhost_func_load_additional_configs(
+        FUNC_CONFIGS = self.configholder.table_func_retrieve_additional_configs(
             type(self).__name__.lower(), inspect.currentframe().f_code.co_name
         )  # inspect.currentframe().f_code.co_name returns function name
         for func_config in FUNC_CONFIGS:

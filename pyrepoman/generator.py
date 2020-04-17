@@ -4,9 +4,9 @@ import argparse
 # Third Party Imports
 
 # Local Application Imports
-from .hosts.webhosts import *
-from .hosts import *
-from .actions import *
+from pyrepoman.hosts.webhosts import *
+from pyrepoman.hosts import *
+from pyrepoman.actions import *
 
 
 class Generator:

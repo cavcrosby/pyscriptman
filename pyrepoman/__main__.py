@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # Standard Library Imports
 from subprocess import CalledProcessError
+import sys
+
+# TODO THIS SHOULD BE APPENDED FOR PACKAGE INSTALLATION ON PYTHONPATH
 
 # Third Party Imports
 
 # Local Application Imports
-from .generator import Generator
-from .cmd import Cmd
+from pyrepoman.generator import Generator
+from pyrepoman.cmd import Cmd
 
 
 def main():

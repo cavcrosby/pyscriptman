@@ -4,10 +4,6 @@
 import toml
 
 # Local Application Imports
-from .global_variables import (
-    TOML_FILE_NAME,
-    TOML_FILE_PATH,
-)
 
 
 class ConfigHolder:
@@ -16,16 +12,27 @@ class ConfigHolder:
 
         return ""
 
-    def __init__(self, args):
+    def __init__(self, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH):
 
         self.configs = list()
-        transformed_args = vars(args)
-        [self.add_config(arg, transformed_args[arg]) for arg in transformed_args]
+        self.CONFIGURATION_FILE_NAME = CONFIGURATION_FILE_NAME
+        self.CONFIGURATION_FILE_PATH = CONFIGURATION_FILE_PATH
 
     @staticmethod
     def _get_toml_table_entrys(toml, index):
 
         return toml[index]
+
+    @classmethod
+    def from_object_dict(cls, args, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH):
+
+        configholder = cls(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
+        transformed_args = vars(args)
+        [
+            configholder.add_config(arg, transformed_args[arg])
+            for arg in transformed_args
+        ]
+        return configholder
 
     def add_config(self, key, value):
 
@@ -36,12 +43,12 @@ class ConfigHolder:
     def load_toml(self):
 
         try:
-            self.add_config(TOML_FILE_NAME, toml.load(TOML_FILE_PATH))
+            self.add_config(self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH))
         except PermissionError:
             raise OSError(
                 13,
                 "Error: Permission denied, cannot read configuration file",
-                TOML_FILE_PATH,
+                self.CONFIGURATION_FILE_PATH,
             )
         except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has bad syntax error
             print(
@@ -50,49 +57,51 @@ class ConfigHolder:
             print(e)
             raise SystemExit()
 
-    def load_webhost_defaults(self, webhost_name):
+    def retrieve_table_defaults(self, table_name):
 
-        webhost_entries = self.get_config_value(TOML_FILE_NAME)
+        table_entries = self.get_config_value(self.CONFIGURATION_FILE_NAME)
         try:
-            wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
+            tb_entries = self._get_toml_table_entrys(table_entries, table_name)
         except KeyError:
             print(
-                f"Error: {webhost_name} table does not exist in the configuration file"
+                f"Error: {table_name} table does not exist in the configuration file"
             )
             raise SystemExit()
 
         try:
-            return self._get_toml_table_entrys(wbhost_entries, "defaults")
+            return self._get_toml_table_entrys(tb_entries, "defaults")
         except KeyError:
             print(
-                f"Error: defaults table does not exist in the {webhost_name} table, check the configuration file"
+                f"Error: defaults table does not exist in the {table_name} table, check the configuration file"
             )
             raise SystemExit()
 
-    def webhost_func_load_additional_configs(self, webhost_name, func_name):
+    def table_func_retrieve_additional_configs(self, table_name, func_name):
 
-        webhost_entries = self.get_config_value(TOML_FILE_NAME)
+        table_entries = self.get_config_value(self.CONFIGURATION_FILE_NAME)
         try:
-            wbhost_entries = self._get_toml_table_entrys(webhost_entries, webhost_name)
+            tb_entries = self._get_toml_table_entrys(table_entries, table_name)
         except KeyError:
             print(
-                f"Error: {webhost_name} table does not exist in the configuration file"
+                f"Error: {table_name} table does not exist in the configuration file"
             )
             raise SystemExit()
-        if func_name not in wbhost_entries:
-            return type(webhost_entries)()
+        if func_name not in tb_entries:
+            return type(table_entries)()
         elif (
-            len(wbhost_entries[func_name]) == 0
+            len(tb_entries[func_name]) == 0
         ):  # empty [func_name] ... [another_func_name] key: value
-            return type(webhost_entries)()
+            return type(table_entries)()
         else:
-            return wbhost_entries[func_name]
+            return tb_entries[func_name]
 
     def config_exist(self, config):
 
         return self.get_config_value(config) != self._EMPTY_CONFIG
 
     def get_config_value(self, config):
+
+        # map(lambda pair: pair[0] ) # TODO MAGIC NUMBERS
 
         for pair in self.configs:
             if pair[0] == config:

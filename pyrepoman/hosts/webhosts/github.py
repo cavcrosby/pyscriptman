@@ -4,7 +4,7 @@
 import requests
 
 # Local Application Imports
-from .webhost import WebHost
+from pyrepoman.hosts.webhosts.webhost import WebHost
 
 
 class GitHub(WebHost):

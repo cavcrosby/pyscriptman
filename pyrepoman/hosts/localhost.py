@@ -4,7 +4,7 @@ import os, subprocess, platform, pathlib, sys
 # Third Party Imports
 
 # Local Application Imports
-from .host import Host
+from pyrepoman.hosts.host import Host
 
 
 class LocalHost(Host):

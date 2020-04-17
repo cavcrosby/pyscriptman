@@ -4,8 +4,8 @@ import os, subprocess
 # Third Party Imports
 
 # Local Application Imports
-from .host import Host
-from ..global_variables import (
+from pyrepoman.hosts.host import Host
+from pyrepoman.pyrepoman_variables import (
     REMOTE_SCRIPT_GET_BARE_REPOS_NAME,
     REMOTE_SCRIPT_GET_BARE_REPOS_PATH,
 )

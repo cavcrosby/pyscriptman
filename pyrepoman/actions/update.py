@@ -4,7 +4,7 @@ import os, subprocess, sys, re
 # Third Party Imports
 
 # Local Application Imports
-from .action import Action
+from pyrepoman.actions.action import Action
 
 
 class Update(Action):

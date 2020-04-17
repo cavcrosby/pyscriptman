@@ -5,6 +5,12 @@ pyrepoman/__pycache__
 # ignore IDE configs
 .vscode
 
+# ignore pytest cache
+.pytest_cache
+
+# .env Enviroment Vars
+*.env
+
 # ignore (configuration) files
 *.toml
 *.ini

@@ -4,9 +4,9 @@ import subprocess, os
 # Third Party Imports
 
 # Local Application Imports
-from ..hosts import *
-from ..hosts.webhosts import *
-from .action import Action
+from pyrepoman.hosts import *
+from pyrepoman.hosts.webhosts import *
+from pyrepoman.actions.action import Action
 
 
 class Fetch(Action):
