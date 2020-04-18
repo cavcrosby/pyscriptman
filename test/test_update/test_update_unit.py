@@ -20,7 +20,7 @@ from test.helpers import(
     change_target_filemode_recursive
 )
 
-NO_PERMISSIONS = 0
+PERMISSIONS = stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
 class TestUpdate:
     def test_permission_error(self):
@@ -29,9 +29,9 @@ class TestUpdate:
         if(platform.system().lower() != 'linux'):
             change_target_filemode_recursive(UPDATE_TARGET, stat.S_IREAD)
         else:
-            change_target_filemode_recursive(UPDATE_TARGET, NO_PERMISSIONS)
+            change_target_filemode_recursive(UPDATE_TARGET, PERMISSIONS)
 
-        with pytest.raises(PermissionError):
+        with pytest.raises(subprocess.CalledProcessError):
             update = Update()
             update.run()
 
