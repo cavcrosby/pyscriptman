@@ -30,6 +30,6 @@ class Update(Action):
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 encoding="utf-8",
-            ).stderr.rstrip()
-            completed_process.check_returncode()
+            )
             os.chdir("..")
+            completed_process.check_returncode()
