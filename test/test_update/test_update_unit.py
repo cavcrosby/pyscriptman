@@ -23,7 +23,7 @@ from test.helpers import(
 PERMISSIONS = stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
 class TestUpdate:
-    def test_permission_error(self):
+    def test_calledprocess_error(self):
 
         filemode_binary = os.stat(UPDATE_TARGET).st_mode
         if(platform.system().lower() != 'linux'):
