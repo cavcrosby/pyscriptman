@@ -45,8 +45,5 @@ class Fetch(Action):
                     f"{self.host.get_location_from_repo_name(repo_name)}",
                     f"{repo_name}",
                 ],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
             )
             completed_process.check_returncode()

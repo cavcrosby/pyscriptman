@@ -1,6 +1,6 @@
 # Standard Library Imports
-import subprocess, os, shutil
-from os.path import join, dirname
+import subprocess, os, shutil, platform, stat
+from os.path import join, dirname, realpath
 
 # Third Party Imports
 
@@ -26,7 +26,7 @@ def delete_folder_and_contents(dir):
 
 def change_target_filemode_recursive(target, permissions):
 
-    walk_root = dirname(os.path.realpath(target))
+    walk_root = dirname(realpath(target))
 
     for root, dirs, files in os.walk(target):
         walk_parent_dir = join(walk_root, root)
@@ -34,6 +34,10 @@ def change_target_filemode_recursive(target, permissions):
             os.chmod(join(walk_parent_dir, name), permissions)
         for name in dirs:
             os.chmod(join(walk_parent_dir, name), permissions)
+    os.chmod(target, permissions)
+
+def change_filemode_permissions(target, permissions):
+
     os.chmod(target, permissions)
 
 def git_add_commit_push(message):

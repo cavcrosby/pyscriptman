@@ -1,9 +1,11 @@
 # Standard Library Imports
+import sys
 
 # Third Party Imports
 import toml
 
 # Local Application Imports
+from pyrepoman.helpers import print_permission_denied
 
 
 class ConfigHolder:
@@ -44,18 +46,15 @@ class ConfigHolder:
 
         try:
             self.add_config(self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH))
-        except PermissionError:
-            raise OSError(
-                13,
-                "Error: Permission denied, cannot read configuration file",
-                self.CONFIGURATION_FILE_PATH,
-            )
+        except PermissionError as e:
+            print_permission_denied(e.filename)
+            sys.exit(e.errno)
         except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has bad syntax error
             print(
                 "Error: the configuration file contains syntax error(s), more details below"
             )
             print(e)
-            raise SystemExit()
+            sys.exit()
 
     def retrieve_table_defaults(self, table_name):
 

@@ -5,6 +5,7 @@ import os, subprocess, platform, pathlib, sys
 
 # Local Application Imports
 from pyrepoman.hosts.host import Host
+from pyrepoman.helpers import print_permission_denied
 
 
 class LocalHost(Host):
@@ -23,8 +24,9 @@ class LocalHost(Host):
 
         try:
             return identifier == cls.__name__.lower() and pathlib.Path(path).exists()
-        except PermissionError:
-            raise OSError(13, "Error: Permission denied", path)
+        except PermissionError as e:
+            print_permission_denied(e.filename)
+            sys.exit(e.errno)
 
     @classmethod
     def _modify_parser(cls, parser):

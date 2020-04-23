@@ -1,10 +1,11 @@
 # Standard Library Imports
 from abc import ABC, abstractclassmethod
-import os, subprocess, shutil, re
+import os, subprocess, shutil, re, sys
 
 # Third Party Imports
 
 # Local Application Imports
+from pyrepoman.helpers import print_permission_denied, get_pwd_local_dir_names, get_pwd_typeof_repo_names
 
 
 class Action(ABC):
@@ -20,17 +21,7 @@ class Action(ABC):
         super().__init_subclass__(*args, **kwargs)
 
         if cls.HELP_DESC is NotImplemented:
-            raise NotImplementedError(
-                f"Error: HELP_DESC not defined in {cls.__name__}"
-            )
-
-    @staticmethod
-    def _get_pwd_local_dir_names():
-
-        root = os.getcwd()
-        return [
-            item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))
-        ]
+            raise NotImplementedError(f"Error: HELP_DESC not defined in {cls.__name__}")
 
     @staticmethod
     def _remove_dir(dir_name):
@@ -60,10 +51,7 @@ class Action(ABC):
                 "create",
                 f"{repo_bundle_name}.bundle",
                 "--all",
-            ],
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            encoding="utf-8",
+            ]
         )
         completed_process.check_returncode()
 
@@ -72,39 +60,13 @@ class Action(ABC):
 
         completed_process = subprocess.run(
             ["git", "clone", "--mirror", location, destination_dir_name],
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            encoding="utf-8",
         )
         completed_process.check_returncode()
 
-    @classmethod
-    def _get_pwd_local_nonbare_repo_names(cls):
+    @staticmethod
+    def _get_pwd_local_nonbare_repo_names():
 
-        repos = list()
-        dirs = cls._get_pwd_local_dir_names()
-        for dir in dirs:
-            os.chdir(dir)
-            is_bare_repo = subprocess.run(
-                ["git", "rev-parse", "--is-bare-repository"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
-            )
-            in_working_dir = subprocess.run(
-                ["git", "rev-parse", "--is-inside-work-tree"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
-            )
-            if (
-                is_bare_repo.stderr == ""
-                and is_bare_repo.stdout.rstrip() == "false"
-                and in_working_dir.stdout.rstrip() == "true"
-            ):
-                repos.append(dir)
-            os.chdir("..")
-        return repos
+        return get_pwd_typeof_repo_names(os.getcwd(), False)
 
     @classmethod
     def _remove_all_dir_content(cls, dir_name, exclude=None):
@@ -128,7 +90,8 @@ class Action(ABC):
         except StopIteration as e:
             pass
         except PermissionError as e:
-            raise
+            print_permission_denied(e.filename)
+            sys.exit(e.errno)
         finally:
             os.chdir("..")
 

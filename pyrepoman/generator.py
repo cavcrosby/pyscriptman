@@ -1,5 +1,5 @@
 # Standard Library Imports
-import argparse
+import argparse, sys
 
 # Third Party Imports
 
@@ -30,7 +30,7 @@ class Generator:
             print(
                 f"Error: Invalid action target; action {configholder.get_config_value('action')}"
             )
-            raise SystemExit()
+            sys.exit(1)
 
     @classmethod
     def _generate_host(cls, configholder):
@@ -48,4 +48,4 @@ class Generator:
             return remotehost.RemoteHost(configholder)
         else:
             print(f"Error: Invalid host target; Configs passed in: {configholder}")
-            raise SystemExit()
+            sys.exit(1)

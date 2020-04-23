@@ -84,9 +84,6 @@ class RemoteHost(Host):
 
             subprocess.run(
                 ["scp", script, f"{target}:{target_path}"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
             )
 
         def execute_script_on_host(target, script):
@@ -98,7 +95,7 @@ class RemoteHost(Host):
                 encoding="utf-8",
             )
             completed_process.check_returncode()
-            return completed_process
+            return completed_process # TODO WHY IS REPOS MODIFIED IN OTHER PLACES?
 
         def remove_script_on_host(target, script):
 

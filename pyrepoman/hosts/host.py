@@ -5,6 +5,7 @@ import os, subprocess, shutil
 # Third Party Imports
 
 # Local Application Imports
+from pyrepoman.helpers import get_pwd_local_dir_names, get_pwd_typeof_repo_names
 
 
 class Host(ABC):
@@ -29,43 +30,9 @@ class Host(ABC):
             )
 
     @staticmethod
-    def _get_pwd_local_dir_names():
-
-        root = os.getcwd()
-        return [
-            item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))
-        ]
-
-    @classmethod
-    def _get_pwd_bare_repo_names(cls, host_path):
-
-        repos = list()
-        pwd = os.getcwd()
-        os.chdir(host_path)
-        dirs = cls._get_pwd_local_dir_names()
-        for dir in dirs:
-            os.chdir(dir)
-            is_bare_repo = subprocess.run(
-                ["git", "rev-parse", "--is-bare-repository"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
-            )
-            in_working_dir = subprocess.run(
-                ["git", "rev-parse", "--is-inside-work-tree"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
-            )
-            if (
-                is_bare_repo.stderr == ""
-                and is_bare_repo.stdout.rstrip() == "true"
-                and in_working_dir.stdout.rstrip() == "false"
-            ):
-                repos.append(dir)
-            os.chdir("..")
-        os.chdir(pwd)
-        return repos
+    def _get_pwd_bare_repo_names(host_path):
+        
+        return get_pwd_typeof_repo_names(host_path, True)
 
     @classmethod
     def add_parser(cls, subparser_container, help_desc):

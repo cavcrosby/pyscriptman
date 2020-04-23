@@ -1,38 +1,91 @@
 # Standard Library Imports
 import subprocess, sys, os, platform, stat
+from os.path import join, realpath, dirname
 
 # Third Party Imports
 import pytest
 
 # Local Application Imports
-from pyrepoman.actions.update import (
-    Update
-)
+from pyrepoman.actions.update import Update
 from test.test_update.conftest import (
-    pytest_runtest_setup,
-    pytest_runtest_teardown,
-    UPDATE_TARGET
+    UPDATE_TARGET,
 )
-from test.test_variables import (
-    PYREPOMAN_MAIN_PATH,
-)
-from test.helpers import(
-    change_target_filemode_recursive
-)
+from test.test_variables import PYREPOMAN_MAIN_PATH
+from test.helpers import change_target_filemode_recursive
 
-PERMISSIONS = stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
 class TestUpdate:
-    def test_calledprocess_error(self):
-
-        filemode_binary = os.stat(UPDATE_TARGET).st_mode
-        if(platform.system().lower() != 'linux'):
-            change_target_filemode_recursive(UPDATE_TARGET, stat.S_IREAD)
-        else:
-            change_target_filemode_recursive(UPDATE_TARGET, PERMISSIONS)
+    @pytest.mark.parametrize(
+        "change_filemode_win_linux",
+        [
+            [
+                UPDATE_TARGET, # testing update with a directory that does not have write access
+                stat.S_IRUSR
+                | stat.S_IXUSR
+                | stat.S_IRGRP
+                | stat.S_IWGRP
+                | stat.S_IXGRP
+                | stat.S_IROTH
+                | stat.S_IWOTH
+                | stat.S_IXOTH, # permissions == filemode 577
+                stat.S_IREAD
+            ],
+            [
+                join(UPDATE_TARGET, '.git'), # testing pyrepoman update with a working directory's .git directory having no write access
+                stat.S_IRUSR
+                | stat.S_IXUSR
+                | stat.S_IRGRP
+                | stat.S_IWGRP
+                | stat.S_IXGRP
+                | stat.S_IROTH
+                | stat.S_IWOTH
+                | stat.S_IXOTH, # permissions == filemode 577
+                stat.S_IREAD
+            ]
+        ],
+        indirect=["change_filemode_win_linux"]
+    )
+    def test_calledprocesserror_handled(self, change_filemode_win_linux):
 
         with pytest.raises(subprocess.CalledProcessError):
             update = Update()
             update.run()
+    
+    @pytest.mark.parametrize(
+        "change_filemode_win_linux",
+        [
+            [
+                dirname(realpath(UPDATE_TARGET)), # testing update with a directory whose parent has no read permissions
+                stat.S_IWUSR
+                | stat.S_IXUSR
+                | stat.S_IRGRP
+                | stat.S_IWGRP
+                | stat.S_IXGRP
+                | stat.S_IROTH
+                | stat.S_IWOTH
+                | stat.S_IXOTH, # permissions == filemode 377
+                stat.S_IREAD
+            ],
+            [
+                UPDATE_TARGET, # testing update with a directory that does not have execute permissions
+                stat.S_IRUSR
+                | stat.S_IWUSR
+                | stat.S_IRGRP
+                | stat.S_IWGRP
+                | stat.S_IXGRP
+                | stat.S_IROTH
+                | stat.S_IWOTH
+                | stat.S_IXOTH, # permissions == filemode 677
+                stat.S_IREAD
+            ]
+        ],
+        indirect=["change_filemode_win_linux"]
+    )
+    def test_permissionerror_handled(self, change_filemode_win_linux, capsys):
 
-        change_target_filemode_recursive(UPDATE_TARGET, filemode_binary)
+        with pytest.raises(PermissionError):
+            update = Update()
+            update.run()
+
+        out, err = capsys.readouterr() # TODO NEED TO ABSTRACT PERMISSIONERROR PRINT MESSAGE SO IT IS NOT HARD CODED
+        assert "Error: a particular file/path was unaccessable, " in out

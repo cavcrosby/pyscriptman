@@ -1,5 +1,6 @@
 # Standard Library Imports
 import subprocess, os, platform, stat
+from os.path import join
 
 # Third Party Imports
 import pytest, toml
@@ -8,18 +9,25 @@ import pytest, toml
 from test.helpers import (
     git_add_commit_push,
     delete_folder_and_contents,
+    change_target_filemode_recursive,
 )
 from test.test_variables import configholder
+from pyrepoman.actions.action import Action
+
+ACTION_IDENTIFIER = "update"
 
 def load_configs(configholder, configs):
 
     for config, value in configs.items():
         configholder.add_config(config, value)
 
-def pytest_runtest_setup(item):
-    configs = configholder.table_func_retrieve_additional_configs(action, item.function.__name__)
+@pytest.fixture(scope="function")
+def normal_setup(request):
+    configs = configholder.table_func_retrieve_additional_configs(
+        ACTION_IDENTIFIER, request.function.__name__
+    )
     load_configs(configholder, configs)
-    BARE_REPO_TO_COPY_PATH = configholder.get_config_value("BARE_REPO_TO_COPY_PATH") 
+    BARE_REPO_TO_COPY_PATH = configholder.get_config_value("BARE_REPO_TO_COPY_PATH")
     subprocess.run(["git", "clone", BARE_REPO_TO_COPY_PATH, UPDATE_TARGET])
     subprocess.run(["git", "clone", BARE_REPO_TO_COPY_PATH, MODEL_TARGET])
     os.chdir(MODEL_TARGET)
@@ -28,18 +36,39 @@ def pytest_runtest_setup(item):
     git_add_commit_push("testing commit...")
     os.chdir("..")
 
-def pytest_runtest_teardown(item, nextitem):
-    os.chdir(MODEL_TARGET)
-    os.remove(ADDITIONAL_FILE1)
-    git_add_commit_push("test done, now deleting any additional files added...")
-    os.chdir("..")
-    delete_folder_and_contents(UPDATE_TARGET)
-    delete_folder_and_contents(MODEL_TARGET)
+    def normal_teardown():
+        os.chdir(MODEL_TARGET)
+        os.remove(ADDITIONAL_FILE1)
+        git_add_commit_push("test done, now deleting any additional files added...")
+        os.chdir("..")
+        delete_folder_and_contents(UPDATE_TARGET)
+        delete_folder_and_contents(MODEL_TARGET)
 
-action = "update"
-configs = configholder.retrieve_table_defaults(action)
+    request.addfinalizer(normal_teardown)
+
+@pytest.fixture(scope="function")
+def change_filemode_win_linux(normal_setup, request):
+
+    target = request.param[0]
+    permissions = request.param[1]
+    win_permissions = request.param[2]
+
+    filemode_binary = os.stat(target).st_mode
+    if platform.system().lower() != "linux":
+        os.chmod(target, win_permissions)
+    else:
+        os.chmod(target, permissions)
+
+    def git_bad_permissions_teardown():
+        os.chmod(target, filemode_binary)
+
+    request.addfinalizer(git_bad_permissions_teardown)
+
+
+configs = configholder.retrieve_table_defaults(ACTION_IDENTIFIER)
 load_configs(configholder, configs)
 
 MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
 UPDATE_TARGET = configholder.get_config_value("UPDATE_TARGET")
-ADDITIONAL_FILE1 = configholder.get_config_value("ADDITIONAL_FILE1")   
+ADDITIONAL_FILE1 = configholder.get_config_value("ADDITIONAL_FILE1")
+
