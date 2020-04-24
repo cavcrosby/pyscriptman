@@ -18,14 +18,14 @@ def main():
         action.run()
     except (CalledProcessError, FileNotFoundError, PermissionError, SystemExit):
         pass
-    except SystemExit:
-        pass
-    except FileNotFoundError as e:
-        print(f"Error: a particular file can not be found, '{e.filename}'")
-    except PermissionError as e:
-        print(f"Error: a particular file/path was unaccessable, '{e.filename}'")
-    except CalledProcessError as e:
-        pass
+    # except SystemExit: # TODO TO BE DELETED
+    #     pass
+    # except FileNotFoundError as e:
+    #     print(f"Error: a particular file can not be found, '{e.filename}'")
+    # except PermissionError as e:
+    #     print(f"Error: a particular file/path was unaccessable, '{e.filename}'")
+    # except CalledProcessError as e:
+    #     pass
     except Exception as e:
         print("Error: an unknown error occured, please report the following below:")
         print(e)
