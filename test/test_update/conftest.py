@@ -1,25 +1,24 @@
 # Standard Library Imports
 import subprocess, os, platform, stat
-from os.path import join
 
 # Third Party Imports
-import pytest, toml
+import pytest
 
 # Local Application Imports
+from test.test_variables import configholder
 from test.helpers import (
     git_add_commit_push,
     delete_folder_and_contents,
-    change_target_filemode_recursive,
 )
-from test.test_variables import configholder
-from pyrepoman.actions.action import Action
 
 ACTION_IDENTIFIER = "update"
 
+
 def load_configs(configholder, configs):
 
-    for config, value in configs.items():
-        configholder.add_config(config, value)
+    for config_name, value in configs.items():
+        configholder.add_config(config_name, value)
+
 
 @pytest.fixture(scope="function")
 def normal_setup(request):
@@ -46,6 +45,7 @@ def normal_setup(request):
 
     request.addfinalizer(normal_teardown)
 
+
 @pytest.fixture(scope="function")
 def change_filemode_win_linux(normal_setup, request):
 
@@ -71,4 +71,3 @@ load_configs(configholder, configs)
 MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
 UPDATE_TARGET = configholder.get_config_value("UPDATE_TARGET")
 ADDITIONAL_FILE1 = configholder.get_config_value("ADDITIONAL_FILE1")
-

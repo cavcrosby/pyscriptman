@@ -5,7 +5,7 @@ import os, subprocess, shutil
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.helpers import get_pwd_local_dir_names, get_pwd_typeof_repo_names
+from pyrepoman.helpers import get_pwd_typeof_repo_names
 
 
 class Host(ABC):
@@ -25,13 +25,11 @@ class Host(ABC):
         super().__init_subclass__(*args, **kwargs)
 
         if cls.HELP_DESC is NotImplemented and cls.__name__ != "WebHost":
-            raise NotImplementedError(
-                f"Error: HELP_DESC not defined in {cls.__name__}"
-            )
+            raise NotImplementedError(f"Error: HELP_DESC not defined in {cls.__name__}")
 
     @staticmethod
     def _get_pwd_bare_repo_names(host_path):
-        
+
         return get_pwd_typeof_repo_names(host_path, True)
 
     @classmethod

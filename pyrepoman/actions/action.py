@@ -5,7 +5,7 @@ import os, subprocess, shutil, re, sys
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.helpers import get_pwd_local_dir_names, get_pwd_typeof_repo_names
+from pyrepoman.helpers import get_pwd_typeof_repo_names
 from util.printexception import PrintException
 
 

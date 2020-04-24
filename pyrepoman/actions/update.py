@@ -38,4 +38,3 @@ class Update(Action):
             raise
         except subprocess.CalledProcessError:
             raise
-            
