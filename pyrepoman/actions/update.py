@@ -5,7 +5,7 @@ import os, subprocess, sys, re
 
 # Local Application Imports
 from pyrepoman.actions.action import Action
-from pyrepoman.helpers import print_permission_denied, print_file_notfound
+from util.printexception import PrintException
 
 
 class Update(Action):
@@ -31,10 +31,10 @@ class Update(Action):
                 os.chdir("..")
                 completed_process.check_returncode()
         except PermissionError as e:
-            print_permission_denied(e.filename)
+            PrintException.print_permission_denied(e.filename)
             raise
         except FileNotFoundError as e:
-            print_file_notfound(e.filename)
+            PrintException.print_file_notfound(e.filename)
             raise
         except subprocess.CalledProcessError:
             raise

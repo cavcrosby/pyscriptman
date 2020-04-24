@@ -40,7 +40,7 @@ class Generator:
         if github.GitHub.is_host_type(identifier):
             configholder.load_toml()
             github_host = github.GitHub(configholder)
-            github_host.load_config_defaults()  # TODO, TEST THIS PART OF THE CODE BY GIVING WACKY (BUT VALID) CONFIGS IN CONFIG FILE
+            github_host.load_config_defaults()
             return github_host
         elif localhost.LocalHost.is_host_type(identifier, configholder):
             return localhost.LocalHost(configholder)

@@ -7,6 +7,7 @@ import pytest
 
 # Local Application Imports
 from pyrepoman.actions.update import Update
+from util.printexception import PrintException
 from test.test_update.conftest import (
     UPDATE_TARGET,
 )
@@ -87,5 +88,5 @@ class TestUpdate:
             update = Update()
             update.run()
 
-        out, err = capsys.readouterr() # TODO NEED TO ABSTRACT PERMISSIONERROR PRINT MESSAGE SO IT IS NOT HARD CODED
-        assert "Error: a particular file/path was unaccessable, " in out
+        out, err = capsys.readouterr()
+        assert PrintException.PERMISSION_DENIED_MESSAGE in out

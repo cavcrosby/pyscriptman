@@ -95,7 +95,9 @@ class RemoteHost(Host):
                 encoding="utf-8",
             )
             completed_process.check_returncode()
-            return completed_process # TODO WHY IS REPOS MODIFIED IN OTHER PLACES?
+            repos = completed_process.stdout.split(",")
+            repos[-1] = repos[-1].strip() # e.g. 'repo1,repo1 - Copy\n'
+            return repos
 
         def remove_script_on_host(target, script):
 
@@ -116,8 +118,6 @@ class RemoteHost(Host):
         copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
         repos = execute_script_on_host(target, remote_script_target_path)
         remove_script_on_host(target, remote_script_target_path)
-        repos = repos.stdout.split(",")  # e.g. 'repo1,repo1 - Copy\n'
-        repos[-1] = repos[-1].strip()
         for repo in repos:
             self.add_repo_name_and_location(repo, f"{target}:{target_path}{repo}")
         return self.repo_names_and_locations

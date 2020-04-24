@@ -3,8 +3,6 @@
 from subprocess import CalledProcessError
 import sys
 
-# TODO THIS SHOULD BE APPENDED FOR PACKAGE INSTALLATION ON PYTHONPATH
-
 # Third Party Imports
 
 # Local Application Imports

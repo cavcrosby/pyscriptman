@@ -7,14 +7,6 @@ from os.path import realpath
 # Local Application Imports
 
 
-def print_permission_denied(filename):
-
-    print(f"Error: a particular file/path was unaccessable, '{realpath(filename)}'")
-
-def print_file_notfound(filename):
-
-    print(f"Error: a particular file/path can not be found, '{realpath(filename)}'")
-
 def get_pwd_local_dir_names():
 
     root = os.getcwd()

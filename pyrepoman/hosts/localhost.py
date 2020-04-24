@@ -5,7 +5,7 @@ import os, subprocess, platform, pathlib, sys
 
 # Local Application Imports
 from pyrepoman.hosts.host import Host
-from pyrepoman.helpers import print_permission_denied
+from util.printexception import PrintException
 
 
 class LocalHost(Host):
@@ -25,7 +25,7 @@ class LocalHost(Host):
         try:
             return identifier == cls.__name__.lower() and pathlib.Path(path).exists()
         except PermissionError as e:
-            print_permission_denied(e.filename)
+            PrintException.print_permission_denied(e.filename)
             sys.exit(e.errno)
 
     @classmethod
