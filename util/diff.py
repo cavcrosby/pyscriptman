@@ -6,6 +6,7 @@ from queue import Queue
 
 # Local Application Imports
 
+
 class Diff:
     def __init__(self, dcmp):
 
@@ -44,11 +45,17 @@ class Diff:
             elif dcmp.left_only or dcmp.right_only:
                 left_only[dcmp.left] = dcmp.left_only
                 right_only[dcmp.right] = dcmp.right_only
-            for sub_dir_name, sub_dir_dcmp in dcmp.subdirs.items():  # key ==> common_dir string, value ==> dircmp object
+            for (
+                sub_dir_name,
+                sub_dir_dcmp,
+            ) in (
+                dcmp.subdirs.items()
+            ):  # key ==> common_dir string, value ==> dircmp object
                 if sub_dir_name == ".git":
                     continue
                 dcmp_queue.put(sub_dir_dcmp)
             return cls._diff_iter(dcmp_queue, diff_files, left_only, right_only)
+
 
 class DiffException(Exception):
     def __init__(self, diff_files, left_only, right_only):

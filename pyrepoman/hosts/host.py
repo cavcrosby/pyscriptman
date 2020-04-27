@@ -17,8 +17,6 @@ class Host(ABC):
 
         return self._repo_names_and_locations
 
-
-
     def __init__(self):
         self._repo_names_and_locations = dict()
 

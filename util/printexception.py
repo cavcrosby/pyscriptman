@@ -6,7 +6,8 @@ from os.path import realpath
 
 # Local Application Imports
 
-class PrintException():
+
+class PrintException:
 
     PERMISSION_DENIED_MESSAGE = "Error: a particular file/path was unaccessable, "
     FILE_NOTFOUND_MESSAGE = "Error: a particular file/path was unaccessable, "
@@ -24,7 +25,9 @@ class PrintException():
     @classmethod
     def print_toml_decodeerror(cls, exception):
 
-        print("Error: the configuration file contains syntax error(s), more details below")
+        print(
+            "Error: the configuration file contains syntax error(s), more details below"
+        )
         print(exception)
 
     @classmethod
@@ -45,9 +48,13 @@ class PrintException():
     @classmethod
     def print_requests_connectionerror(cls, class_name):
 
-        print(f"Error: could not connect to {class_name}, check network settings or try again later")
+        print(
+            f"Error: could not connect to {class_name}, check network settings or try again later"
+        )
 
     @classmethod
     def print_requests_httperror(cls, class_name, response):
 
-        print(f"Error: communicating with {class_name} failed; Reason: {response.json()['message']}")
+        print(
+            f"Error: communicating with {class_name} failed; Reason: {response.json()['message']}"
+        )

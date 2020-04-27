@@ -40,7 +40,9 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
             [
-                join(UPDATE_TARGET, ".git"),  # testing pyrepoman update with a working directory's .git directory having no write access
+                join(
+                    UPDATE_TARGET, ".git"
+                ),  # testing pyrepoman update with a working directory's .git directory having no write access
                 stat.S_IRUSR
                 | stat.S_IXUSR
                 | stat.S_IRGRP
@@ -64,7 +66,9 @@ class TestUpdate:
         "change_filemode_win_linux",
         [
             [
-                dirname(realpath(UPDATE_TARGET)),  # testing update with a directory whose parent has no read permissions
+                dirname(
+                    realpath(UPDATE_TARGET)
+                ),  # testing update with a directory whose parent has no read permissions
                 stat.S_IWUSR
                 | stat.S_IXUSR
                 | stat.S_IRGRP

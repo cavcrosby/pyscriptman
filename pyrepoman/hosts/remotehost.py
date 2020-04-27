@@ -24,7 +24,7 @@ class RemoteHost(Host):
 
     @staticmethod
     def expand_user_on_host(target, target_path):
-        
+
         completed_process = subprocess.run(
             [
                 "ssh",
@@ -87,7 +87,9 @@ class RemoteHost(Host):
     def get_user_repo_names_and_locations(self):
         def copy_script_to_host(target, target_path, script):
 
-            completed_process = subprocess.run(["scp", script, f"{target}:{target_path}"],)
+            completed_process = subprocess.run(
+                ["scp", script, f"{target}:{target_path}"],
+            )
             completed_process.check_returncode()
 
         def execute_script_on_host(target, script):
@@ -104,7 +106,7 @@ class RemoteHost(Host):
             return repos
 
         def remove_script_on_host(target, script):
-            
+
             try:
                 completed_process = subprocess.run(
                     [
@@ -123,7 +125,9 @@ class RemoteHost(Host):
             target_path = self.expand_user_on_host(
                 target, self.target_path
             )  # target_path really is endpoint path we are looking to manipulate repos from
-            remote_script_target_path = f"{target_path}{REMOTE_SCRIPT_GET_BARE_REPOS_NAME}"
+            remote_script_target_path = (
+                f"{target_path}{REMOTE_SCRIPT_GET_BARE_REPOS_NAME}"
+            )
             copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
             repos = execute_script_on_host(target, remote_script_target_path)
             remove_script_on_host(target, remote_script_target_path)

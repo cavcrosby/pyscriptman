@@ -17,7 +17,7 @@
 # class TestUpdate():
 
 # def test_success_update():
-    
+
 #     UPDATE_TARGET = 'tmp1'
 #     MODEL_TARGET = 'tmp2'
 #     TESTING_FILE1 = 'testing.txt'

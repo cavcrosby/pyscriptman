@@ -7,8 +7,8 @@ import toml
 # Local Application Imports
 from util.printexception import PrintException
 
-class Config:
 
+class Config:
     @property
     def NAME(self):
 

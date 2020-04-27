@@ -10,6 +10,7 @@ from pyrepoman.hosts.webhosts import *
 from pyrepoman.actions.action import Action
 from util.printexception import PrintException
 
+
 class Fetch(Action):
 
     HELP_DESC = "fetch all Git repos through a web provider"

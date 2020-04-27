@@ -14,7 +14,7 @@ class ConfigHolder:
     def _EMPTY_CONFIG(self):
 
         return None
-    
+
     @property
     def _DEFAULTS_ENTRY_NAME(self):
 
@@ -49,7 +49,9 @@ class ConfigHolder:
     def load_toml(self):
 
         try:
-            self.add_config(self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH))
+            self.add_config(
+                self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH)
+            )
         except PermissionError as e:
             PrintException.print_permission_denied(e.filename)
             raise
@@ -67,7 +69,9 @@ class ConfigHolder:
             raise
 
         try:
-            return self._get_toml_table_entries(table_entries, self._DEFAULTS_ENTRY_NAME)
+            return self._get_toml_table_entries(
+                table_entries, self._DEFAULTS_ENTRY_NAME
+            )
         except KeyError:
             print(
                 f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file"

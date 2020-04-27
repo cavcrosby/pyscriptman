@@ -32,7 +32,9 @@ class LocalHost(Host):
     @classmethod
     def _modify_parser(cls, parser):
 
-        parser.add_argument(cls._PATH_CMD_ARG_NAME, help="specifies what directory you wish to target")
+        parser.add_argument(
+            cls._PATH_CMD_ARG_NAME, help="specifies what directory you wish to target"
+        )
 
         return parser
 

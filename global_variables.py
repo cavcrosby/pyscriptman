@@ -11,4 +11,3 @@ CONFIGS_PATH = os.path.join(ROOT_DIR, "etc")
 
 sys.path.insert(0, UTIL_PATH)
 sys.path.insert(0, CONFIGS_PATH)
-
