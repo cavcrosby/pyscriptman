@@ -11,6 +11,7 @@ from util.printexception import PrintException
 class LocalHost(Host):
 
     HELP_DESC = "can manipulate local directories containing git repos"
+    _PATH_CMD_ARG_NAME = "path"
 
     def __init__(self, configholder):
 
@@ -20,18 +21,18 @@ class LocalHost(Host):
     @classmethod
     def is_host_type(cls, identifier, configholder):
 
-        path = os.path.expanduser(configholder.get_config_value("path"))
+        path = os.path.expanduser(configholder.get_config_value(cls._PATH_VAR_NAME))
 
         try:
             return identifier == cls.__name__.lower() and pathlib.Path(path).exists()
         except PermissionError as e:
             PrintException.print_permission_denied(e.filename)
-            sys.exit(e.errno)
+            raise
 
     @classmethod
     def _modify_parser(cls, parser):
 
-        parser.add_argument("path", help="specifies what directory you wish to target")
+        parser.add_argument(cls._PATH_VAR_NAME, help="specifies what directory you wish to target")
 
         return parser
 

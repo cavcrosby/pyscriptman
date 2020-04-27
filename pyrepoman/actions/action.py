@@ -13,8 +13,8 @@ class Action(ABC):
 
     HELP_DESC = NotImplemented
 
-    _HOST_SUBPARSER_TITLE = "available hosts"
-    _HOST_SUBPARSER_METAVAR = "host [options ...]"
+    _HOST_SUBPARSER_TITLE = "available actions"
+    _HOST_SUBPARSER_METAVAR = "action [options ...]"
     _REQUIRE_SUBCOMMANDS = True
 
     def __init_subclass__(cls, *args, **kwargs):

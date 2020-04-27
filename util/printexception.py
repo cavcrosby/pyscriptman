@@ -20,3 +20,14 @@ class PrintException():
     def print_file_notfound(cls, filename):
 
         print(f"{cls.FILE_NOTFOUND_MESSAGE}'{realpath(filename)}'")
+
+    @classmethod
+    def print_toml_decodeerror(cls, exception):
+
+        print("Error: the configuration file contains syntax error(s), more details below")
+        print(exception)
+
+    @classmethod
+    def print_key_error(cls, table_name):
+
+        print(f"Error: {table_name} table does not exist in the configuration file")

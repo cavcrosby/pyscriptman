@@ -14,6 +14,11 @@ class ConfigHolder:
     def _EMPTY_CONFIG(self):
 
         return None
+    
+    @property
+    def _DEFAULTS_ENTRY_NAME(self):
+
+        return "defaults"
 
     def __init__(self, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH):
 
@@ -47,13 +52,10 @@ class ConfigHolder:
             self.add_config(self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH))
         except PermissionError as e:
             PrintException.print_permission_denied(e.filename)
-            sys.exit(e.errno)
+            raise
         except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has bad syntax error
-            print(
-                "Error: the configuration file contains syntax error(s), more details below"
-            )
-            print(e)
-            sys.exit()
+            PrintException.print_toml_decodeerror(e)
+            raise
 
     def retrieve_table_defaults(self, table_name):
 
@@ -61,18 +63,16 @@ class ConfigHolder:
         try:
             table_entries = self._get_toml_table_entries(tables, table_name)
         except KeyError:
-            print(
-                f"Error: {table_name} table does not exist in the configuration file"
-            )
-            raise SystemExit()
+            PrintException.print_key_error(table_name)
+            raise
 
         try:
-            return self._get_toml_table_entries(table_entries, "defaults")
+            return self._get_toml_table_entries(table_entries, self._DEFAULTS_ENTRY_NAME)
         except KeyError:
             print(
-                f"Error: defaults table does not exist in the {table_name} table, check the configuration file"
+                f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file"
             )
-            raise SystemExit()
+            raise
 
     def table_func_retrieve_additional_configs(self, table_name, func_name):
 
@@ -80,10 +80,8 @@ class ConfigHolder:
         try:
             table_entries = self._get_toml_table_entries(tables, table_name)
         except KeyError:
-            print(
-                f"Error: {table_name} table does not exist in the configuration file"
-            )
-            raise SystemExit()
+            PrintException.print_key_error(table_name)
+            raise
         if func_name not in table_entries:
             return type(tables)()
         elif (

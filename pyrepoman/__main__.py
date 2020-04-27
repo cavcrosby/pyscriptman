@@ -4,6 +4,7 @@ from subprocess import CalledProcessError
 import sys
 
 # Third Party Imports
+from toml import TomlDecodeError
 
 # Local Application Imports
 from pyrepoman.generator import Generator
@@ -16,7 +17,7 @@ def main():
         configholder = Cmd.retrieve_args()
         action = Generator.generate_action(configholder)
         action.run()
-    except (CalledProcessError, FileNotFoundError, PermissionError, SystemExit):
+    except (CalledProcessError, FileNotFoundError, PermissionError, SystemExit, TomlDecodeError):
         pass
     # except SystemExit: # TODO TO BE DELETED
     #     pass
