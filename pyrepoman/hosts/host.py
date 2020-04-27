@@ -17,6 +17,8 @@ class Host(ABC):
 
         return self._repo_names_and_locations
 
+
+
     def __init__(self):
         self._repo_names_and_locations = dict()
 
@@ -35,13 +37,18 @@ class Host(ABC):
     @classmethod
     def add_parser(cls, subparser_container, help_desc):
 
-        subcommand = cls.__name__.lower()
+        subcommand = cls._get_host_name()
         parser = subparser_container.add_parser(
             subcommand, help=help_desc, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
         parser.set_defaults(host=subcommand)
         return parser
+
+    @classmethod
+    def _get_host_name(cls):
+
+        return cls.__name__.lower()
 
     def add_repo_name_and_location(self, repo_name, location):
 

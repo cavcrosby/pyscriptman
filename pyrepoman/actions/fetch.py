@@ -2,12 +2,13 @@
 import subprocess, os
 
 # Third Party Imports
+from requests.exceptions import ConnectionError, HTTPError
 
 # Local Application Imports
 from pyrepoman.hosts import *
 from pyrepoman.hosts.webhosts import *
 from pyrepoman.actions.action import Action
-
+from util.printexception import PrintException
 
 class Fetch(Action):
 
@@ -36,14 +37,27 @@ class Fetch(Action):
 
     def run(self):
 
-        repo_names_and_locations = self.host.get_user_repo_names_and_locations()
-        for repo_name in repo_names_and_locations:
-            completed_process = subprocess.run(
-                [
-                    "git",
-                    "clone",
-                    f"{self.host.get_location_from_repo_name(repo_name)}",
-                    f"{repo_name}",
-                ],
-            )
-            completed_process.check_returncode()
+        try:
+            repo_names_and_locations = self.host.get_user_repo_names_and_locations()
+            for repo_name in repo_names_and_locations:
+                completed_process = subprocess.run(
+                    [
+                        "git",
+                        "clone",
+                        f"{self.host.get_location_from_repo_name(repo_name)}",
+                        f"{repo_name}",
+                    ],
+                )
+                completed_process.check_returncode()
+        except subprocess.CalledProcessError:
+            raise
+        except PermissionError as e:
+            PrintException.print_permission_denied(e.filename)
+        except FileNotFoundError as e:
+            PrintException.print_file_notfound(e.filename)
+        except AttributeError:
+            raise
+        except ConnectionError:
+            raise
+        except HTTPError:
+            raise

@@ -5,6 +5,7 @@ import requests
 
 # Local Application Imports
 from pyrepoman.hosts.webhosts.webhost import WebHost
+from util.printexception import PrintException
 
 
 class GitHub(WebHost):
@@ -19,9 +20,9 @@ class GitHub(WebHost):
         self.username = configholder.get_config_value("username")
 
     @classmethod
-    def is_host_type(cls, identifier):
+    def is_host_type(cls, chosen_host):
 
-        return identifier == cls.__name__.lower()
+        return chosen_host == cls._get_host_name()
 
     @classmethod
     def _modify_parser(cls, parser):
@@ -83,26 +84,20 @@ class GitHub(WebHost):
                 if self.repo_owner_type == "own"
                 else None
             )
-            repos = requests.get(url, auth=auth, params={"type": self.payload})
-            repos.raise_for_status()
-            for repo in repos.json():
+            response = requests.get(url, auth=auth, params={"type": self.payload})
+            response.raise_for_status()
+            for repo in response.json():
                 self.add_repo_name_and_location(repo["name"], repo["svn_url"])
             return self.repo_names_and_locations
-        except AttributeError:
-            print(
-                f"Error: no api token exists in the configuration file for {type(self).__name__.lower()}"
-            )
-            raise SystemExit()
+        except AttributeError as e:
+            PrintException.print_attribute_error(e)
+            raise
         except (requests.exceptions.ConnectionError):
-            print(
-                "Error: could not connect to GitHub, check network settings or try again later"
-            )
-            raise SystemExit()
+            PrintException.print_requests_connectionerror(self._get_host_name())
+            raise
         except requests.HTTPError:
-            print(
-                f"Error: communicating with GitHub failed; Reason: {repos.json()['message']}"
-            )
-            raise SystemExit()
+            PrintException.print_requests_httperror(self._get_host_name(), response)
+            raise
 
 
 class GitHubAuth(requests.auth.AuthBase):

@@ -5,6 +5,7 @@ import sys
 
 # Third Party Imports
 from toml import TomlDecodeError
+from requests.exceptions import ConnectionError, HTTPError
 
 # Local Application Imports
 from pyrepoman.generator import Generator
@@ -17,16 +18,17 @@ def main():
         configholder = Cmd.retrieve_args()
         action = Generator.generate_action(configholder)
         action.run()
-    except (CalledProcessError, FileNotFoundError, PermissionError, SystemExit, TomlDecodeError):
+    except (
+        CalledProcessError,
+        FileNotFoundError,
+        PermissionError,
+        SystemExit,
+        TomlDecodeError,
+        AttributeError,
+        ConnectionError,
+        HTTPError,
+    ):
         pass
-    # except SystemExit: # TODO TO BE DELETED
-    #     pass
-    # except FileNotFoundError as e:
-    #     print(f"Error: a particular file can not be found, '{e.filename}'")
-    # except PermissionError as e:
-    #     print(f"Error: a particular file/path was unaccessable, '{e.filename}'")
-    # except CalledProcessError as e:
-    #     pass
     except Exception as e:
         print("Error: an unknown error occured, please report the following below:")
         print(e)

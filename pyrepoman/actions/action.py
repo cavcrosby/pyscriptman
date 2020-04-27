@@ -103,21 +103,19 @@ class Action(ABC):
             os.mkdir(dir_name)
 
     @classmethod
-    def is_action_type(cls, identifier):
+    def is_action_type(cls, chosen_action):
 
-        return identifier == cls._get_identifier()
+        return chosen_action == cls._get_action_name()
 
     @classmethod
-    def _get_identifier(cls):
-
-        """ USED TO HELP GENERATOR DETERMINE WHAT ACTION TO CREATE """
+    def _get_action_name(cls):
 
         return cls.__name__.lower()
 
     @classmethod
     def add_parser(cls, subparser_container, help_desc):
 
-        subcommand = cls.__name__.lower()
+        subcommand = cls._get_action_name()
         parser = subparser_container.add_parser(
             subcommand, help=cls.HELP_DESC, allow_abbrev=False
         )

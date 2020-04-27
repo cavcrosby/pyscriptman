@@ -31,3 +31,23 @@ class PrintException():
     def print_key_error(cls, table_name):
 
         print(f"Error: {table_name} table does not exist in the configuration file")
+
+    @classmethod
+    def print_script_removal_fail_warning(cls, target):
+
+        print(f"Warning: could not remove script from {target}")
+
+    @classmethod
+    def print_attribute_error(cls, exception):
+
+        print(f"Error: {exception.args[0]}")
+
+    @classmethod
+    def print_requests_connectionerror(cls, class_name):
+
+        print(f"Error: could not connect to {class_name}, check network settings or try again later")
+
+    @classmethod
+    def print_requests_httperror(cls, class_name, response):
+
+        print(f"Error: communicating with {class_name} failed; Reason: {response.json()['message']}")

@@ -43,4 +43,3 @@ def git_add_commit_push(message):
     subprocess.run(["git", "add", "."])
     subprocess.run(["git", "commit", "-m", f"{message}"])
     subprocess.run(["git", "push", "origin", "master"])
-
