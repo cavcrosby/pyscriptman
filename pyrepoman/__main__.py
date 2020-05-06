@@ -12,7 +12,7 @@ from pyrepoman.generator import Generator
 from pyrepoman.cmd import Cmd
 
 
-def main():
+def pyrepoman():
 
     try:
         configholder = Cmd.retrieve_args()
@@ -35,4 +35,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    pyrepoman()

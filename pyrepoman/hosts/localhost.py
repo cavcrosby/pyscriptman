@@ -1,5 +1,6 @@
 # Standard Library Imports
 import os, pathlib
+from os.path import expanduser
 
 # Third Party Imports
 
@@ -21,7 +22,8 @@ class LocalHost(Host):
     @classmethod
     def is_host_type(cls, chosen_host, configholder):
 
-        path = os.path.expanduser(configholder.get_config_value(cls._PATH_CMD_ARG_NAME))
+        path = configholder.get_config_value(cls._PATH_CMD_ARG_NAME)
+        path = "" if path == configholder.EMPTY_CONFIG else expanduser(path)
 
         try:
             return chosen_host == cls._get_host_name() and pathlib.Path(path).exists()

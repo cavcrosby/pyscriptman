@@ -6,6 +6,7 @@ import requests
 # Local Application Imports
 from pyrepoman.hosts.webhosts.webhost import WebHost
 from util.printexception import PrintException
+from util.githubauth import GitHubAuth
 
 
 class GitHub(WebHost):
@@ -98,18 +99,3 @@ class GitHub(WebHost):
         except requests.HTTPError:
             PrintException.print_requests_httperror(self._get_host_name(), response)
             raise
-
-
-class GitHubAuth(requests.auth.AuthBase):
-    def __init__(self, api_token):
-
-        self.api_token = api_token
-
-    def __call__(self, requests_obj):
-
-        requests_obj.headers["Authorization"] = self.auth_header_value()
-        return requests_obj
-
-    def auth_header_value(self):
-
-        return f"token {self.api_token}"

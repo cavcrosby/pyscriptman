@@ -88,7 +88,7 @@ class Action(ABC):
                 else:
                     os.remove(dir_entry)
                     dir_entry = nodes.__next__()
-        except StopIteration as e:
+        except StopIteration:
             pass
         except PermissionError as e:
             PrintException.print_permission_denied(e.filename)

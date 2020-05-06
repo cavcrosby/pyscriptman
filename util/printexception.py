@@ -25,7 +25,7 @@ class PrintException:
     @classmethod
     def print_toml_decodeerror(cls, exception):
 
-        print(
+        print( # TODO ADD ERROR MESSAGES AS VARS TO BE TESTED LATER?
             "Error: the configuration file contains syntax error(s), more details below"
         )
         print(exception)

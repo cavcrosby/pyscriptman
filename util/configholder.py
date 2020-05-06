@@ -11,7 +11,7 @@ from util.config import Config
 
 class ConfigHolder:
     @property
-    def _EMPTY_CONFIG(self):
+    def EMPTY_CONFIG(self):
 
         return None
 
@@ -97,7 +97,7 @@ class ConfigHolder:
 
     def config_exist(self, config):
 
-        return self.get_config_value(config) != self._EMPTY_CONFIG
+        return self.get_config_value(config) != self.EMPTY_CONFIG
 
     def get_config_value(self, config_name):
 
@@ -105,7 +105,7 @@ class ConfigHolder:
             if config.NAME == config_name:
                 return config.VALUE
 
-        return self._EMPTY_CONFIG
+        return self.EMPTY_CONFIG
 
     def __str__(self):
 
@@ -114,6 +114,6 @@ class ConfigHolder:
             {
                 debug_configs_name: self.get_config_value(debug_configs_name)
                 for debug_configs_name in debug_configs_names
-                if self.get_config_value(debug_configs_name) != self._EMPTY_CONFIG
+                if self.get_config_value(debug_configs_name) != self.EMPTY_CONFIG
             }
         )

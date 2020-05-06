@@ -10,8 +10,8 @@ from os.path import join, dirname, realpath
 def delete_folder_and_contents(dir):
     os.chdir(dir)
     nodes = os.scandir()
-    dir_entry = nodes.__next__()
     try:
+        dir_entry = nodes.__next__()
         while dir_entry:
             if dir_entry.is_dir():
                 shutil.rmtree(dir_entry)
@@ -19,7 +19,7 @@ def delete_folder_and_contents(dir):
             else:
                 os.remove(dir_entry)
                 dir_entry = nodes.__next__()
-    except StopIteration as e:
+    except StopIteration:
         pass
     finally:
         os.chdir("..")
