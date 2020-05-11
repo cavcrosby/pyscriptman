@@ -8,7 +8,7 @@ from requests.exceptions import ConnectionError, HTTPError
 from pyrepoman.hosts import *
 from pyrepoman.hosts.webhosts import *
 from pyrepoman.actions.action import Action
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 
 
 class Fetch(Action):
@@ -53,9 +53,9 @@ class Fetch(Action):
         except subprocess.CalledProcessError:
             raise
         except PermissionError as e:
-            PrintException.print_permission_denied(e.filename)
+            PrintMessage.print_permission_denied(e.filename)
         except FileNotFoundError as e:
-            PrintException.print_file_notfound(e.filename)
+            PrintMessage.print_file_notfound(e.filename)
         except AttributeError:
             raise
         except ConnectionError:

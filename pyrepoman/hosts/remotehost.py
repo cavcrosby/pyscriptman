@@ -5,7 +5,7 @@ import os, subprocess
 
 # Local Application Imports
 from pyrepoman.hosts.host import Host
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 from pyrepoman.pyrepoman_variables import (
     REMOTE_SCRIPT_GET_BARE_REPOS_NAME,
     REMOTE_SCRIPT_GET_BARE_REPOS_PATH,
@@ -117,7 +117,7 @@ class RemoteHost(Host):
                 )
                 completed_process.check_returncode()
             except subprocess.CalledProcessError:
-                PrintException.print_script_removal_fail_warning(target)
+                PrintMessage.print_script_removal_fail(target)
                 pass
 
         target = self.target

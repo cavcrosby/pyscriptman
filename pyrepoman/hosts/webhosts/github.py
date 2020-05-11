@@ -5,7 +5,7 @@ import requests
 
 # Local Application Imports
 from pyrepoman.hosts.webhosts.webhost import WebHost
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 from util.githubauth import GitHubAuth
 
 
@@ -91,11 +91,11 @@ class GitHub(WebHost):
                 self.add_repo_name_and_location(repo["name"], repo["svn_url"])
             return self.repo_names_and_locations
         except AttributeError as e:
-            PrintException.print_attribute_error(e)
+            PrintMessage.print_attribute_error(e)
             raise
         except (requests.exceptions.ConnectionError):
-            PrintException.print_requests_connectionerror(self._get_host_name())
+            PrintMessage.print_requests_connectionerror(self._get_host_name())
             raise
         except requests.HTTPError:
-            PrintException.print_requests_httperror(self._get_host_name(), response)
+            PrintMessage.print_requests_httperror(self._get_host_name(), response)
             raise

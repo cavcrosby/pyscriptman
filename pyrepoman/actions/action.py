@@ -6,7 +6,7 @@ import os, subprocess, shutil, re, sys
 
 # Local Application Imports
 from pyrepoman.helpers import get_pwd_typeof_repo_names
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 
 
 class Action(ABC):
@@ -91,7 +91,7 @@ class Action(ABC):
         except StopIteration:
             pass
         except PermissionError as e:
-            PrintException.print_permission_denied(e.filename)
+            PrintMessage.print_permission_denied(e.filename)
             sys.exit(e.errno)
         finally:
             os.chdir("..")

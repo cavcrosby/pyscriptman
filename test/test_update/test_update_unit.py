@@ -7,7 +7,7 @@ import pytest
 
 # Local Application Imports
 from pyrepoman.actions.update import Update
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 from util.diff import Diff
 from test.test_update.conftest import (
     UPDATE_TARGET,
@@ -101,7 +101,7 @@ class TestUpdate:
             update.run()
 
         out, err = capsys.readouterr()
-        assert PrintException.PERMISSION_DENIED_MESSAGE in out
+        assert PrintMessage.PERMISSION_DENIED_MESSAGE in out
 
     def test_update_file_notfound_handled(self, normal_setup, capsys, monkeypatch):
 
@@ -122,4 +122,4 @@ class TestUpdate:
             update.run()
 
         out, err = capsys.readouterr()
-        assert PrintException.FILE_NOTFOUND_MESSAGE in out
+        assert PrintMessage.FILE_NOTFOUND_MESSAGE in out

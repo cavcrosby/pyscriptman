@@ -5,7 +5,7 @@ import sys
 import toml
 
 # Local Application Imports
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 
 
 class Config:

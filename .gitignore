@@ -17,3 +17,6 @@ pyrepoman/__pycache__
 
 # ignore README.md at the moment
 README.md
+
+# ignore pyenv stuff
+.python-version
