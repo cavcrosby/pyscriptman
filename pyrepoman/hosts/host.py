@@ -5,7 +5,7 @@ import os, subprocess, shutil
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.helpers import get_pwd_typeof_repo_names
+from util.helpers import get_typeof_repo_names_no_path
 
 
 class Host(ABC):
@@ -30,7 +30,7 @@ class Host(ABC):
     @staticmethod
     def _get_pwd_bare_repo_names(host_path):
 
-        return get_pwd_typeof_repo_names(host_path, True)
+        return get_typeof_repo_names_no_path(host_path, True)
 
     @classmethod
     def add_parser(cls, subparser_container, help_desc):

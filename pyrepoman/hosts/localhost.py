@@ -6,7 +6,7 @@ from os.path import expanduser
 
 # Local Application Imports
 from pyrepoman.hosts.host import Host
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 
 
 class LocalHost(Host):
@@ -23,12 +23,12 @@ class LocalHost(Host):
     def is_host_type(cls, chosen_host, configholder):
 
         path = configholder.get_config_value(cls._PATH_CMD_ARG_NAME)
-        path = "" if path == configholder.EMPTY_CONFIG else expanduser(path)
+        path = "" if path == configholder.NON_EXISTANT_CONFIG else expanduser(path)
 
         try:
             return chosen_host == cls._get_host_name() and pathlib.Path(path).exists()
         except PermissionError as e:
-            PrintException.print_permission_denied(e.filename)
+            PrintMessage.print_permission_denied(e.filename)
             raise
 
     @classmethod

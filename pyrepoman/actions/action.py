@@ -5,7 +5,7 @@ import os, subprocess, shutil, re, sys
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.helpers import get_pwd_typeof_repo_names
+from util.helpers import get_typeof_repo_names_no_path
 from util.printmessage import PrintMessage
 
 
@@ -67,7 +67,7 @@ class Action(ABC):
     @staticmethod
     def _get_pwd_local_nonbare_repo_names():
 
-        return get_pwd_typeof_repo_names(os.getcwd(), False)
+        return get_typeof_repo_names_no_path(os.getcwd(), False)
 
     @classmethod
     def _remove_all_dir_content(cls, dir_name, exclude=None):

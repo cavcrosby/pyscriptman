@@ -6,7 +6,13 @@ import os, subprocess
 # Local Application Imports
 from pyrepoman.hosts.host import Host
 from util.printmessage import PrintMessage
-from pyrepoman.pyrepoman_variables import (
+from util.helpers import (
+    copy_script_to_host,
+    execute_script_on_host,
+    remove_script_on_host,
+    expand_target_path_on_host,
+)
+from global_variables import (
     REMOTE_SCRIPT_GET_BARE_REPOS_NAME,
     REMOTE_SCRIPT_GET_BARE_REPOS_PATH,
 )
@@ -21,22 +27,6 @@ class RemoteHost(Host):
         super().__init__()
         self.target = configholder.get_config_value("target")
         self.target_path = configholder.get_config_value("target_path")
-
-    @staticmethod
-    def expand_user_on_host(target, target_path):
-
-        completed_process = subprocess.run(
-            [
-                "ssh",
-                target,
-                f'python3 -c "import os; print(os.path.join(os.path.expanduser(\\"{target_path}\\"), \\"\\"));"',
-            ],
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            encoding="utf-8",
-        )
-        completed_process.check_returncode()
-        return completed_process.stdout.rstrip()
 
     @classmethod
     def is_host_type(cls, chosen_host, configholder):
@@ -59,7 +49,7 @@ class RemoteHost(Host):
             return False
         try:
             target = configholder.get_config_value("target")
-            expanded_path = cls.expand_user_on_host(
+            expanded_path = expand_target_path_on_host(
                 target, configholder.get_config_value("target_path")
             )
             return can_reach_remote_dir(target, expanded_path)
@@ -85,53 +75,21 @@ class RemoteHost(Host):
         return parser
 
     def get_user_repo_names_and_locations(self):
-        def copy_script_to_host(target, target_path, script):
-
-            completed_process = subprocess.run(
-                ["scp", script, f"{target}:{target_path}"],
-            )
-            completed_process.check_returncode()
-
-        def execute_script_on_host(target, script):
-
-            completed_process = subprocess.run(
-                ["ssh", target, f"cd {target_path}; python3 {script}"],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                encoding="utf-8",
-            )
-            completed_process.check_returncode()
-            repos = completed_process.stdout.split(",")
-            repos[-1] = repos[-1].strip()  # e.g. 'repo1,repo1 - Copy\n'
-            return repos
-
-        def remove_script_on_host(target, script):
-
-            try:
-                completed_process = subprocess.run(
-                    [
-                        "ssh",
-                        target,
-                        f'python3 -c "import os; path = os.path.expanduser(\\"{script}\\"); os.remove(path)"',
-                    ]
-                )
-                completed_process.check_returncode()
-            except subprocess.CalledProcessError:
-                PrintMessage.print_script_removal_fail(target)
-                pass
 
         target = self.target
         try:
-            target_path = self.expand_user_on_host(
+            target_path = expand_target_path_on_host(
                 target, self.target_path
             )  # target_path really is endpoint path we are looking to manipulate repos from
             remote_script_target_path = (
                 f"{target_path}{REMOTE_SCRIPT_GET_BARE_REPOS_NAME}"
             )
             copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
-            repos = execute_script_on_host(target, remote_script_target_path)
+            bare_repos = execute_script_on_host(
+                target, remote_script_target_path
+            )
             remove_script_on_host(target, remote_script_target_path)
-            for repo in repos:
+            for repo in bare_repos:
                 self.add_repo_name_and_location(repo, f"{target}:{target_path}{repo}")
             return self.repo_names_and_locations
         except subprocess.CalledProcessError:

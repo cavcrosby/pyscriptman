@@ -7,6 +7,7 @@ import os, sys
 from global_variables import (
     ROOT_DIR,
     CONFIGS_PATH,
+    UTIL_PATH
 )
 from util.configholder import ConfigHolder
 
@@ -15,6 +16,7 @@ CONFIGURATION_FILE_NAME = "test_configs.toml"
 CONFIGURATION_FILE_PATH = os.path.join(
     ROOT_DIR, os.path.join(CONFIGS_PATH, CONFIGURATION_FILE_NAME)
 )
-
-configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
-configholder.load_toml()
+REMOTE_SCRIPT_GET_BARE_REPOS_NAME = "pyrepoman_get_brepos.py"
+REMOTE_SCRIPT_GET_BARE_REPOS_PATH = os.path.join(
+    ROOT_DIR, os.path.join(UTIL_PATH, REMOTE_SCRIPT_GET_BARE_REPOS_NAME)
+)
