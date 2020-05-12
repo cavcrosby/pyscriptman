@@ -47,7 +47,7 @@ class TestFetch:
                 "remotehost",  # TODO IF REMOTEHOST CANNOT BE REACHED, MAKE SURE TEST FAILS THEN!
                 target,
                 "--target-path",
-                configholder.get_config_value('REMOTE_BARE_REPOS_DIR'),
+                configholder.get_config_value("REMOTE_BARE_REPOS_DIR"),
             ]
         )
         os.chdir("..")
@@ -57,11 +57,7 @@ class TestFetch:
 
     @pytest.mark.parametrize(
         "github_setup",
-        [
-            ("own", "all"),
-            ("own", "public"),
-            ("own", "private"),
-        ],
+        [("own", "all"), ("own", "public"), ("own", "private"),],
         indirect=True,
     )
     def test_fetch_github_own(self, github_setup):
@@ -86,11 +82,7 @@ class TestFetch:
 
     @pytest.mark.parametrize(
         "github_setup",
-        [
-            ("other", "all"),
-            ("other", "owner"),
-            ("other", "member"),
-        ],
+        [("other", "all"), ("other", "owner"), ("other", "member"),],
         indirect=True,
     )
     def test_fetch_github_other(self, github_setup):
