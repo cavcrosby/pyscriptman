@@ -44,7 +44,7 @@ class TestFetch:
                 sys.executable,
                 PYREPOMAN_MAIN_PATH,
                 ACTION_IDENTIFIER,
-                "remotehost",  # TODO IF REMOTEHOST CANNOT BE REACHED, MAKE SURE TEST FAILS THEN!
+                "remotehost",
                 target,
                 "--target-path",
                 configholder.get_config_value("REMOTE_BARE_REPOS_DIR"),

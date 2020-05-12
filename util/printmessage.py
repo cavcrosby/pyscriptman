@@ -11,6 +11,7 @@ class PrintMessage:
 
     ERROR_PREFIX = "Error:"
     WARNING_PREFIX = "Warning:"
+    UNKNOWN_ERROR_OCCURRED = "an unknown error occurred, please report the following below:"
     PERMISSION_DENIED_MESSAGE = "a particular file/path was unaccessable,"
     FILE_NOTFOUND_MESSAGE = "a particular file/path was unaccessable,"
     TOML_DECODEERROR_MESSAGE = (
@@ -28,6 +29,12 @@ class PrintMessage:
         "configholder was given a duplicate configuration to store:"
     )
     CONFIGHOLDER_CONFIG_NOT_EXIST = "configuration does not exist,"
+
+    @classmethod
+    def print_unknown_error_occurred(cls, exception):
+
+        print(f"{cls.ERROR_PREFIX} {cls.UNKNOWN_ERROR_OCCURRED}")
+        print(exception)
 
     @classmethod
     def print_permission_denied(cls, filename):

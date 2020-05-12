@@ -10,6 +10,7 @@ from requests.exceptions import ConnectionError, HTTPError
 # Local Application Imports
 from pyrepoman.generator import Generator
 from pyrepoman.cmd import Cmd
+from util.printmessage import PrintMessage
 
 
 def pyrepoman():
@@ -30,8 +31,7 @@ def pyrepoman():
     ):
         pass
     except Exception as e:
-        print("Error: an unknown error occured, please report the following below:")
-        print(e)
+        PrintMessage.print_unknown_error_occurred(e)
 
 
 if __name__ == "__main__":
