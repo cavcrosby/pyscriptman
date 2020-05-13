@@ -1,5 +1,5 @@
 # Standard Library Imports
-import subprocess, os
+import subprocess, os, platform
 from os.path import expanduser, join
 
 # Third Party Imports
@@ -42,7 +42,7 @@ def load_init_configs(ACTION_IDENTIFIER, configholder):
 
 
 @pytest.fixture(scope="function")
-def localhost_setup(request, normal_setup):
+def localhost_setup(request, integration_test_setup):
     git_command = request.param[0]
     configholder = request.param[1]
     target = request.param[2]
@@ -50,7 +50,7 @@ def localhost_setup(request, normal_setup):
 
 
 @pytest.fixture(scope="function")
-def remotehost_setup(request, normal_setup):
+def remotehost_setup(request, integration_test_setup):
     git_command = request.param[0]
     configholder = request.param[1]
     target = request.param[2]
@@ -58,7 +58,7 @@ def remotehost_setup(request, normal_setup):
 
 
 @pytest.fixture(scope="function")
-def github_setup(request, normal_setup):
+def github_setup(request, integration_test_setup):
     repo_owner_type = request.param[0]
     repo_type = request.param[1]
     git_command = request.param[2]
@@ -67,6 +67,23 @@ def github_setup(request, normal_setup):
     return get_github_repos(
         repo_owner_type, repo_type, git_command, configholder, target
     )
+
+
+@pytest.fixture(scope="function")
+def filemode_change_setup_win_linux(request, unit_test_setup):
+    target = request.param[0]
+    permissions = request.param[1]
+    win_permissions = request.param[2]
+    filemode_binary = os.stat(target).st_mode
+    if platform.system().lower() != "linux":
+        os.chmod(target, win_permissions)
+    else:
+        os.chmod(target, permissions)
+
+    def filemode_change_teardown():
+        os.chmod(target, filemode_binary)
+
+    request.addfinalizer(filemode_change_teardown)
 
 
 def get_localhost_repos(git_command, configholder, target):

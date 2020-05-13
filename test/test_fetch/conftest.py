@@ -29,7 +29,7 @@ ACTION_IDENTIFIER = "fetch"
 
 
 @pytest.fixture(scope="function")
-def normal_setup(request):
+def integration_test_setup(request):
     configs = configholder.table_func_retrieve_additional_configs(
         ACTION_IDENTIFIER, request.function.__name__
     )

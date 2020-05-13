@@ -39,7 +39,7 @@ class TestUpdate:
         assert diff.run() == False
 
     @pytest.mark.parametrize(
-        "unit_test_setup",
+        "filemode_change_setup_win_linux",
         [
             [
                 UPDATE_TARGET,  # testing update with a directory that does not have write access
@@ -68,10 +68,10 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
         ],
-        indirect=["unit_test_setup"],
+        indirect=["filemode_change_setup_win_linux"],
     )
     def test_update_calledprocesserror_handled(
-        self, unit_test_setup
+        self, filemode_change_setup_win_linux
     ):
 
         with pytest.raises(subprocess.CalledProcessError):
@@ -79,7 +79,7 @@ class TestUpdate:
             update.run()
 
     @pytest.mark.parametrize(
-        "unit_test_setup",
+        "filemode_change_setup_win_linux",
         [
             [
                 dirname(
@@ -108,10 +108,10 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
         ],
-        indirect=["unit_test_setup"],
+        indirect=["filemode_change_setup_win_linux"],
     )
     def test_update_permissionerror_handled(
-        self, unit_test_setup, capsys
+        self, filemode_change_setup_win_linux, capsys
     ):
 
         with pytest.raises(PermissionError):
@@ -122,7 +122,7 @@ class TestUpdate:
         assert PrintMessage.PERMISSION_DENIED_MESSAGE in out
 
     @pytest.mark.parametrize(
-        "unit_test_setup",
+        "filemode_change_setup_win_linux",
         [
             [
                 dirname(
@@ -140,10 +140,10 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
         ],
-        indirect=["unit_test_setup"],
+        indirect=["filemode_change_setup_win_linux"],
     )
     def test_update_file_notfound_handled(
-        self, unit_test_setup, capsys, monkeypatch
+        self, filemode_change_setup_win_linux, capsys, monkeypatch
     ):
 
         from pyrepoman.actions.action import Action

@@ -1,5 +1,5 @@
 # Standard Library Imports
-import subprocess, os, platform, stat, shutil
+import subprocess, os, stat, shutil
 
 # Third Party Imports
 import pytest
@@ -27,7 +27,7 @@ ACTION_IDENTIFIER = "update"
 
 
 @pytest.fixture(scope="function")
-def normal_setup(request):
+def integration_test_setup(request):
     configs = configholder.table_func_retrieve_additional_configs(
         ACTION_IDENTIFIER, request.function.__name__
     )
@@ -57,25 +57,15 @@ def unit_test_setup(request):
         ACTION_IDENTIFIER, request.function.__name__
     )
     load_configs(configholder, configs)
-    UPDATE_TARGET = configholder.get_config_value("UPDATE_TARGET")
     os.mkdir(UPDATE_TARGET)
     os.chdir(UPDATE_TARGET)
     subprocess.run(["git", "init"])
     os.chdir("..")
-    target = request.param[0]
-    permissions = request.param[1]
-    win_permissions = request.param[2]
-    filemode_binary = os.stat(target).st_mode
-    if platform.system().lower() != "linux":
-        os.chmod(target, win_permissions)
-    else:
-        os.chmod(target, permissions)
 
-    def unit_test_setup():
-        os.chmod(target, filemode_binary)
+    def unit_test_teardown():
         delete_folder_and_contents(UPDATE_TARGET)
 
-    request.addfinalizer(unit_test_setup)
+    request.addfinalizer(unit_test_teardown)
 
 
 def finish_setup():
