@@ -9,23 +9,37 @@ import pytest
 from pyrepoman.actions.update import Update
 from util.printmessage import PrintMessage
 from util.diff import Diff
+from test.conftest import (
+    localhost_clone_repo, 
+    localhost_setup,
+)
 from test.test_update.conftest import (
     UPDATE_TARGET,
     MODEL_TARGET,
+    configholder,
+    finish_setup,
 )
 
 
 class TestUpdate:
-    def test_update(self, normal_setup):
+    @pytest.mark.parametrize(
+        "localhost_setup",
+        [(localhost_clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
+    )
+    def test_update(self, localhost_setup):
 
+        finish_setup()
+        os.chdir(UPDATE_TARGET)
         update = Update()
         update.run()
+        os.chdir("..")
         dcmp = filecmp.dircmp(UPDATE_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
         assert diff.run() == False
 
     @pytest.mark.parametrize(
-        "change_filemode_win_linux",
+        "unit_test_setup",
         [
             [
                 UPDATE_TARGET,  # testing update with a directory that does not have write access
@@ -40,8 +54,8 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
             [
-                join(
-                    UPDATE_TARGET, ".git"
+                realpath(
+                    join(UPDATE_TARGET, ".git")
                 ),  # testing pyrepoman update with a working directory's .git directory having no write access
                 stat.S_IRUSR
                 | stat.S_IXUSR
@@ -54,16 +68,18 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
         ],
-        indirect=["change_filemode_win_linux"],
+        indirect=["unit_test_setup"],
     )
-    def test_update_calledprocesserror_handled(self, change_filemode_win_linux):
+    def test_update_calledprocesserror_handled(
+        self, unit_test_setup
+    ):
 
         with pytest.raises(subprocess.CalledProcessError):
             update = Update()
             update.run()
 
     @pytest.mark.parametrize(
-        "change_filemode_win_linux",
+        "unit_test_setup",
         [
             [
                 dirname(
@@ -92,9 +108,11 @@ class TestUpdate:
                 stat.S_IREAD,
             ],
         ],
-        indirect=["change_filemode_win_linux"],
+        indirect=["unit_test_setup"],
     )
-    def test_update_permissionerror_handled(self, change_filemode_win_linux, capsys):
+    def test_update_permissionerror_handled(
+        self, unit_test_setup, capsys
+    ):
 
         with pytest.raises(PermissionError):
             update = Update()
@@ -103,7 +121,30 @@ class TestUpdate:
         out, err = capsys.readouterr()
         assert PrintMessage.PERMISSION_DENIED_MESSAGE in out
 
-    def test_update_file_notfound_handled(self, normal_setup, capsys, monkeypatch):
+    @pytest.mark.parametrize(
+        "unit_test_setup",
+        [
+            [
+                dirname(
+                    realpath(UPDATE_TARGET)
+                ),  # testing update with a directory whose parent has all permissions
+                stat.S_IRUSR
+                | stat.S_IWUSR
+                | stat.S_IXUSR
+                | stat.S_IRGRP
+                | stat.S_IWGRP
+                | stat.S_IXGRP
+                | stat.S_IROTH
+                | stat.S_IWOTH
+                | stat.S_IXOTH,  # permissions == filemode 777
+                stat.S_IREAD,
+            ],
+        ],
+        indirect=["unit_test_setup"],
+    )
+    def test_update_file_notfound_handled(
+        self, unit_test_setup, capsys, monkeypatch
+    ):
 
         from pyrepoman.actions.action import Action
 

@@ -1,29 +1,30 @@
 # Standard Library Imports
-import subprocess, os, platform, stat
-from os.path import expanduser
+import subprocess, os, platform, stat, shutil
 
 # Third Party Imports
 import pytest
 
 # Local Application Imports
-from test.test_variables import configholder
-from test.helpers import (
+from util.configholder import ConfigHolder
+from test.conftest import (
+    load_configs,
+    delete_configs,
+    load_init_configs,
+)
+from test.test_variables import (
+    CONFIGURATION_FILE_NAME, 
+    CONFIGURATION_FILE_PATH,
+)
+from util.helpers import (
     git_add_commit_push,
     delete_folder_and_contents,
 )
 
+configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
+configholder.load_toml()
+
 ACTION_IDENTIFIER = "update"
 
-
-def load_configs(configholder, configs):
-
-    for config_name, value in configs.items():
-        configholder.add_config(config_name, value)
-
-def load_init_configs():
-
-    configs = configholder.retrieve_table_defaults(ACTION_IDENTIFIER)
-    load_configs(configholder, configs)
 
 @pytest.fixture(scope="function")
 def normal_setup(request):
@@ -31,46 +32,70 @@ def normal_setup(request):
         ACTION_IDENTIFIER, request.function.__name__
     )
     load_configs(configholder, configs)
-    BARE_REPO_TO_CLONE_PATH = expanduser(configholder.get_config_value("BARE_REPO_TO_CLONE_PATH"))
-    subprocess.run(["git", "clone", BARE_REPO_TO_CLONE_PATH, UPDATE_TARGET])
-    subprocess.run(["git", "clone", BARE_REPO_TO_CLONE_PATH, MODEL_TARGET])
-    os.chdir(MODEL_TARGET)
-    with open(ADDITIONAL_FILE1, "a") as f:
-        f.write("testing update by adding file")
-    git_add_commit_push("testing commit...")
-    os.chdir("..")
+    UPDATE_TARGET = configholder.get_config_value("UPDATE_TARGET")
+    MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
+    os.mkdir(MODEL_TARGET)
 
     def normal_teardown():
         os.chdir(MODEL_TARGET)
-        os.remove(ADDITIONAL_FILE1)
-        git_add_commit_push("test done, now deleting any additional files added...")
+        for repo in os.listdir():
+            os.chdir(repo)
+            os.remove(ADDITIONAL_FILE1)
+            git_add_commit_push("test done, now deleting any additional files added...")
+            os.chdir("..")
         os.chdir("..")
         delete_folder_and_contents(UPDATE_TARGET)
         delete_folder_and_contents(MODEL_TARGET)
+        delete_configs(configholder, configs)
 
     request.addfinalizer(normal_teardown)
 
 
 @pytest.fixture(scope="function")
-def change_filemode_win_linux(normal_setup, request):
-
+def unit_test_setup(request):
+    configs = configholder.table_func_retrieve_additional_configs(
+        ACTION_IDENTIFIER, request.function.__name__
+    )
+    load_configs(configholder, configs)
+    UPDATE_TARGET = configholder.get_config_value("UPDATE_TARGET")
+    os.mkdir(UPDATE_TARGET)
+    os.chdir(UPDATE_TARGET)
+    subprocess.run(["git", "init"])
+    os.chdir("..")
     target = request.param[0]
     permissions = request.param[1]
     win_permissions = request.param[2]
-
     filemode_binary = os.stat(target).st_mode
     if platform.system().lower() != "linux":
         os.chmod(target, win_permissions)
     else:
         os.chmod(target, permissions)
 
-    def git_bad_permissions_teardown():
+    def unit_test_setup():
         os.chmod(target, filemode_binary)
+        delete_folder_and_contents(UPDATE_TARGET)
 
-    request.addfinalizer(git_bad_permissions_teardown)
+    request.addfinalizer(unit_test_setup)
 
-load_init_configs()
 
-MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
+def finish_setup():
+    shutil.copytree(MODEL_TARGET, UPDATE_TARGET)
+    add_additional_file()
+
+
+def add_additional_file():
+    os.chdir(MODEL_TARGET)
+    for repo in os.listdir():
+        os.chdir(repo)
+        with open(ADDITIONAL_FILE1, "a") as f:
+            f.write("testing update by adding file")
+        git_add_commit_push("testing commit...")
+        os.chdir("..")
+    os.chdir("..")
+
+
+load_init_configs(ACTION_IDENTIFIER, configholder)
+
 UPDATE_TARGET = configholder.get_config_value("UPDATE_TARGET")
+MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
 ADDITIONAL_FILE1 = configholder.get_config_value("ADDITIONAL_FILE1")
