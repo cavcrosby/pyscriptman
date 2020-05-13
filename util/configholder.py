@@ -5,13 +5,13 @@ import sys
 import toml
 
 # Local Application Imports
-from util.printexception import PrintException
+from util.printmessage import PrintMessage
 from util.config import Config
 
 
 class ConfigHolder:
     @property
-    def EMPTY_CONFIG(self):
+    def NON_EXISTANT_CONFIG(self):
 
         return None
 
@@ -27,10 +27,10 @@ class ConfigHolder:
         self.CONFIGURATION_FILE_PATH = CONFIGURATION_FILE_PATH
 
     @classmethod
-    def from_object_dict(cls, args, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH):
+    def from_object_dict(cls, obj, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH):
 
         configholder = cls(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
-        transformed_args = vars(args)
+        transformed_args = vars(obj)
         [
             configholder.add_config(arg, transformed_args[arg])
             for arg in transformed_args
@@ -38,13 +38,47 @@ class ConfigHolder:
         return configholder
 
     @staticmethod
-    def _get_toml_table_entries(toml, index):
+    def _get_toml_table_entries(table, index):
 
-        return toml[index]
+        return table[index]
 
-    def add_config(self, name, value):
+    def get_config(self, config_name):
 
-        self.configs.append(Config(name, value))
+        for config in self.configs:
+            if config.NAME == config_name:
+                return config
+
+        return self.NON_EXISTANT_CONFIG
+
+    def add_config(self, config_name, value):
+
+        if self.config_exist(config_name):
+            PrintMessage.print_configholder_duplicate_config_inserted(
+                config_name, value
+            )
+            self.delete_config(config_name)
+        self.configs.append(Config(config_name, value))
+
+    def delete_config(self, config_name):
+
+        if not self.config_exist(config_name):
+            PrintMessage.print_configuration_not_exist(config_name)
+            raise KeyError
+        config = self.get_config(config_name)
+        self.configs.remove(config)
+
+    def config_exist(self, config_name):
+
+        return self.get_config(config_name) != self.NON_EXISTANT_CONFIG
+
+    def get_config_value(self, config_name):
+
+        config = self.get_config(config_name)
+
+        if config != self.NON_EXISTANT_CONFIG:
+            return config.VALUE
+
+        return config
 
     def load_toml(self):
 
@@ -53,10 +87,10 @@ class ConfigHolder:
                 self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH)
             )
         except PermissionError as e:
-            PrintException.print_permission_denied(e.filename)
+            PrintMessage.print_permission_denied(e.filename)
             raise
         except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has bad syntax error
-            PrintException.print_toml_decodeerror(e)
+            PrintMessage.print_toml_decodeerror(e)
             raise
 
     def retrieve_table_defaults(self, table_name):
@@ -65,7 +99,7 @@ class ConfigHolder:
         try:
             table_entries = self._get_toml_table_entries(tables, table_name)
         except KeyError:
-            PrintException.print_key_error(table_name)
+            PrintMessage.print_table_not_exist(table_name)
             raise
 
         try:
@@ -84,7 +118,7 @@ class ConfigHolder:
         try:
             table_entries = self._get_toml_table_entries(tables, table_name)
         except KeyError:
-            PrintException.print_key_error(table_name)
+            PrintMessage.print_table_not_exist(table_name)
             raise
         if func_name not in table_entries:
             return type(tables)()
@@ -95,18 +129,6 @@ class ConfigHolder:
         else:
             return table_entries[func_name]
 
-    def config_exist(self, config):
-
-        return self.get_config_value(config) != self.EMPTY_CONFIG
-
-    def get_config_value(self, config_name):
-
-        for config in self.configs:
-            if config.NAME == config_name:
-                return config.VALUE
-
-        return self.EMPTY_CONFIG
-
     def __str__(self):
 
         debug_configs_names = ["path", "host", "host_path"]
@@ -114,6 +136,6 @@ class ConfigHolder:
             {
                 debug_configs_name: self.get_config_value(debug_configs_name)
                 for debug_configs_name in debug_configs_names
-                if self.get_config_value(debug_configs_name) != self.EMPTY_CONFIG
+                if self.get_config_value(debug_configs_name) != self.NON_EXISTANT_CONFIG
             }
         )
