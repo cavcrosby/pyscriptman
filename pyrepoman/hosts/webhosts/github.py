@@ -82,7 +82,7 @@ class GitHub(WebHost):
         try:
             auth = (
                 GitHubAuth(getattr(self, "api_token"))
-                if self.repo_owner_type == "own"
+                if self.repo_owner_type == "own" and getattr(self, "api_token", "") != ""
                 else None
             )
             response = requests.get(url, auth=auth, params={"type": self.payload})
@@ -90,9 +90,6 @@ class GitHub(WebHost):
             for repo in response.json():
                 self.add_repo_name_and_location(repo["name"], repo["svn_url"])
             return self.repo_names_and_locations
-        except AttributeError as e:
-            PrintMessage.print_attribute_error(e)
-            raise
         except (requests.exceptions.ConnectionError):
             PrintMessage.print_requests_connectionerror(self._get_host_name())
             raise

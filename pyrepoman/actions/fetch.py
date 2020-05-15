@@ -54,8 +54,10 @@ class Fetch(Action):
             raise
         except PermissionError as e:
             PrintMessage.print_permission_denied(e.filename)
+            raise
         except FileNotFoundError as e:
             PrintMessage.print_file_notfound(e.filename)
+            raise
         except AttributeError:
             raise
         except ConnectionError:

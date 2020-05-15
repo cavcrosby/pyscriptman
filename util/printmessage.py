@@ -60,11 +60,6 @@ class PrintMessage:
         print(f"{cls.ERROR_PREFIX} '{table_name}' {cls.TABLE_DOES_NOT_EXIST_MESSAGE}")
 
     @classmethod
-    def print_attribute_error(cls, exception):
-
-        print(f"{cls.ERROR_PREFIX} {exception.args[0]}")
-
-    @classmethod
     def print_requests_connectionerror(cls, class_name):
 
         print(
