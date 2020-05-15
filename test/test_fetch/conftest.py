@@ -47,6 +47,19 @@ def integration_test_setup(request):
 
     request.addfinalizer(normal_teardown)
 
+@pytest.fixture(scope="function")
+def unit_test_setup(request):
+    configs = configholder.table_func_retrieve_additional_configs(
+        ACTION_IDENTIFIER, request.function.__name__
+    )
+    load_configs(configholder, configs)
+    os.mkdir(FETCH_TARGET)
+
+    def unit_test_teardown():
+        delete_folder_and_contents(FETCH_TARGET)
+
+    request.addfinalizer(unit_test_teardown)
+
 load_init_configs(ACTION_IDENTIFIER, configholder)
 
 FETCH_TARGET = configholder.get_config_value("FETCH_TARGET")

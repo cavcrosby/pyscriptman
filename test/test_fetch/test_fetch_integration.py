@@ -25,7 +25,7 @@ from test.test_variables import (
 )
 
 
-class TestFetch:
+class TestFetchIntegration:
     @pytest.mark.parametrize(
         "localhost_setup",
         [(localhost_clone_repo, configholder, MODEL_TARGET)],

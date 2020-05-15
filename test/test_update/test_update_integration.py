@@ -22,7 +22,7 @@ from test.test_update.conftest import (
 )
 
 
-class TestUpdate:
+class TestUpdateIntegration:
     @pytest.mark.parametrize(
         "localhost_setup",
         [(localhost_clone_repo, configholder, MODEL_TARGET)],
