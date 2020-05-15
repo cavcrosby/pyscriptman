@@ -32,8 +32,11 @@ class Action(ABC):
     @staticmethod
     def _dir_exist(dir_name):
 
-        dir_contents = os.listdir()
-        return dir_name in dir_contents
+        try:
+            dir_contents = os.listdir()
+            return dir_name in dir_contents
+        except PermissionError:
+            raise
 
     @staticmethod
     def _update_mirror(dir_name):
@@ -59,10 +62,13 @@ class Action(ABC):
     @classmethod
     def _create_mirror(cls, location, destination_dir_name):
 
-        completed_process = subprocess.run(
-            ["git", "clone", "--mirror", location, destination_dir_name],
-        )
-        completed_process.check_returncode()
+        try:
+            completed_process = subprocess.run(
+                ["git", "clone", "--mirror", location, destination_dir_name],
+            )
+            completed_process.check_returncode()
+        except subprocess.CalledProcessError:
+            raise
 
     @staticmethod
     def _get_pwd_local_nonbare_repo_names():
@@ -90,17 +96,19 @@ class Action(ABC):
                     dir_entry = nodes.__next__()
         except StopIteration:
             pass
-        except PermissionError as e:
-            PrintMessage.print_permission_denied(e.filename)
-            sys.exit(e.errno)
+        except PermissionError:
+            raise
         finally:
             os.chdir("..")
 
     @classmethod
     def _create_dir(cls, dir_name):
 
-        if not cls._dir_exist(dir_name):
-            os.mkdir(dir_name)
+        try:
+            if not cls._dir_exist(dir_name):
+                os.mkdir(dir_name)
+        except PermissionError:
+            raise
 
     @classmethod
     def is_action_type(cls, chosen_action):

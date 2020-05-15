@@ -2,7 +2,7 @@
 import subprocess, os
 
 # Third Party Imports
-from requests.exceptions import ConnectionError, HTTPError
+import requests
 
 # Local Application Imports
 from pyrepoman.hosts import *
@@ -58,9 +58,7 @@ class Fetch(Action):
         except FileNotFoundError as e:
             PrintMessage.print_file_notfound(e.filename)
             raise
-        except AttributeError:
+        except requests.exceptions.ConnectionError:
             raise
-        except ConnectionError:
-            raise
-        except HTTPError:
+        except requests.exceptions.HTTPError:
             raise
