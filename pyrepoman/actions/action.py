@@ -13,7 +13,7 @@ class Action(ABC):
 
     HELP_DESC = NotImplemented
 
-    _HOST_SUBPARSER_TITLE = "available actions"
+    _HOST_SUBPARSER_TITLE = "[available actions]"
     _HOST_SUBPARSER_METAVAR = "action [options ...]"
     _REQUIRE_SUBCOMMANDS = True
 
@@ -44,16 +44,16 @@ class Action(ABC):
         subprocess.run(["git", "--git-dir", dir_name, "remote", "update"])
 
     @classmethod
-    def _create_bundle(cls, repo_bundle_name, mirror_repo):
+    def _create_bundle(cls, mirror_repo_name):
 
         completed_process = subprocess.run(
             [
                 "git",
                 "--git-dir",
-                mirror_repo,
+                mirror_repo_name,
                 "bundle",
                 "create",
-                f"{repo_bundle_name}.bundle",
+                f"{mirror_repo_name}.bundle",
                 "--all",
             ]
         )

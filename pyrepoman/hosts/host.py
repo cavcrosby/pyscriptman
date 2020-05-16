@@ -17,6 +17,11 @@ class Host(ABC):
 
         return self._repo_names_and_locations
 
+    @property
+    def repo_names(self):
+
+        return self._repo_names_and_locations.keys()        
+
     def __init__(self):
         self._repo_names_and_locations = dict()
 
