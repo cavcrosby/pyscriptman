@@ -17,7 +17,6 @@ from test.test_variables import (
 )
 from util.helpers import (
     git_add_commit_push,
-    delete_folder_and_contents,
 )
 
 configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
@@ -44,8 +43,8 @@ def integration_test_setup(request):
             git_add_commit_push("test done, now deleting any additional files added...")
             os.chdir("..")
         os.chdir("..")
-        delete_folder_and_contents(UPDATE_TARGET)
-        delete_folder_and_contents(MODEL_TARGET)
+        shutil.rmtree(UPDATE_TARGET)
+        shutil.rmtree(MODEL_TARGET)
         delete_configs(configholder, configs)
 
     request.addfinalizer(normal_teardown)
@@ -63,7 +62,7 @@ def unit_test_setup(request):
     os.chdir("..")
 
     def unit_test_teardown():
-        delete_folder_and_contents(UPDATE_TARGET)
+        shutil.rmtree(UPDATE_TARGET)
 
     request.addfinalizer(unit_test_teardown)
 

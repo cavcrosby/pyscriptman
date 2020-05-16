@@ -8,25 +8,6 @@ from os.path import join, dirname, realpath
 from util.printmessage import PrintMessage
 
 
-def delete_folder_and_contents(dir):
-    os.chdir(dir)
-    nodes = os.scandir()
-    try:
-        dir_entry = nodes.__next__()
-        while dir_entry:
-            if dir_entry.is_dir():
-                shutil.rmtree(dir_entry)
-                dir_entry = nodes.__next__()
-            else:
-                os.remove(dir_entry)
-                dir_entry = nodes.__next__()
-    except StopIteration:
-        pass
-    finally:
-        os.chdir("..")
-        os.rmdir(dir)
-
-
 def change_target_filemode_recursive(target, permissions):
 
     walk_root = dirname(realpath(target))
@@ -100,10 +81,10 @@ def copy_script_to_host(target, target_path, script):
     completed_process.check_returncode()
 
 
-def execute_script_on_host(target, script_path):
+def execute_script_on_host(target, target_path, script_path):
 
     completed_process = subprocess.run(
-        ["ssh", target, f"python3 {script_path}"],
+        ["ssh", target, f"cd {target_path}; python3 {script_path}"],
         stderr=subprocess.PIPE,
         stdout=subprocess.PIPE,
         encoding="utf-8",

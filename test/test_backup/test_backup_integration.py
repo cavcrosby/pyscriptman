@@ -1,5 +1,5 @@
 # Standard Library Imports
-import subprocess, os, filecmp, sys, shutil
+import subprocess, os, filecmp, sys
 
 # Third Party Imports
 import pytest
@@ -7,17 +7,17 @@ import pytest
 # Local Application Imports
 from util.diff import Diff
 from test.conftest import (
-    localhost_clone_repo,
-    remotehost_clone_repo,
-    github_clone_repo,
+    localhost_mirror_repo,
+    remotehost_mirror_repo,
+    github_mirror_repo,
     localhost_setup,
     remotehost_setup,
     github_setup,
 )
-from test.test_fetch.conftest import (
+from test.test_backup.conftest import (
     configholder,
     ACTION_IDENTIFIER,
-    FETCH_TARGET,
+    BACKUP_TARGET,
     MODEL_TARGET,
 )
 from test.test_variables import (
@@ -25,14 +25,14 @@ from test.test_variables import (
 )
 
 
-class TestFetchIntegration:
+class TestBackupIntegration:
     @pytest.mark.parametrize(
         "localhost_setup",
-        [(localhost_clone_repo, configholder, MODEL_TARGET)],
+        [(localhost_mirror_repo, configholder, MODEL_TARGET)],
         indirect=True,
     )
-    def test_fetch_localhost(self, localhost_setup):
-        os.chdir(FETCH_TARGET)
+    def test_backup_localhost(self, localhost_setup):
+        os.chdir(BACKUP_TARGET)
         subprocess.run(
             [
                 sys.executable,
@@ -43,18 +43,18 @@ class TestFetchIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
+        dcmp = filecmp.dircmp(BACKUP_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
         assert diff.run() == False
 
     @pytest.mark.parametrize(
         "remotehost_setup",
-        [(remotehost_clone_repo, configholder, MODEL_TARGET)],
+        [(remotehost_mirror_repo, configholder, MODEL_TARGET)],
         indirect=True,
     )
-    def test_fetch_remotehost(self, remotehost_setup):
+    def test_backup_remotehost(self, remotehost_setup):
         target = f"{configholder.get_config_value('REMOTE_USER')}@{configholder.get_config_value('REMOTE_ADDR')}"
-        os.chdir(FETCH_TARGET)
+        os.chdir(BACKUP_TARGET)
         subprocess.run(
             [
                 sys.executable,
@@ -67,23 +67,23 @@ class TestFetchIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
+        dcmp = filecmp.dircmp(BACKUP_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
         assert diff.run() == False
 
     @pytest.mark.parametrize(
         "github_setup",
         [
-            ("own", "all", github_clone_repo, configholder, MODEL_TARGET),
-            ("own", "public", github_clone_repo, configholder, MODEL_TARGET),
-            ("own", "private", github_clone_repo, configholder, MODEL_TARGET),
+            ("own", "all", github_mirror_repo, configholder, MODEL_TARGET),
+            ("own", "public", github_mirror_repo, configholder, MODEL_TARGET),
+            ("own", "private", github_mirror_repo, configholder, MODEL_TARGET),
         ],
         indirect=True,
     )
-    def test_fetch_github_own(self, github_setup):
+    def test_backup_github_own(self, github_setup):
         data = github_setup
         repo_owner_type, repo_type = data[0], data[1]
-        os.chdir(FETCH_TARGET)
+        os.chdir(BACKUP_TARGET)
         subprocess.run(
             [
                 sys.executable,
@@ -96,24 +96,24 @@ class TestFetchIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
+        dcmp = filecmp.dircmp(BACKUP_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
         assert diff.run() == False
 
     @pytest.mark.parametrize(
         "github_setup",
         [
-            ("other", "all", github_clone_repo, configholder, MODEL_TARGET),
-            ("other", "owner", github_clone_repo, configholder, MODEL_TARGET),
-            ("other", "member", github_clone_repo, configholder, MODEL_TARGET),
+            ("other", "all", github_mirror_repo, configholder, MODEL_TARGET),
+            ("other", "owner", github_mirror_repo, configholder, MODEL_TARGET),
+            ("other", "member", github_mirror_repo, configholder, MODEL_TARGET),
         ],
         indirect=True,
     )
-    def test_fetch_github_other(self, github_setup):
+    def test_backup_github_other(self, github_setup):
         data = github_setup
         username = configholder.get_config_value("GITHUB_NAME")
         repo_owner_type, repo_type = data[0], data[1]
-        os.chdir(FETCH_TARGET)
+        os.chdir(BACKUP_TARGET)
         subprocess.run(
             [
                 sys.executable,
@@ -127,6 +127,6 @@ class TestFetchIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
+        dcmp = filecmp.dircmp(BACKUP_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
         assert diff.run() == False

@@ -86,11 +86,11 @@ class RemoteHost(Host):
             )
             copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
             bare_repos = execute_script_on_host(
-                target, remote_script_target_path
+                target, target_path, remote_script_target_path
             )
             remove_script_on_host(target, remote_script_target_path)
             for repo in bare_repos:
                 self.add_repo_name_and_location(repo, f"{target}:{target_path}{repo}")
-            return self.repo_names_and_locations
+            return self.repo_names
         except subprocess.CalledProcessError:
             raise

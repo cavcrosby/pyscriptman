@@ -34,7 +34,7 @@ class GitHub(WebHost):
         default_other = "owner"
 
         subparser_github_container = parser.add_subparsers(
-            title="available repo-owner-types",
+            title="[available repo-owner-types]",
             metavar="repo-owner-type [options ...]",
             dest="repo_owner_type",
         )
@@ -89,7 +89,7 @@ class GitHub(WebHost):
             response.raise_for_status()
             for repo in response.json():
                 self.add_repo_name_and_location(repo["name"], repo["svn_url"])
-            return self.repo_names_and_locations
+            return self.repo_names
         except (requests.exceptions.ConnectionError):
             PrintMessage.print_requests_connectionerror(self._get_host_name())
             raise

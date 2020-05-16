@@ -39,8 +39,8 @@ class Fetch(Action):
     def run(self):
 
         try:
-            repo_names_and_locations = self.host.get_user_repo_names_and_locations()
-            for repo_name in repo_names_and_locations:
+            repo_names = self.host.get_user_repo_names_and_locations()
+            for repo_name in repo_names:
                 completed_process = subprocess.run(
                     [
                         "git",

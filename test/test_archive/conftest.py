@@ -22,7 +22,7 @@ from global_variables import (
 configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
 configholder.load_toml()
 
-ACTION_IDENTIFIER = "fetch"
+ACTION_IDENTIFIER = "archive"
 
 
 @pytest.fixture(scope="function")
@@ -31,14 +31,12 @@ def integration_test_setup(request):
         ACTION_IDENTIFIER, request.function.__name__
     )
     load_configs(configholder, configs)
-    FETCH_TARGET = configholder.get_config_value("FETCH_TARGET")
-    MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
-    os.mkdir(FETCH_TARGET)
+    os.mkdir(ARCHIVE_TARGET)
     os.mkdir(MODEL_TARGET)
 
     def normal_teardown():
         os.chdir(ROOT_DIR)
-        shutil.rmtree(FETCH_TARGET)
+        shutil.rmtree(ARCHIVE_TARGET)
         shutil.rmtree(MODEL_TARGET)
         delete_configs(configholder, configs)
 
@@ -50,14 +48,14 @@ def unit_test_setup(request):
         ACTION_IDENTIFIER, request.function.__name__
     )
     load_configs(configholder, configs)
-    os.mkdir(FETCH_TARGET)
+    os.mkdir(ARCHIVE_TARGET)
 
     def unit_test_teardown():
-        shutil.rmtree(FETCH_TARGET)
+        shutil.rmtree(ARCHIVE_TARGET)
 
     request.addfinalizer(unit_test_teardown)
 
 load_init_configs(ACTION_IDENTIFIER, configholder)
 
-FETCH_TARGET = configholder.get_config_value("FETCH_TARGET")
+ARCHIVE_TARGET = configholder.get_config_value("ARCHIVE_TARGET")
 MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")

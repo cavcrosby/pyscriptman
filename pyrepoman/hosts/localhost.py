@@ -47,7 +47,7 @@ class LocalHost(Host):
             repos = self._get_pwd_bare_repo_names(local_path)
             for repo in repos:
                 self.add_repo_name_and_location(repo, os.path.join(local_path, repo))
-            return self.repo_names_and_locations
+            return self.repo_names
         except PermissionError:
             raise
         except FileNotFoundError:

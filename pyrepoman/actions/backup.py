@@ -19,12 +19,10 @@ class Backup(Action):
 
         super().__init__()
         self.host = host
-        self.dest = configholder.get_config_value("dest")
 
     @classmethod
     def _modify_parser(cls, parser):
 
-        parser.add_argument("dest", help="where to store backups (destination)")
         backup_host_subparsers = parser.add_subparsers(
             title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_TITLE
         )
@@ -39,22 +37,13 @@ class Backup(Action):
         return parser
 
     def run(self):
-        
+
         try:
-            repo_names_and_locations = self.host.get_user_repo_names_and_locations()
-            dest = self.dest
-            super()._create_dir(dest)
-            not_delete = list()
-            backup_content = os.listdir(dest)
-            for repo_name in repo_names_and_locations:
-                backup_repo_location = os.path.join(dest, repo_name)
-                if not repo_name in backup_content:
-                    super()._create_mirror(
-                        self.host.get_location_from_repo_name(repo_name),
-                        backup_repo_location,
-                    )
-                not_delete.append(repo_name)
-            super()._remove_all_dir_content(dest, not_delete)
+            repo_names = self.host.get_user_repo_names_and_locations()
+            for repo_name in repo_names:
+                super()._create_mirror(
+                    self.host.get_location_from_repo_name(repo_name), repo_name,
+                )
         except subprocess.CalledProcessError as e:
             raise
         except PermissionError as e:
@@ -62,8 +51,6 @@ class Backup(Action):
             raise
         except FileNotFoundError as e:
             PrintMessage.print_file_notfound(e.filename)
-            raise
-        except AttributeError:
             raise
         except requests.exceptions.ConnectionError:
             raise
