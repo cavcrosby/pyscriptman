@@ -7,14 +7,15 @@ import pytest, requests
 
 # Local Application Imports
 from pyrepoman.actions.fetch import Fetch
-from pyrepoman.hosts.localhost import LocalHost
-from pyrepoman.hosts.webhosts.github import GitHub
 from util.printmessage import PrintMessage
 from util.diff import Diff
 from test.conftest import (
     localhost_clone_repo,
     localhost_setup,
     filemode_change_setup_win_linux,
+    generate_localhost,
+    generate_github_host,
+    fake_get_user_repo_names_and_locations,
 )
 from test.test_fetch.conftest import (
     FETCH_TARGET,
@@ -25,29 +26,22 @@ from test.test_fetch.conftest import (
 )
 
 
-def generate_localhost():
-
-    # see localhost constructor, as it is expecting a configuration called 'path'
-    target_path = expanduser(configholder.get_config_value("BARE_REPOS_DIR"))
-    configholder.add_config(
-        "path", target_path
-    )
-    return LocalHost(configholder)
-
-def generate_github_host():
-
-    # see github constructor, as it is currently expecting the following configurations
-    configholder.add_config("repo_type", "all")
-    configholder.add_config("repo_owner_type", "own")
-    configholder.add_config("username", configholder.get_config_value("GITHUB_NAME"))
-
-    return GitHub(configholder)
-
-def fake_get_user_repo_names_and_locations(self):
-
-    self._get_user_repo_names_and_locations()
-
 class TestFetchUnit:
+    @pytest.mark.parametrize(
+        "localhost_setup",
+        [(localhost_clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
+    )
+    def test_fetch_localhost(self, localhost_setup):
+        os.chdir(FETCH_TARGET)
+        localhost = generate_localhost(configholder)
+        fetch = Fetch(localhost)
+        fetch.run()
+        os.chdir("..")
+        dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
+        diff = Diff(dcmp)
+        assert diff.run() == False
+
     def test_fetch_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
 
         from pyrepoman.hosts.host import Host
@@ -57,34 +51,31 @@ class TestFetchUnit:
             os.chdir("non-existing git repo")
 
         monkeypatch.setattr(
-            Host,
-            "_get_pwd_bare_repo_names",
-            fake_get_pwd_local_nonbare_repo_names,
+            Host, "_get_pwd_bare_repo_names", fake_get_pwd_local_nonbare_repo_names,
         )
 
         with pytest.raises(FileNotFoundError):
-            localhost = generate_localhost()
+            localhost = generate_localhost(configholder)
             fetch = Fetch(localhost)
             fetch.run()
 
         out, err = capsys.readouterr()
         assert PrintMessage.FILE_NOTFOUND_MESSAGE in out
 
-    def test_fetch_requests_connectionerror_handled(self, unit_test_setup, capsys, monkeypatch):
+    def test_fetch_requests_connectionerror_handled(
+        self, unit_test_setup, capsys, monkeypatch
+    ):
 
         from pyrepoman.hosts.webhosts import github
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
         class FakeGitHubAuth:
-
             def __init__(self, arg1):
 
                 raise requests.exceptions.ConnectionError
 
         monkeypatch.setattr(
-            github,
-            "GitHubAuth",
-            FakeGitHubAuth,
+            github, "GitHubAuth", FakeGitHubAuth,
         )
 
         monkeypatch.setattr(
@@ -94,7 +85,7 @@ class TestFetchUnit:
         )
 
         with pytest.raises(requests.exceptions.ConnectionError):
-            github = generate_github_host()
+            github = generate_github_host(configholder)
             setattr(github, "api_token", "invalid-api-token")
             fetch = Fetch(github)
             fetch.run()
@@ -102,7 +93,9 @@ class TestFetchUnit:
         out, err = capsys.readouterr()
         assert PrintMessage.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE in out
 
-    def test_fetch_requests_httperror_handled(self, unit_test_setup, capsys, monkeypatch):
+    def test_fetch_requests_httperror_handled(
+        self, unit_test_setup, capsys, monkeypatch
+    ):
 
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
@@ -113,7 +106,7 @@ class TestFetchUnit:
         )
 
         with pytest.raises(requests.exceptions.HTTPError):
-            github = generate_github_host()
+            github = generate_github_host(configholder)
             setattr(github, "api_token", "invalid-api-token")
             fetch = Fetch(github)
             fetch.run()
@@ -145,7 +138,7 @@ class TestFetchUnit:
     ):
 
         with pytest.raises(PermissionError):
-            localhost = generate_localhost()
+            localhost = generate_localhost(configholder)
             fetch = Fetch(localhost)
             fetch.run()
 
@@ -175,7 +168,7 @@ class TestFetchUnit:
         os.chdir(FETCH_TARGET)
 
         with pytest.raises(subprocess.CalledProcessError):
-            localhost = generate_localhost()
+            localhost = generate_localhost(configholder)
             fetch = Fetch(localhost)
             fetch.run()
 

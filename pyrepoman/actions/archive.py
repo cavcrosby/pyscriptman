@@ -46,7 +46,6 @@ class Archive(Action):
                 )
                 super()._create_bundle(repo_name)
                 super()._remove_dir(repo_name)
-            os.chdir("..")
         except subprocess.CalledProcessError as e:
             raise
         except PermissionError as e:
