@@ -86,7 +86,7 @@ class TestBackupUnit:
 
         with pytest.raises(requests.exceptions.ConnectionError):
             github = generate_github_host(configholder)
-            setattr(github, "api_token", "invalid-api-token")
+            setattr(github, "API_TOKEN", "invalid-api-token")
             backup = Backup(github)
             backup.run()
 
@@ -107,7 +107,7 @@ class TestBackupUnit:
 
         with pytest.raises(requests.exceptions.HTTPError):
             github = generate_github_host(configholder)
-            setattr(github, "api_token", "invalid-api-token")
+            setattr(github, "API_TOKEN", "invalid-api-token")
             backup = Backup(github)
             backup.run()
 

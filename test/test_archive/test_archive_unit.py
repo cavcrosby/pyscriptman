@@ -85,7 +85,7 @@ class TestArchiveUnit:
 
         with pytest.raises(requests.exceptions.ConnectionError):
             github = generate_github_host(configholder)
-            setattr(github, "api_token", "invalid-api-token")
+            setattr(github, "API_TOKEN", "invalid-api-token")
             archive = Archive(github)
             archive.run()
 
@@ -106,7 +106,7 @@ class TestArchiveUnit:
 
         with pytest.raises(requests.exceptions.HTTPError):
             github = generate_github_host(configholder)
-            setattr(github, "api_token", "invalid-api-token")
+            setattr(github, "API_TOKEN", "invalid-api-token")
             archive = Archive(github)
             archive.run()
 

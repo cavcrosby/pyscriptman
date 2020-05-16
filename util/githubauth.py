@@ -7,9 +7,9 @@ import requests
 
 
 class GitHubAuth(requests.auth.AuthBase):
-    def __init__(self, api_token):
+    def __init__(self, API_TOKEN):
 
-        self.api_token = api_token
+        self.API_TOKEN = API_TOKEN
 
     def __call__(self, requests_obj):
 
@@ -18,4 +18,4 @@ class GitHubAuth(requests.auth.AuthBase):
 
     def auth_header_value(self):
 
-        return f"token {self.api_token}"
+        return f"token {self.API_TOKEN}"

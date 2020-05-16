@@ -148,7 +148,7 @@ def get_github_repos(repo_owner_type, repo_type, git_command, configholder, dest
         if repo_owner_type == "own"
         else f"https://api.github.com/users/{username}/repos"
     )
-    auth = GitHubAuth(configholder.get_config_value("API_TOKEN"))
+    auth = GitHubAuth(configholder.get_config_value("GITHUB_API_TOKEN"))
     response = requests.get(url, auth=auth, params={"type": repo_type})
     for repo in response.json():
         git_command(repo)
