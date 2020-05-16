@@ -46,7 +46,7 @@ def load_init_configs(ACTION_IDENTIFIER, configholder):
 def generate_localhost(configholder):
 
     # see localhost constructor, as it is expecting a configuration called 'path'
-    target_path = expanduser(configholder.get_config_value("BARE_REPOS_DIR"))
+    target_path = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
     configholder.add_config("path", target_path)
     return LocalHost(configholder)
 
@@ -113,7 +113,7 @@ def filemode_change_setup_win_linux(request, unit_test_setup):
 
 def get_localhost_repos(git_command, configholder, dest):
     os.chdir(dest)
-    BARE_REPOS_DIR_PATH = expanduser(configholder.get_config_value("BARE_REPOS_DIR"))
+    BARE_REPOS_DIR_PATH = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
     bare_repos = get_typeof_repo_names_no_path(BARE_REPOS_DIR_PATH, True)
     for bare_repo in bare_repos:
         git_command(BARE_REPOS_DIR_PATH, bare_repo)

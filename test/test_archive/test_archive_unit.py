@@ -117,7 +117,7 @@ class TestArchiveUnit:
         "filemode_change_setup_win_linux",
         [
             [
-                expanduser(configholder.get_config_value("BARE_REPOS_DIR")),
+                expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")),
                 # testing archive with a path that does not have execute permissions
                 stat.S_IRUSR
                 | stat.S_IWUSR

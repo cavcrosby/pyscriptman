@@ -37,7 +37,7 @@ class TestBackupIntegration:
                 PYREPOMAN_MAIN_PATH,
                 ACTION_IDENTIFIER,
                 "localhost",
-                configholder.get_config_value("BARE_REPOS_DIR"),
+                configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"),
             ]
         )
         os.chdir("..")
