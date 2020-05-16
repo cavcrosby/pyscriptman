@@ -19,6 +19,7 @@ from test.test_archive.conftest import (
     ACTION_IDENTIFIER,
     ARCHIVE_TARGET,
     MODEL_TARGET,
+    diff_bundle_contents,
 )
 from test.test_variables import PYREPOMAN_MAIN_PATH
 
@@ -41,12 +42,7 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        # dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
-        # diff = Diff(dcmp)
-        # TODO tests with the same bundles are seen as different for some reason, investigate
-        dir_package = os.listdir(ARCHIVE_TARGET)
-        dir_setup = os.listdir(MODEL_TARGET)
-        assert dir_package == dir_setup
+        assert diff_bundle_contents() == False
 
     @pytest.mark.parametrize(
         "remotehost_setup",

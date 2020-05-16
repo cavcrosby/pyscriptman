@@ -1,11 +1,14 @@
 # Standard Library Imports
-import os, shutil
+import os, shutil, subprocess, filecmp
+from os.path import join
 
 # Third Party Imports
 import pytest
 
 # Local Application Imports
 from util.configholder import ConfigHolder
+from global_variables import ROOT_DIR
+from util.diff import Diff
 from test.test_variables import (
     CONFIGURATION_FILE_NAME,
     CONFIGURATION_FILE_PATH,
@@ -15,12 +18,34 @@ from test.conftest import (
     delete_configs,
     load_init_configs,
 )
-from global_variables import ROOT_DIR
 
 configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
 configholder.load_toml()
 
 ACTION_IDENTIFIER = "archive"
+
+
+def diff_bundle_contents():
+
+    dir_package = os.listdir(ARCHIVE_TARGET)
+    dir_setup = os.listdir(MODEL_TARGET)
+    if dir_package != dir_setup:
+        return True
+    for bundle in dir_package:
+        os.chdir(ARCHIVE_TARGET)
+        subprocess.run(["git", "clone", bundle])
+        os.chdir("..")
+        os.chdir(MODEL_TARGET)
+        subprocess.run(["git", "clone", bundle])
+        os.chdir("..")
+        dcmp = filecmp.dircmp(
+            join(ARCHIVE_TARGET, bundle[: bundle.find(".bundle")]),
+            join(MODEL_TARGET, bundle[: bundle.find(".bundle")]),
+        )
+        diff = Diff(dcmp)
+        if diff.run():
+            return True
+    return False
 
 
 @pytest.fixture(scope="function")

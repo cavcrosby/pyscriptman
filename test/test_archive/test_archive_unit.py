@@ -23,6 +23,7 @@ from test.test_archive.conftest import (
     configholder,
     unit_test_setup,
     configholder,
+    diff_bundle_contents,
 )
 
 
@@ -38,13 +39,7 @@ class TestArchiveUnit:
         archive = Archive(localhost)
         archive.run()
         os.chdir("..")
-        # dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
-        # diff = Diff(dcmp)
-        # assert diff.run() == False
-        # TODO tests with the same bundles are seen as different for some reason, investigate
-        dir_package = os.listdir(ARCHIVE_TARGET)
-        dir_setup = os.listdir(MODEL_TARGET)
-        assert dir_package == dir_setup
+        assert diff_bundle_contents() == False
 
     def test_archive_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
 
