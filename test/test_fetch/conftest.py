@@ -31,8 +31,6 @@ def integration_test_setup(request):
         ACTION_IDENTIFIER, request.function.__name__
     )
     load_configs(configholder, configs)
-    FETCH_TARGET = configholder.get_config_value("FETCH_TARGET")
-    MODEL_TARGET = configholder.get_config_value("MODEL_TARGET")
     os.mkdir(FETCH_TARGET)
     os.mkdir(MODEL_TARGET)
 

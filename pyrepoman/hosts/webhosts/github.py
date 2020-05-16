@@ -88,8 +88,8 @@ class GitHub(WebHost):
             response = requests.get(url, auth=auth, params={"type": self.payload})
             response.raise_for_status()
             for repo in response.json():
-                self.add_repo_name_and_location(repo["name"], repo["svn_url"])
-            return self.repo_names
+                super().add_repo_name_and_location(repo["name"], repo["svn_url"])
+            return super().repo_names
         except (requests.exceptions.ConnectionError):
             PrintMessage.print_requests_connectionerror(self._get_host_name())
             raise

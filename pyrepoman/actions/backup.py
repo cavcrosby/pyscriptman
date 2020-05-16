@@ -15,7 +15,7 @@ class Backup(Action):
 
     HELP_DESC = "backup all Git repos, done by mirroring repos fully"
 
-    def __init__(self, host, configholder):
+    def __init__(self, host):
 
         super().__init__()
         self.host = host

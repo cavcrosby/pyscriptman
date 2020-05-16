@@ -22,10 +22,10 @@ class Generator:
             return fetch.Fetch(host)
         elif archive.Archive.is_action_type(identifier):
             host = cls._generate_host(configholder)
-            return archive.Archive(host, configholder)
+            return archive.Archive(host)
         elif backup.Backup.is_action_type(identifier):
             host = cls._generate_host(configholder)
-            return backup.Backup(host, configholder)
+            return backup.Backup(host)
         else:
             print(
                 f"Error: Invalid action target; action {configholder.get_config_value('action')}"

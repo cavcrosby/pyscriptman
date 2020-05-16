@@ -15,7 +15,7 @@ class Archive(Action):
 
     HELP_DESC = "archive all Git repos, done by bundling repos"
 
-    def __init__(self, host, configholder):
+    def __init__(self, host):
 
         super().__init__()
         self.host = host
