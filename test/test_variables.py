@@ -4,11 +4,7 @@ import os, sys
 # Third Party Imports
 
 # Local Application Imports
-from global_variables import (
-    ROOT_DIR,
-    CONFIGS_PATH,
-    UTIL_PATH
-)
+from global_variables import ROOT_DIR, CONFIGS_PATH, UTIL_PATH
 from util.configholder import ConfigHolder
 
 PYREPOMAN_MAIN_PATH = os.path.join(ROOT_DIR, "pyrepoman/__main__.py")

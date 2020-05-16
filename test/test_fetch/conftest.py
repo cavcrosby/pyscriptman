@@ -15,9 +15,7 @@ from test.conftest import (
     delete_configs,
     load_init_configs,
 )
-from global_variables import (
-    ROOT_DIR,
-)
+from global_variables import ROOT_DIR
 
 configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
 configholder.load_toml()
@@ -42,6 +40,7 @@ def integration_test_setup(request):
 
     request.addfinalizer(normal_teardown)
 
+
 @pytest.fixture(scope="function")
 def unit_test_setup(request):
     configs = configholder.table_func_retrieve_additional_configs(
@@ -54,6 +53,7 @@ def unit_test_setup(request):
         shutil.rmtree(FETCH_TARGET)
 
     request.addfinalizer(unit_test_teardown)
+
 
 load_init_configs(ACTION_IDENTIFIER, configholder)
 

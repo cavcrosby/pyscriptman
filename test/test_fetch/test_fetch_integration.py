@@ -20,9 +20,7 @@ from test.test_fetch.conftest import (
     FETCH_TARGET,
     MODEL_TARGET,
 )
-from test.test_variables import (
-    PYREPOMAN_MAIN_PATH,
-)
+from test.test_variables import PYREPOMAN_MAIN_PATH
 
 
 class TestFetchIntegration:

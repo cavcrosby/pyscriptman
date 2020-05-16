@@ -11,7 +11,9 @@ class PrintMessage:
 
     ERROR_PREFIX = "Error:"
     WARNING_PREFIX = "Warning:"
-    UNKNOWN_ERROR_OCCURRED = "an unknown error occurred, please report the following below:"
+    UNKNOWN_ERROR_OCCURRED = (
+        "an unknown error occurred, please report the following below:"
+    )
     PERMISSION_DENIED_MESSAGE = "a particular file/path was unaccessable,"
     FILE_NOTFOUND_MESSAGE = "a particular file/path was unaccessable,"
     TOML_DECODEERROR_MESSAGE = (

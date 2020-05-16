@@ -12,12 +12,10 @@ from test.conftest import (
     load_init_configs,
 )
 from test.test_variables import (
-    CONFIGURATION_FILE_NAME, 
+    CONFIGURATION_FILE_NAME,
     CONFIGURATION_FILE_PATH,
 )
-from util.helpers import (
-    git_add_commit_push,
-)
+from util.helpers import git_add_commit_push
 
 configholder = ConfigHolder(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
 configholder.load_toml()

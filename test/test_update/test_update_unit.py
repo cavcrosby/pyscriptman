@@ -12,7 +12,7 @@ from util.diff import Diff
 from test.conftest import (
     localhost_clone_repo,
     localhost_setup,
-    filemode_change_setup_win_linux
+    filemode_change_setup_win_linux,
 )
 from test.test_update.conftest import (
     UPDATE_TARGET,

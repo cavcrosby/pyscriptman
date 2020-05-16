@@ -20,9 +20,7 @@ from test.test_archive.conftest import (
     ARCHIVE_TARGET,
     MODEL_TARGET,
 )
-from test.test_variables import (
-    PYREPOMAN_MAIN_PATH,
-)
+from test.test_variables import PYREPOMAN_MAIN_PATH
 
 
 class TestArchiveIntegration:
@@ -43,9 +41,9 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        #dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
-        #diff = Diff(dcmp) 
-        #TODO tests with the same bundles are seen as different for some reason, investigate
+        # dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
+        # diff = Diff(dcmp)
+        # TODO tests with the same bundles are seen as different for some reason, investigate
         dir_package = os.listdir(ARCHIVE_TARGET)
         dir_setup = os.listdir(MODEL_TARGET)
         assert dir_package == dir_setup

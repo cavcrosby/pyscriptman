@@ -90,7 +90,9 @@ class RemoteHost(Host):
             )
             remove_script_on_host(target, remote_script_target_path)
             for repo in bare_repos:
-                super().add_repo_name_and_location(repo, f"{target}:{target_path}{repo}")
+                super().add_repo_name_and_location(
+                    repo, f"{target}:{target_path}{repo}"
+                )
             return super().repo_names
         except subprocess.CalledProcessError:
             raise

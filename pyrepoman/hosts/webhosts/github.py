@@ -82,7 +82,8 @@ class GitHub(WebHost):
         try:
             auth = (
                 GitHubAuth(getattr(self, "api_token"))
-                if self.repo_owner_type == "own" and getattr(self, "api_token", "") != ""
+                if self.repo_owner_type == "own"
+                and getattr(self, "api_token", "") != ""
                 else None
             )
             response = requests.get(url, auth=auth, params={"type": self.payload})
