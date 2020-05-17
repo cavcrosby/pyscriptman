@@ -15,19 +15,19 @@ class WebHost(Host):
 
     def load_config_defaults(self):
 
-        DEFAULT_CONFIGS = self.configholder.retrieve_table_defaults(
+        default_configs = self.configholder.retrieve_table_defaults(
             self._get_host_name()
         )
-        for default_config in DEFAULT_CONFIGS:
-            setattr(self, default_config, DEFAULT_CONFIGS[default_config])
+        for default_config in default_configs:
+            setattr(self, default_config, default_configs[default_config])
 
     def get_user_repo_names_and_locations(self):
 
-        FUNC_CONFIGS = self.configholder.table_func_retrieve_additional_configs(
+        func_configs = self.configholder.table_func_retrieve_additional_configs(
             self._get_host_name(), inspect.currentframe().f_code.co_name
         )  # inspect.currentframe().f_code.co_name returns function name
-        for func_config in FUNC_CONFIGS:
-            setattr(self, func_config, FUNC_CONFIGS[func_config])
+        for func_config in func_configs:
+            setattr(self, func_config, func_configs[func_config])
         return self._get_user_repo_names_and_locations()
 
     @abstractmethod

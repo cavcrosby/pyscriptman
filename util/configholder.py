@@ -106,7 +106,7 @@ class ConfigHolder:
             )
         except KeyError:
             print(
-                f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file"
+                f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file" # TODO PUT THIS IN MESSAGE CLASS
             )
             raise
 
