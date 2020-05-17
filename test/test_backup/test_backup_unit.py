@@ -7,7 +7,7 @@ import pytest, requests
 
 # Local Application Imports
 from pyrepoman.actions.backup import Backup
-from util.printmessage import PrintMessage
+from util.message import Message
 from util.diff import Diff
 from test.conftest import (
     localhost_mirror_repo,
@@ -60,7 +60,7 @@ class TestBackupUnit:
             backup.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.FILE_NOTFOUND_MESSAGE in out
+        assert Message.FILE_NOTFOUND_MESSAGE in out
 
     def test_backup_requests_connectionerror_handled(
         self, unit_test_setup, capsys, monkeypatch
@@ -91,7 +91,7 @@ class TestBackupUnit:
             backup.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE in out
+        assert Message.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE in out
 
     def test_backup_requests_httperror_handled(
         self, unit_test_setup, capsys, monkeypatch
@@ -112,7 +112,7 @@ class TestBackupUnit:
             backup.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.REQUESTS_PACKAGE_HTTPERROR_MESSAGE in out
+        assert Message.REQUESTS_PACKAGE_HTTPERROR_MESSAGE in out
 
     @pytest.mark.parametrize(
         "filemode_change_setup_win_linux",
@@ -143,7 +143,7 @@ class TestBackupUnit:
             backup.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.PERMISSION_DENIED_MESSAGE in out
+        assert Message.PERMISSION_DENIED_MESSAGE in out
 
     @pytest.mark.parametrize(
         "filemode_change_setup_win_linux",

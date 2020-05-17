@@ -4,16 +4,19 @@ import argparse, sys
 # Third Party Imports
 
 # Local Application Imports
+from pyrepoman.actions.action import Action
+from pyrepoman.hosts.host import Host
 from pyrepoman.hosts.webhosts import *
 from pyrepoman.hosts import *
 from pyrepoman.actions import *
+from util.message import Message
 
 
 class Generator:
     @classmethod
     def generate_action(cls, configholder):
 
-        identifier = configholder.get_config_value("action")
+        identifier = configholder.get_config_value(Action.CONFIGHOLDER_ATTRIBUTE_NAME)
 
         if update.Update.is_action_type(identifier):
             return update.Update()
@@ -27,15 +30,15 @@ class Generator:
             host = cls._generate_host(configholder)
             return backup.Backup(host)
         else:
-            print(
-                f"Error: Invalid action target; action {configholder.get_config_value('action')}"
+            Message.print_generator_invalid_action(
+                configholder.get_config_value(Action.CONFIGHOLDER_ATTRIBUTE_NAME)
             )
             sys.exit(1)
 
     @classmethod
     def _generate_host(cls, configholder):
 
-        identifier = configholder.get_config_value("host")
+        identifier = configholder.get_config_value(Host.CONFIGHOLDER_ATTRIBUTE_NAME)
 
         if github.GitHub.is_host_type(identifier):
             configholder.load_toml()
@@ -47,5 +50,5 @@ class Generator:
         elif remotehost.RemoteHost.is_host_type(identifier, configholder):
             return remotehost.RemoteHost(configholder)
         else:
-            print(f"Error: Invalid host target; Configs passed in: {configholder}")
+            Message.print_generator_invalid_host(configholder)
             sys.exit(1)

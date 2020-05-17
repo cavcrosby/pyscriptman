@@ -6,11 +6,13 @@ import os, subprocess, shutil
 
 # Local Application Imports
 from util.helpers import get_typeof_repo_names_no_path
+from util.message import Message
 
 
 class Host(ABC):
 
     HELP_DESC = NotImplemented
+    CONFIGHOLDER_ATTRIBUTE_NAME = "host"
 
     @property
     def repo_names_and_locations(self):
@@ -30,7 +32,9 @@ class Host(ABC):
         super().__init_subclass__(*args, **kwargs)
 
         if cls.HELP_DESC is NotImplemented and cls.__name__ != "WebHost":
-            raise NotImplementedError(f"Error: HELP_DESC not defined in {cls.__name__}")
+            raise NotImplementedError(
+                Message.construct_helpdesc_notimplemented_msg({cls.__name__})
+            )
 
     @staticmethod
     def _get_pwd_bare_repo_names(host_path):
@@ -45,7 +49,7 @@ class Host(ABC):
             subcommand, help=help_desc, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
-        parser.set_defaults(host=subcommand)
+        parser.set_defaults(**{cls.CONFIGHOLDER_ATTRIBUTE_NAME: subcommand})
         return parser
 
     @classmethod

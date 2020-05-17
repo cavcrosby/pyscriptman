@@ -5,7 +5,7 @@ import os, subprocess
 
 # Local Application Imports
 from pyrepoman.hosts.host import Host
-from util.printmessage import PrintMessage
+from util.message import Message
 from util.helpers import (
     copy_script_to_host,
     execute_script_on_host,
@@ -21,12 +21,15 @@ from global_variables import (
 class RemoteHost(Host):
 
     HELP_DESC = "can target directories on remote hosts"
+    TARGET_CMD_ARG_NAME = "target"
+    TARGET_PATH_CMD_ARG_NAME = "target_path"
+    DEFAULT_TARGET_PATH = "$HOME"
 
     def __init__(self, configholder):
 
         super().__init__()
-        self.target = configholder.get_config_value("target")
-        self.target_path = configholder.get_config_value("target_path")
+        self.target = configholder.get_config_value(self.TARGET_CMD_ARG_NAME)
+        self.target_path = configholder.get_config_value(self.TARGET_PATH_CMD_ARG_NAME)
 
     @classmethod
     def is_host_type(cls, chosen_host, configholder):
@@ -48,9 +51,9 @@ class RemoteHost(Host):
         if chosen_host != cls._get_host_name():
             return False
         try:
-            target = configholder.get_config_value("target")
+            target = configholder.get_config_value(cls.TARGET_CMD_ARG_NAME)
             expanded_path = expand_target_path_on_host(
-                target, configholder.get_config_value("target_path")
+                target, configholder.get_config_value(cls.TARGET_PATH_CMD_ARG_NAME)
             )
             return can_reach_remote_dir(target, expanded_path)
         except subprocess.CalledProcessError:
@@ -59,17 +62,17 @@ class RemoteHost(Host):
     @classmethod
     def _modify_parser(cls, parser):
 
-        default_target_path = "$HOME"
+        target_path_cmd_name_dash = cls.TARGET_PATH_CMD_ARG_NAME.replace("_", "-")
 
         parser.add_argument(
-            "target",
+            cls.TARGET_CMD_ARG_NAME,
             help="specifies what host you wish to target, host format is the format of hostname in ssh",
         )
         parser.add_argument(
-            "--target-path",
+            f"--{target_path_cmd_name_dash}",
             metavar="path",
-            default=default_target_path,
-            help=f"specifies what directory on the host to target for repos (default: {default_target_path}).",
+            default=cls.DEFAULT_TARGET_PATH,
+            help=f"specifies what directory on the host to target for repos (default: {cls.DEFAULT_TARGET_PATH}).",
         )
 
         return parser

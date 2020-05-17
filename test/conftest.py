@@ -54,8 +54,8 @@ def generate_localhost(configholder):
 def generate_github_host(configholder):
 
     # see github constructor, as it is currently expecting the following configurations
-    configholder.add_config("repo_type", "all")
-    configholder.add_config("repo_owner_type", "own")
+    configholder.add_config("repo_type", GitHub.DEFAULT_REPO_TYPE_OWN)
+    configholder.add_config("repo_owner_type", GitHub.OWN_CMD_ARG_NAME)
     configholder.add_config("username", configholder.get_config_value("GITHUB_NAME"))
 
     return GitHub(configholder)
@@ -113,7 +113,9 @@ def filemode_change_setup_win_linux(request, unit_test_setup):
 
 def get_localhost_repos(git_command, configholder, dest):
     os.chdir(dest)
-    BARE_REPOS_DIR_PATH = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
+    BARE_REPOS_DIR_PATH = expanduser(
+        configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
+    )
     bare_repos = get_typeof_repo_names_no_path(BARE_REPOS_DIR_PATH, True)
     for bare_repo in bare_repos:
         git_command(BARE_REPOS_DIR_PATH, bare_repo)
@@ -145,7 +147,7 @@ def get_github_repos(repo_owner_type, repo_type, git_command, configholder, dest
     username = configholder.get_config_value("GITHUB_NAME")
     url = (
         "https://api.github.com/user/repos"
-        if repo_owner_type == "own"
+        if repo_owner_type == GitHub.OWN_CMD_ARG_NAME
         else f"https://api.github.com/users/{username}/repos"
     )
     auth = GitHubAuth(configholder.get_config_value("GITHUB_API_TOKEN"))

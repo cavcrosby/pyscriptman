@@ -10,13 +10,20 @@ from requests.exceptions import ConnectionError, HTTPError
 # Local Application Imports
 from pyrepoman.generator import Generator
 from pyrepoman.cmd import Cmd
-from util.printmessage import PrintMessage
+from util.configholder import ConfigHolder
+from util.message import Message
+from pyrepoman.pyrepoman_variables import (
+    CONFIGURATION_FILE_NAME,
+    CONFIGURATION_FILE_PATH,
+)
 
 
 def pyrepoman():
 
     try:
-        configholder = Cmd.retrieve_args()
+        configholder = ConfigHolder.from_object_dict(
+            Cmd.retrieve_args(), CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH
+        )
         action = Generator.generate_action(configholder)
         action.run()
     except (
@@ -31,7 +38,7 @@ def pyrepoman():
     ):
         pass
     except Exception as e:
-        PrintMessage.print_unknown_error_occurred(e)
+        Message.print_unknown_error_occurred(e)
 
 
 if __name__ == "__main__":

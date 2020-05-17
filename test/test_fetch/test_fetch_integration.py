@@ -6,6 +6,7 @@ import pytest
 
 # Local Application Imports
 from util.diff import Diff
+from pyrepoman.hosts.webhosts.github import GitHub
 from test.conftest import (
     localhost_clone_repo,
     remotehost_clone_repo,
@@ -72,9 +73,27 @@ class TestFetchIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            ("own", "all", github_clone_repo, configholder, MODEL_TARGET),
-            ("own", "public", github_clone_repo, configholder, MODEL_TARGET),
-            ("own", "private", github_clone_repo, configholder, MODEL_TARGET),
+            (
+                GitHub.OWN_CMD_ARG_NAME,
+                "all",
+                github_clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
+            (
+                GitHub.OWN_CMD_ARG_NAME,
+                "public",
+                github_clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
+            (
+                GitHub.OWN_CMD_ARG_NAME,
+                "private",
+                github_clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
         ],
         indirect=True,
     )
@@ -101,9 +120,27 @@ class TestFetchIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            ("other", "all", github_clone_repo, configholder, MODEL_TARGET),
-            ("other", "owner", github_clone_repo, configholder, MODEL_TARGET),
-            ("other", "member", github_clone_repo, configholder, MODEL_TARGET),
+            (
+                GitHub.OTHER_CMD_ARG_NAME,
+                "all",
+                github_clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
+            (
+                GitHub.OTHER_CMD_ARG_NAME,
+                "owner",
+                github_clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
+            (
+                GitHub.OTHER_CMD_ARG_NAME,
+                "member",
+                github_clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
         ],
         indirect=True,
     )

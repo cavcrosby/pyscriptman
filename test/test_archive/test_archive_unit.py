@@ -7,7 +7,7 @@ import pytest, requests
 
 # Local Application Imports
 from pyrepoman.actions.archive import Archive
-from util.printmessage import PrintMessage
+from util.message import Message
 from util.diff import Diff
 from test.conftest import (
     localhost_bundle_repo,
@@ -59,7 +59,7 @@ class TestArchiveUnit:
             archive.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.FILE_NOTFOUND_MESSAGE in out
+        assert Message.FILE_NOTFOUND_MESSAGE in out
 
     def test_archive_requests_connectionerror_handled(
         self, unit_test_setup, capsys, monkeypatch
@@ -90,7 +90,7 @@ class TestArchiveUnit:
             archive.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE in out
+        assert Message.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE in out
 
     def test_archive_requests_httperror_handled(
         self, unit_test_setup, capsys, monkeypatch
@@ -111,7 +111,7 @@ class TestArchiveUnit:
             archive.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.REQUESTS_PACKAGE_HTTPERROR_MESSAGE in out
+        assert Message.REQUESTS_PACKAGE_HTTPERROR_MESSAGE in out
 
     @pytest.mark.parametrize(
         "filemode_change_setup_win_linux",
@@ -142,7 +142,7 @@ class TestArchiveUnit:
             archive.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.PERMISSION_DENIED_MESSAGE in out
+        assert Message.PERMISSION_DENIED_MESSAGE in out
 
     @pytest.mark.parametrize(
         "filemode_change_setup_win_linux",

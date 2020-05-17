@@ -7,10 +7,11 @@ from os.path import realpath
 # Local Application Imports
 
 
-class PrintMessage:
+class Message:
 
     ERROR_PREFIX = "Error:"
     WARNING_PREFIX = "Warning:"
+    HELP_DESC_NOT_IMPLEMENTED = "HELP_DESC not defined in"
     UNKNOWN_ERROR_OCCURRED = (
         "an unknown error occurred, please report the following below:"
     )
@@ -31,6 +32,13 @@ class PrintMessage:
         "configholder was given a duplicate configuration to store:"
     )
     CONFIGHOLDER_CONFIG_NOT_EXIST = "configuration does not exist,"
+    GENERATOR_INVALID_ACTION = "Invalid action target; action"
+    GENERATOR_INVALID_HOST = "Invalid host target; Configs passed in:"
+
+    @classmethod
+    def construct_helpdesc_notimplemented_msg(cls, class_name):
+
+        return f"{cls.ERROR_PREFIX} {cls.HELP_DESC_NOT_IMPLEMENTED} {class_name}"
 
     @classmethod
     def print_unknown_error_occurred(cls, exception):
@@ -91,3 +99,13 @@ class PrintMessage:
     def print_configuration_not_exist(cls, config_name):
 
         print(f"{cls.ERROR_PREFIX} {cls.CONFIGHOLDER_CONFIG_NOT_EXIST} {config_name}")
+
+    @classmethod
+    def print_generator_invalid_action(cls, action_name):
+
+        print(f"{cls.ERROR_PREFIX} {cls.GENERATOR_INVALID_ACTION} {action_name}")
+
+    @classmethod
+    def print_generator_invalid_host(cls, configholder):
+
+        print(f"{cls.ERROR_PREFIX} {cls.GENERATOR_INVALID_HOST} {configholder}")

@@ -8,7 +8,7 @@ import requests
 from pyrepoman.hosts import *
 from pyrepoman.hosts.webhosts import *
 from pyrepoman.actions.action import Action
-from util.printmessage import PrintMessage
+from util.message import Message
 
 
 class Fetch(Action):
@@ -53,10 +53,10 @@ class Fetch(Action):
         except subprocess.CalledProcessError:
             raise
         except PermissionError as e:
-            PrintMessage.print_permission_denied(e.filename)
+            Message.print_permission_denied(e.filename)
             raise
         except FileNotFoundError as e:
-            PrintMessage.print_file_notfound(e.filename)
+            Message.print_file_notfound(e.filename)
             raise
         except requests.exceptions.ConnectionError:
             raise

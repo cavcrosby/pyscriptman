@@ -5,7 +5,7 @@ import sys
 import toml
 
 # Local Application Imports
-from util.printmessage import PrintMessage
+from util.message import Message
 
 
 class Config:

@@ -4,11 +4,6 @@ import argparse
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.pyrepoman_variables import (
-    CONFIGURATION_FILE_NAME,
-    CONFIGURATION_FILE_PATH,
-)
-from util.configholder import ConfigHolder
 from pyrepoman.actions import *
 
 
@@ -39,6 +34,4 @@ class Cmd:
 
         args = cls._parser.parse_args()
 
-        return ConfigHolder.from_object_dict(
-            args, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH
-        )
+        return args

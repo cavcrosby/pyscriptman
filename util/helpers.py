@@ -5,7 +5,7 @@ from os.path import join, dirname, realpath
 # Third Party Imports
 
 # Local Application Imports
-from util.printmessage import PrintMessage
+from util.message import Message
 
 
 def change_target_filemode_recursive(target, permissions):
@@ -107,7 +107,7 @@ def remove_script_on_host(target, script):
         )
         completed_process.check_returncode()
     except subprocess.CalledProcessError:
-        PrintMessage.print_script_removal_fail(target)
+        Message.print_script_removal_fail(target)
         pass
 
 

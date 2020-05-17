@@ -6,12 +6,13 @@ import os, subprocess, shutil, re, sys
 
 # Local Application Imports
 from util.helpers import get_typeof_repo_names_no_path
-from util.printmessage import PrintMessage
+from util.message import Message
 
 
 class Action(ABC):
 
     HELP_DESC = NotImplemented
+    CONFIGHOLDER_ATTRIBUTE_NAME = "action"
 
     _HOST_SUBPARSER_TITLE = "[available actions]"
     _HOST_SUBPARSER_METAVAR = "action [options ...]"
@@ -22,7 +23,9 @@ class Action(ABC):
         super().__init_subclass__(*args, **kwargs)
 
         if cls.HELP_DESC is NotImplemented:
-            raise NotImplementedError(f"Error: HELP_DESC not defined in {cls.__name__}")
+            raise NotImplementedError(
+                Message.construct_helpdesc_notimplemented_msg({cls.__name__})
+            )
 
     @staticmethod
     def _remove_dir(dir_name):
@@ -128,7 +131,7 @@ class Action(ABC):
             subcommand, help=cls.HELP_DESC, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
-        parser.set_defaults(action=subcommand)
+        parser.set_defaults(**{cls.CONFIGHOLDER_ATTRIBUTE_NAME: subcommand})
         return parser
 
     @abstractclassmethod

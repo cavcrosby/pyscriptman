@@ -7,7 +7,7 @@ import pytest
 
 # Local Application Imports
 from pyrepoman.actions.update import Update
-from util.printmessage import PrintMessage
+from util.message import Message
 from util.diff import Diff
 from test.conftest import (
     localhost_clone_repo,
@@ -59,7 +59,7 @@ class TestUpdateUnit:
             update.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.FILE_NOTFOUND_MESSAGE in out
+        assert Message.FILE_NOTFOUND_MESSAGE in out
 
     @pytest.mark.parametrize(
         "filemode_change_setup_win_linux",
@@ -140,4 +140,4 @@ class TestUpdateUnit:
             update.run()
 
         out, err = capsys.readouterr()
-        assert PrintMessage.PERMISSION_DENIED_MESSAGE in out
+        assert Message.PERMISSION_DENIED_MESSAGE in out

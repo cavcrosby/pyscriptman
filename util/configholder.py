@@ -5,7 +5,7 @@ import sys
 import toml
 
 # Local Application Imports
-from util.printmessage import PrintMessage
+from util.message import Message
 from util.config import Config
 
 
@@ -53,16 +53,14 @@ class ConfigHolder:
     def add_config(self, config_name, value):
 
         if self.config_exist(config_name):
-            PrintMessage.print_configholder_duplicate_config_inserted(
-                config_name, value
-            )
+            Message.print_configholder_duplicate_config_inserted(config_name, value)
             self.delete_config(config_name)
         self.configs.append(Config(config_name, value))
 
     def delete_config(self, config_name):
 
         if not self.config_exist(config_name):
-            PrintMessage.print_configuration_not_exist(config_name)
+            Message.print_configuration_not_exist(config_name)
             raise KeyError
         config = self.get_config(config_name)
         self.configs.remove(config)
@@ -87,10 +85,10 @@ class ConfigHolder:
                 self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH)
             )
         except PermissionError as e:
-            PrintMessage.print_permission_denied(e.filename)
+            Message.print_permission_denied(e.filename)
             raise
-        except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has bad syntax error
-            PrintMessage.print_toml_decodeerror(e)
+        except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has syntax error
+            Message.print_toml_decodeerror(e)
             raise
 
     def retrieve_table_defaults(self, table_name):
@@ -99,7 +97,7 @@ class ConfigHolder:
         try:
             table_entries = self._get_toml_table_entries(tables, table_name)
         except KeyError:
-            PrintMessage.print_table_not_exist(table_name)
+            Message.print_table_not_exist(table_name)
             raise
 
         try:
@@ -118,7 +116,7 @@ class ConfigHolder:
         try:
             table_entries = self._get_toml_table_entries(tables, table_name)
         except KeyError:
-            PrintMessage.print_table_not_exist(table_name)
+            Message.print_table_not_exist(table_name)
             raise
         if func_name not in table_entries:
             return type(tables)()
