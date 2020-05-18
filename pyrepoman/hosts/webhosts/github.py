@@ -32,7 +32,7 @@ class GitHub(WebHost):
         self.username = configholder.get_config_value(self.USERNAME_CMD_ARG_NAME)
 
     @classmethod
-    def is_host_type(cls, chosen_host, configholder):
+    def is_host_type(cls, chosen_host):
 
         return chosen_host == cls._get_host_name()
 

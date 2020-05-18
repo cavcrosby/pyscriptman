@@ -37,4 +37,6 @@ class Update(Action):
             Message.print_file_notfound(e.filename)
             raise
         except subprocess.CalledProcessError:
+            os.chdir("..")
+            # incase CalledProcessError forces program to eject before going back up the dir
             raise
