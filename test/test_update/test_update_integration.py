@@ -1,5 +1,8 @@
 # Standard Library Imports
-import subprocess, os, filecmp, sys
+import subprocess
+import os
+import filecmp
+import sys
 
 # Third Party Imports
 import pytest

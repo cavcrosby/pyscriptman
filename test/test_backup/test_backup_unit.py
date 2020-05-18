@@ -1,9 +1,13 @@
 # Standard Library Imports
-import subprocess, os, stat, filecmp
-from os.path import join, expanduser, dirname
+import subprocess
+import os
+import stat
+import filecmp
+from os.path import expanduser
 
 # Third Party Imports
-import pytest, requests
+import pytest
+import requests
 
 # Local Application Imports
 from pyrepoman.actions.backup import Backup
@@ -22,7 +26,6 @@ from test.test_backup.conftest import (
     MODEL_TARGET,
     configholder,
     unit_test_setup,
-    configholder,
 )
 
 

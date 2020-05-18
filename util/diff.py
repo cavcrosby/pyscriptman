@@ -1,5 +1,4 @@
 # Standard Library Imports
-import filecmp
 from queue import Queue
 
 # Third Party Imports

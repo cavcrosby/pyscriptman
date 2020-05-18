@@ -1,5 +1,6 @@
 # Standard Library Imports
-import os, pathlib
+import os
+import pathlib
 from os.path import expanduser
 
 # Third Party Imports

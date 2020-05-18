@@ -1,11 +1,10 @@
 # Standard Library Imports
-import os, subprocess
+import subprocess
 
 # Third Party Imports
 
 # Local Application Imports
 from pyrepoman.hosts.host import Host
-from util.message import Message
 from util.helpers import (
     copy_script_to_host,
     execute_script_on_host,
@@ -44,8 +43,8 @@ class RemoteHost(Host):
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 encoding="utf-8",
+                check=True,
             )
-            completed_process.check_returncode()
             return completed_process.stdout.strip() == "True"
 
         if chosen_host != cls._get_host_name():

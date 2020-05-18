@@ -1,10 +1,10 @@
 # Standard Library Imports
-import os, subprocess
+import os
 
 # Third Party Imports
 
 # Local Application Imports
-from global_variables import ROOT_DIR, CONFIGS_PATH, UTIL_PATH
+from global_variables import ROOT_DIR, CONFIGS_PATH
 
 CONFIGURATION_FILE_NAME = "pyrepoman_configs.toml"
 CONFIGURATION_FILE_PATH = os.path.join(

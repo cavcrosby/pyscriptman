@@ -1,6 +1,5 @@
 # Standard Library Imports
 from abc import ABC, abstractmethod, abstractclassmethod
-import os, subprocess, shutil
 
 # Third Party Imports
 
@@ -67,7 +66,7 @@ class Host(ABC):
         return self.repo_names_and_locations[repo_name]
 
     @abstractclassmethod
-    def is_host_type(cls, identifier):
+    def is_host_type(cls, chosen_host, configholder):
 
         """ FUNCTION USED ALONG WITH THE _IDENTIFIER TO DETERMINE IF PASSED IN HOST IS OF TYPE """
 

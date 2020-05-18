@@ -1,5 +1,6 @@
 # Standard Library Imports
-import os, shutil
+import os
+import shutil
 
 # Third Party Imports
 import pytest

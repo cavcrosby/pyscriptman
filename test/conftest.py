@@ -1,9 +1,11 @@
 # Standard Library Imports
-import subprocess, os, platform, shutil
-from os.path import expanduser, join, basename
+import os
+import platform
+from os.path import expanduser, join
 
 # Third Party Imports
-import pytest, requests
+import pytest
+import requests
 
 # Local Application Imports
 from util.githubauth import GitHubAuth

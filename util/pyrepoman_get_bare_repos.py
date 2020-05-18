@@ -1,5 +1,6 @@
 # Standard Library Imports
-import os, subprocess
+import os
+import subprocess
 
 # Third Party Imports
 

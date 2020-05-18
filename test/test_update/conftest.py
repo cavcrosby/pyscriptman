@@ -1,5 +1,7 @@
 # Standard Library Imports
-import subprocess, os, stat, shutil
+import subprocess
+import os
+import shutil
 
 # Third Party Imports
 import pytest

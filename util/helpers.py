@@ -1,5 +1,7 @@
 # Standard Library Imports
-import subprocess, os, shutil
+import subprocess
+import os
+import shutil
 from os.path import join, dirname, realpath
 
 # Third Party Imports
@@ -30,8 +32,7 @@ def git_add_commit_push(message):
 def clone_repo(repo_path, repo_name):
 
     try:
-        completed_process = subprocess.run(["git", "clone", repo_path, repo_name])
-        completed_process.check_returncode()
+        subprocess.run(["git", "clone", repo_path, repo_name], check=True)
     except subprocess.CalledProcessError:
         raise
 
@@ -39,10 +40,10 @@ def clone_repo(repo_path, repo_name):
 def mirror_repo(repo_path, repo_name):
 
     try:
-        completed_process = subprocess.run(
-            ["git", "clone", "--mirror", repo_path, repo_name]
+        subprocess.run(
+            ["git", "clone", "--mirror", repo_path, repo_name],
+            check=True
         )
-        completed_process.check_returncode()
     except subprocess.CalledProcessError:
         raise
 
@@ -51,7 +52,7 @@ def bundle_repo(repo_path, repo_name):
 
     try:
         mirror_repo(repo_path, repo_name)
-        completed_process = subprocess.run(
+        subprocess.run(
             [
                 "git",
                 "--git-dir",
@@ -60,10 +61,10 @@ def bundle_repo(repo_path, repo_name):
                 "create",
                 f"{repo_name}.bundle",
                 "--all",
-            ]
+            ],
+            check=True
         )
         shutil.rmtree(repo_name)
-        completed_process.check_returncode()
     except subprocess.CalledProcessError:
         raise
 
@@ -87,26 +88,28 @@ def get_typeof_repo_names_no_path(host_path, barerepo):
     try:
         os.chdir(host_path)
         dirs = get_pwd_local_dir_names()
-        for dir in dirs:
-            os.chdir(dir)
+        for dir_node in dirs:
+            os.chdir(dir_node)
             is_bare_repo = subprocess.run(
                 ["git", "rev-parse", "--is-bare-repository"],
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 encoding="utf-8",
+                check=True,
             )
             in_working_dir = subprocess.run(
                 ["git", "rev-parse", "--is-inside-work-tree"],
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 encoding="utf-8",
+                check=True,
             )
             if (
                 is_bare_repo.stderr == ""
                 and is_bare_repo.stdout.rstrip() == pred1
                 and in_working_dir.stdout.rstrip() == pred2
             ):
-                repos.append(dir)
+                repos.append(dir_node)
             os.chdir("..")
         os.chdir(pwd)
         return repos
@@ -114,12 +117,13 @@ def get_typeof_repo_names_no_path(host_path, barerepo):
         raise
     except FileNotFoundError:
         raise
+    except subprocess.CalledProcessError:
+        raise
 
 
 def copy_script_to_host(target, target_path, script):
 
-    completed_process = subprocess.run(["scp", script, f"{target}:{target_path}"],)
-    completed_process.check_returncode()
+    subprocess.run(["scp", script, f"{target}:{target_path}"], check=True)
 
 
 def execute_script_on_host(target, target_path, script_path):
@@ -129,8 +133,8 @@ def execute_script_on_host(target, target_path, script_path):
         stderr=subprocess.PIPE,
         stdout=subprocess.PIPE,
         encoding="utf-8",
+        check=True,
     )
-    completed_process.check_returncode()
     repos = completed_process.stdout.split(",")
     repos[-1] = repos[-1].strip()  # e.g. 'repo1,repo1 - Copy\n'
     return repos
@@ -139,17 +143,16 @@ def execute_script_on_host(target, target_path, script_path):
 def remove_script_on_host(target, script):
 
     try:
-        completed_process = subprocess.run(
+        subprocess.run(
             [
                 "ssh",
                 target,
                 f'python3 -c "import os; path = os.path.expanduser(\\"{script}\\"); os.remove(path)"',
-            ]
+            ],
+            check=True,
         )
-        completed_process.check_returncode()
     except subprocess.CalledProcessError:
         Message.print_script_removal_fail(target)
-        pass
 
 
 def expand_target_path_on_host(target, target_path):
@@ -163,6 +166,6 @@ def expand_target_path_on_host(target, target_path):
         stderr=subprocess.PIPE,
         stdout=subprocess.PIPE,
         encoding="utf-8",
+        check=True,
     )
-    completed_process.check_returncode()
     return completed_process.stdout.rstrip()

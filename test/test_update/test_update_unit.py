@@ -1,5 +1,8 @@
 # Standard Library Imports
-import subprocess, os, stat, filecmp
+import subprocess
+import os
+import stat
+import filecmp
 from os.path import join, realpath, dirname
 
 # Third Party Imports

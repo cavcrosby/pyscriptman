@@ -1,14 +1,16 @@
 # Standard Library Imports
-import subprocess, os, stat, filecmp
-from os.path import join, expanduser, dirname
+import subprocess
+import os 
+import stat
+from os.path import expanduser
 
 # Third Party Imports
-import pytest, requests
+import pytest
+import requests
 
 # Local Application Imports
 from pyrepoman.actions.archive import Archive
 from util.message import Message
-from util.diff import Diff
 from util.helpers import bundle_repo
 from test.conftest import (
     localhost_setup,
@@ -22,7 +24,6 @@ from test.test_archive.conftest import (
     MODEL_TARGET,
     configholder,
     unit_test_setup,
-    configholder,
     diff_bundle_contents,
 )
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # Standard Library Imports
 from subprocess import CalledProcessError
-import sys
 
 # Third Party Imports
+import requests
 from toml import TomlDecodeError
-from requests.exceptions import ConnectionError, HTTPError
 
 # Local Application Imports
 from pyrepoman.generator import Generator
@@ -33,8 +32,8 @@ def pyrepoman():
         SystemExit,
         TomlDecodeError,
         AttributeError,
-        ConnectionError,
-        HTTPError,
+        requests.exceptions.ConnectionError,
+        requests.exceptions.HTTPError,
     ):
         pass
     except Exception as e:

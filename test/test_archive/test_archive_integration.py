@@ -1,5 +1,8 @@
 # Standard Library Imports
-import subprocess, os, filecmp, sys
+import subprocess
+import os
+import filecmp
+import sys
 
 # Third Party Imports
 import pytest
@@ -7,7 +10,7 @@ import pytest
 # Local Application Imports
 from util.diff import Diff
 from pyrepoman.hosts.webhosts.github import GitHub
-from util.helpers import bundle_repo, bundle_repo
+from util.helpers import bundle_repo
 from test.conftest import (
     localhost_setup,
     remotehost_setup,

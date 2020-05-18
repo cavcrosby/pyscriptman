@@ -1,5 +1,4 @@
 # Standard Library Imports
-import sys
 
 # Third Party Imports
 import toml

@@ -1,5 +1,6 @@
 # Standard Library Imports
-import os, sys
+import os
+import sys
 
 # Third Party Imports
 

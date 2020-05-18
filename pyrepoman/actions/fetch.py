@@ -1,5 +1,5 @@
 # Standard Library Imports
-import subprocess, os
+import subprocess
 
 # Third Party Imports
 import requests
@@ -41,15 +41,15 @@ class Fetch(Action):
         try:
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
-                completed_process = subprocess.run(
+                subprocess.run(
                     [
                         "git",
                         "clone",
                         f"{self.host.get_location_from_repo_name(repo_name)}",
                         f"{repo_name}",
                     ],
+                    check=True
                 )
-                completed_process.check_returncode()
         except subprocess.CalledProcessError:
             raise
         except PermissionError as e:

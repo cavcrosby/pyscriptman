@@ -1,5 +1,6 @@
 # Standard Library Imports
-import os, subprocess, sys, re
+import os
+import subprocess
 
 # Third Party Imports
 
@@ -27,9 +28,8 @@ class Update(Action):
             nonbare_repo_names = super()._get_pwd_local_nonbare_repo_names()
             for nonbare_repo_name in nonbare_repo_names:
                 os.chdir(nonbare_repo_name)
-                completed_process = subprocess.run(["git", "pull"])
+                subprocess.run(["git", "pull"], check=True)
                 os.chdir("..")
-                completed_process.check_returncode()
         except PermissionError as e:
             Message.print_permission_denied(e.filename)
             raise
