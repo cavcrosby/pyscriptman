@@ -117,8 +117,8 @@ def get_localhost_repos(git_command, configholder, dest):
         configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
     )
     bare_repos = get_typeof_repo_names_no_path(BARE_REPOS_DIR_PATH, True)
-    for bare_repo in bare_repos:
-        git_command(BARE_REPOS_DIR_PATH, bare_repo)
+    for bare_repo_name in bare_repos:
+        git_command(join(BARE_REPOS_DIR_PATH, bare_repo_name), bare_repo_name)
     os.chdir("..")
 
 
@@ -137,8 +137,8 @@ def get_remotehost_repos(git_command, configholder, dest):
     copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
     bare_repos = execute_script_on_host(target, target_path, remote_script_target_path)
     remove_script_on_host(target, remote_script_target_path)
-    for bare_repo in bare_repos:
-        git_command(f"{target}:{target_path}", bare_repo)
+    for bare_repo_name in bare_repos:
+        git_command(join(f"{target}:{target_path}", bare_repo_name), bare_repo_name)
     os.chdir("..")
 
 
@@ -153,72 +153,7 @@ def get_github_repos(repo_owner_type, repo_type, git_command, configholder, dest
     auth = GitHubAuth(configholder.get_config_value("GITHUB_API_TOKEN"))
     response = requests.get(url, auth=auth, params={"type": repo_type})
     for repo in response.json():
-        git_command(repo)
+        git_command(repo["svn_url"], repo["name"])
     os.chdir("..")
 
     return (repo_owner_type, repo_type)
-
-
-def localhost_clone_repo(repo_path, repo):
-
-    subprocess.run(["git", "clone", join(repo_path, repo), repo])
-
-
-def remotehost_clone_repo(repo_path, repo):
-
-    subprocess.run(["git", "clone", join(repo_path, repo), repo])
-
-
-def github_clone_repo(repo):
-
-    subprocess.run(["git", "clone", repo["svn_url"], repo["name"]])
-
-
-def localhost_mirror_repo(repo_path, repo):
-
-    subprocess.run(["git", "clone", "--mirror", join(repo_path, repo), repo])
-
-
-def remotehost_mirror_repo(repo_path, repo):
-
-    subprocess.run(["git", "clone", "--mirror", join(repo_path, repo), repo])
-
-
-def github_mirror_repo(repo):
-
-    subprocess.run(["git", "clone", "--mirror", repo["svn_url"], repo["name"]])
-
-
-def localhost_bundle_repo(repo_path, repo):
-
-    localhost_mirror_repo(repo_path, repo)
-    subprocess.run(
-        ["git", "--git-dir", repo, "bundle", "create", f"{repo}.bundle", "--all",]
-    )
-    shutil.rmtree(repo)
-
-
-def remotehost_bundle_repo(repo_path, repo):
-
-    remotehost_mirror_repo(repo_path, repo)
-    subprocess.run(
-        ["git", "--git-dir", repo, "bundle", "create", f"{repo}.bundle", "--all",]
-    )
-    shutil.rmtree(repo)
-
-
-def github_bundle_repo(repo):
-
-    github_mirror_repo(repo)
-    subprocess.run(
-        [
-            "git",
-            "--git-dir",
-            repo["name"],
-            "bundle",
-            "create",
-            f"{repo['name']}.bundle",
-            "--all",
-        ]
-    )
-    shutil.rmtree(repo["name"])

@@ -45,7 +45,7 @@ class ConfigHolder:
     def get_config(self, config_name):
 
         for config in self.configs:
-            if config.NAME == config_name:
+            if config.name == config_name:
                 return config
 
         return self.NON_EXISTANT_CONFIG
@@ -74,7 +74,7 @@ class ConfigHolder:
         config = self.get_config(config_name)
 
         if config != self.NON_EXISTANT_CONFIG:
-            return config.VALUE
+            return config.value
 
         return config
 
@@ -106,7 +106,7 @@ class ConfigHolder:
             )
         except KeyError:
             print(
-                f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file" # TODO PUT THIS IN MESSAGE CLASS
+                f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file"  # TODO PUT THIS IN MESSAGE CLASS
             )
             raise
 

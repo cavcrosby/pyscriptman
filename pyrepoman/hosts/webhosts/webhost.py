@@ -10,6 +10,7 @@ from pyrepoman.hosts.host import Host
 
 class WebHost(Host):
     def __init__(self, configholder):
+
         super().__init__()
         self.configholder = configholder
 

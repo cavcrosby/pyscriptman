@@ -9,8 +9,8 @@ import pytest, requests
 from pyrepoman.actions.archive import Archive
 from util.message import Message
 from util.diff import Diff
+from util.helpers import bundle_repo
 from test.conftest import (
-    localhost_bundle_repo,
     localhost_setup,
     filemode_change_setup_win_linux,
     generate_localhost,
@@ -29,9 +29,7 @@ from test.test_archive.conftest import (
 
 class TestArchiveUnit:
     @pytest.mark.parametrize(
-        "localhost_setup",
-        [(localhost_bundle_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "localhost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_archive_localhost(self, localhost_setup):
         os.chdir(ARCHIVE_TARGET)

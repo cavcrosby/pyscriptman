@@ -9,6 +9,7 @@ from pyrepoman.hosts import *
 from pyrepoman.hosts.webhosts import *
 from pyrepoman.actions.action import Action
 from util.message import Message
+from util.helpers import mirror_repo
 
 
 class Backup(Action):
@@ -41,7 +42,7 @@ class Backup(Action):
         try:
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
-                super()._create_mirror(
+                mirror_repo(
                     self.host.get_location_from_repo_name(repo_name), repo_name,
                 )
         except subprocess.CalledProcessError as e:

@@ -1,5 +1,5 @@
 # Standard Library Imports
-import os, subprocess
+import os, subprocess, shutil
 
 # Third Party Imports
 import requests
@@ -9,6 +9,7 @@ from pyrepoman.hosts import *
 from pyrepoman.hosts.webhosts import *
 from pyrepoman.actions.action import Action
 from util.message import Message
+from util.helpers import bundle_repo
 
 
 class Archive(Action):
@@ -41,11 +42,7 @@ class Archive(Action):
         try:
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
-                super()._create_mirror(
-                    self.host.get_location_from_repo_name(repo_name), repo_name
-                )
-                super()._create_bundle(repo_name)
-                super()._remove_dir(repo_name)
+                bundle_repo(self.host.get_location_from_repo_name(repo_name), repo_name)
         except subprocess.CalledProcessError as e:
             raise
         except PermissionError as e:

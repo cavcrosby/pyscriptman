@@ -10,12 +10,12 @@ from util.message import Message
 
 class Config:
     @property
-    def NAME(self):
+    def name(self):
 
         return self._name
 
     @property
-    def VALUE(self):
+    def value(self):
 
         return self._value
 

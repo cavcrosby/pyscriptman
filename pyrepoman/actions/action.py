@@ -11,11 +11,11 @@ from util.message import Message
 
 class Action(ABC):
 
-    HELP_DESC = NotImplemented
-    CONFIGHOLDER_ATTRIBUTE_NAME = "action"
+    HELP_DESC = NotImplemented  # this class var should be implemented in subclasses
+    ACTION_CMD_ARG_NAME = "action"
 
-    _HOST_SUBPARSER_TITLE = "[available actions]"
-    _HOST_SUBPARSER_METAVAR = "action [options ...]"
+    _HOST_SUBPARSER_TITLE = "[available hosts]"
+    _HOST_SUBPARSER_METAVAR = "host [options ...]"
     _REQUIRE_SUBCOMMANDS = True
 
     def __init_subclass__(cls, *args, **kwargs):
@@ -28,90 +28,9 @@ class Action(ABC):
             )
 
     @staticmethod
-    def _remove_dir(dir_name):
-
-        shutil.rmtree(dir_name)
-
-    @staticmethod
-    def _dir_exist(dir_name):
-
-        try:
-            dir_contents = os.listdir()
-            return dir_name in dir_contents
-        except PermissionError:
-            raise
-
-    @staticmethod
-    def _update_mirror(dir_name):
-
-        subprocess.run(["git", "--git-dir", dir_name, "remote", "update"])
-
-    @classmethod
-    def _create_bundle(cls, mirror_repo_name):
-
-        completed_process = subprocess.run(
-            [
-                "git",
-                "--git-dir",
-                mirror_repo_name,
-                "bundle",
-                "create",
-                f"{mirror_repo_name}.bundle",
-                "--all",
-            ]
-        )
-        completed_process.check_returncode()
-
-    @classmethod
-    def _create_mirror(cls, location, destination_dir_name):
-
-        try:
-            completed_process = subprocess.run(
-                ["git", "clone", "--mirror", location, destination_dir_name],
-            )
-            completed_process.check_returncode()
-        except subprocess.CalledProcessError:
-            raise
-
-    @staticmethod
     def _get_pwd_local_nonbare_repo_names():
 
         return get_typeof_repo_names_no_path(os.getcwd(), False)
-
-    @classmethod
-    def _remove_all_dir_content(cls, dir_name, exclude=None):
-
-        os.chdir(dir_name)
-        nodes = os.scandir()
-        try:
-            dir_entry = nodes.__next__()
-            if exclude == None:
-                exclude = list()
-            while dir_entry:
-                if dir_entry.name in exclude:
-                    dir_entry = nodes.__next__()
-                    continue
-                if dir_entry.is_dir():
-                    cls._remove_dir(dir_entry.name)
-                    dir_entry = nodes.__next__()
-                else:
-                    os.remove(dir_entry)
-                    dir_entry = nodes.__next__()
-        except StopIteration:
-            pass
-        except PermissionError:
-            raise
-        finally:
-            os.chdir("..")
-
-    @classmethod
-    def _create_dir(cls, dir_name):
-
-        try:
-            if not cls._dir_exist(dir_name):
-                os.mkdir(dir_name)
-        except PermissionError:
-            raise
 
     @classmethod
     def is_action_type(cls, chosen_action):
@@ -131,7 +50,7 @@ class Action(ABC):
             subcommand, help=cls.HELP_DESC, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
-        parser.set_defaults(**{cls.CONFIGHOLDER_ATTRIBUTE_NAME: subcommand})
+        parser.set_defaults(**{cls.ACTION_CMD_ARG_NAME: subcommand})
         return parser
 
     @abstractclassmethod

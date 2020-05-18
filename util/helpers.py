@@ -27,6 +27,47 @@ def git_add_commit_push(message):
     subprocess.run(["git", "push", "origin", "master"])
 
 
+def clone_repo(repo_path, repo_name):
+
+    try:
+        completed_process = subprocess.run(["git", "clone", repo_path, repo_name])
+        completed_process.check_returncode()
+    except subprocess.CalledProcessError:
+        raise
+
+
+def mirror_repo(repo_path, repo_name):
+
+    try:
+        completed_process = subprocess.run(
+            ["git", "clone", "--mirror", repo_path, repo_name]
+        )
+        completed_process.check_returncode()
+    except subprocess.CalledProcessError:
+        raise
+
+
+def bundle_repo(repo_path, repo_name):
+
+    try:
+        mirror_repo(repo_path, repo_name)
+        completed_process = subprocess.run(
+            [
+                "git",
+                "--git-dir",
+                repo_name,
+                "bundle",
+                "create",
+                f"{repo_name}.bundle",
+                "--all",
+            ]
+        )
+        shutil.rmtree(repo_name)
+        completed_process.check_returncode()
+    except subprocess.CalledProcessError:
+        raise
+
+
 def get_pwd_local_dir_names():
 
     root = os.getcwd()

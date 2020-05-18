@@ -7,9 +7,8 @@ import pytest
 # Local Application Imports
 from util.diff import Diff
 from test.test_variables import PYREPOMAN_MAIN_PATH
+from util.helpers import clone_repo
 from test.conftest import (
-    localhost_clone_repo,
-    remotehost_clone_repo,
     localhost_setup,
     remotehost_setup,
 )
@@ -24,9 +23,7 @@ from test.test_update.conftest import (
 
 class TestUpdateIntegration:
     @pytest.mark.parametrize(
-        "localhost_setup",
-        [(localhost_clone_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_update_localhost(self, localhost_setup):
         finish_setup()
@@ -38,9 +35,7 @@ class TestUpdateIntegration:
         assert diff.run() == False
 
     @pytest.mark.parametrize(
-        "remotehost_setup",
-        [(remotehost_clone_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "remotehost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_update_remotehost(self, remotehost_setup):
         finish_setup()

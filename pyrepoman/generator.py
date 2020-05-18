@@ -16,7 +16,7 @@ class Generator:
     @classmethod
     def generate_action(cls, configholder):
 
-        identifier = configholder.get_config_value(Action.CONFIGHOLDER_ATTRIBUTE_NAME)
+        identifier = configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
 
         if update.Update.is_action_type(identifier):
             return update.Update()
@@ -31,14 +31,14 @@ class Generator:
             return backup.Backup(host)
         else:
             Message.print_generator_invalid_action(
-                configholder.get_config_value(Action.CONFIGHOLDER_ATTRIBUTE_NAME)
+                configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
             )
             sys.exit(1)
 
     @classmethod
     def _generate_host(cls, configholder):
 
-        identifier = configholder.get_config_value(Host.CONFIGHOLDER_ATTRIBUTE_NAME)
+        identifier = configholder.get_config_value(Host.HOST_CMD_ARG_NAME)
 
         if github.GitHub.is_host_type(identifier):
             configholder.load_toml()

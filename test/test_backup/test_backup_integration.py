@@ -7,10 +7,8 @@ import pytest
 # Local Application Imports
 from util.diff import Diff
 from pyrepoman.hosts.webhosts.github import GitHub
+from util.helpers import mirror_repo, mirror_repo
 from test.conftest import (
-    localhost_mirror_repo,
-    remotehost_mirror_repo,
-    github_mirror_repo,
     localhost_setup,
     remotehost_setup,
     github_setup,
@@ -26,9 +24,7 @@ from test.test_variables import PYREPOMAN_MAIN_PATH
 
 class TestBackupIntegration:
     @pytest.mark.parametrize(
-        "localhost_setup",
-        [(localhost_mirror_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "localhost_setup", [(mirror_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_backup_localhost(self, localhost_setup):
         os.chdir(BACKUP_TARGET)
@@ -47,9 +43,7 @@ class TestBackupIntegration:
         assert diff.run() == False
 
     @pytest.mark.parametrize(
-        "remotehost_setup",
-        [(remotehost_mirror_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "remotehost_setup", [(mirror_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_backup_remotehost(self, remotehost_setup):
         target = f"{configholder.get_config_value('REMOTE_USER')}@{configholder.get_config_value('REMOTE_ADDR')}"
@@ -73,24 +67,18 @@ class TestBackupIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            (
-                GitHub.OWN_CMD_ARG_NAME,
-                "all",
-                github_mirror_repo,
-                configholder,
-                MODEL_TARGET,
-            ),
+            (GitHub.OWN_CMD_ARG_NAME, "all", mirror_repo, configholder, MODEL_TARGET,),
             (
                 GitHub.OWN_CMD_ARG_NAME,
                 "public",
-                github_mirror_repo,
+                mirror_repo,
                 configholder,
                 MODEL_TARGET,
             ),
             (
                 GitHub.OWN_CMD_ARG_NAME,
                 "private",
-                github_mirror_repo,
+                mirror_repo,
                 configholder,
                 MODEL_TARGET,
             ),
@@ -123,21 +111,21 @@ class TestBackupIntegration:
             (
                 GitHub.OTHER_CMD_ARG_NAME,
                 "all",
-                github_mirror_repo,
+                mirror_repo,
                 configholder,
                 MODEL_TARGET,
             ),
             (
                 GitHub.OTHER_CMD_ARG_NAME,
                 "owner",
-                github_mirror_repo,
+                mirror_repo,
                 configholder,
                 MODEL_TARGET,
             ),
             (
                 GitHub.OTHER_CMD_ARG_NAME,
                 "member",
-                github_mirror_repo,
+                mirror_repo,
                 configholder,
                 MODEL_TARGET,
             ),

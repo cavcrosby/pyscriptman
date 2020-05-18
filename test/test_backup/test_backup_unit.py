@@ -9,8 +9,8 @@ import pytest, requests
 from pyrepoman.actions.backup import Backup
 from util.message import Message
 from util.diff import Diff
+from util.helpers import mirror_repo
 from test.conftest import (
-    localhost_mirror_repo,
     localhost_setup,
     filemode_change_setup_win_linux,
     generate_localhost,
@@ -28,9 +28,7 @@ from test.test_backup.conftest import (
 
 class TestBackupUnit:
     @pytest.mark.parametrize(
-        "localhost_setup",
-        [(localhost_mirror_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "localhost_setup", [(mirror_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_backup_localhost(self, localhost_setup):
         os.chdir(BACKUP_TARGET)

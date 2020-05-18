@@ -9,8 +9,8 @@ import pytest
 from pyrepoman.actions.update import Update
 from util.message import Message
 from util.diff import Diff
+from util.helpers import clone_repo
 from test.conftest import (
-    localhost_clone_repo,
     localhost_setup,
     filemode_change_setup_win_linux,
 )
@@ -25,9 +25,7 @@ from test.test_update.conftest import (
 
 class TestUpdateUnit:
     @pytest.mark.parametrize(
-        "localhost_setup",
-        [(localhost_clone_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_update(self, localhost_setup):
 

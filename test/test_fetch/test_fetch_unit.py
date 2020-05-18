@@ -9,8 +9,8 @@ import pytest, requests
 from pyrepoman.actions.fetch import Fetch
 from util.message import Message
 from util.diff import Diff
+from util.helpers import clone_repo
 from test.conftest import (
-    localhost_clone_repo,
     localhost_setup,
     filemode_change_setup_win_linux,
     generate_localhost,
@@ -28,9 +28,7 @@ from test.test_fetch.conftest import (
 
 class TestFetchUnit:
     @pytest.mark.parametrize(
-        "localhost_setup",
-        [(localhost_clone_repo, configholder, MODEL_TARGET)],
-        indirect=True,
+        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_fetch_localhost(self, localhost_setup):
         os.chdir(FETCH_TARGET)

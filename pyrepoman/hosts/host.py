@@ -11,8 +11,8 @@ from util.message import Message
 
 class Host(ABC):
 
-    HELP_DESC = NotImplemented
-    CONFIGHOLDER_ATTRIBUTE_NAME = "host"
+    HELP_DESC = NotImplemented  # this class var should be implemented in subclasses
+    HOST_CMD_ARG_NAME = "host"
 
     @property
     def repo_names_and_locations(self):
@@ -25,6 +25,7 @@ class Host(ABC):
         return self._repo_names_and_locations.keys()
 
     def __init__(self):
+
         self._repo_names_and_locations = dict()
 
     def __init_subclass__(cls, *args, **kwargs):
@@ -49,7 +50,7 @@ class Host(ABC):
             subcommand, help=help_desc, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
-        parser.set_defaults(**{cls.CONFIGHOLDER_ATTRIBUTE_NAME: subcommand})
+        parser.set_defaults(**{cls.HOST_CMD_ARG_NAME: subcommand})
         return parser
 
     @classmethod
