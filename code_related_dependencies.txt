@@ -1,3 +1,0 @@
-Possible Dependencies:
-Usage of allow_abbrev arg for optional arguments (file: Cmd.py, https://docs.python.org/3/library/argparse.html#allow-abbrev)
-f-strings require at least python 3.6
