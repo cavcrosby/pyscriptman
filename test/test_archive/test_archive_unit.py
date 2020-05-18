@@ -1,6 +1,6 @@
 # Standard Library Imports
 import subprocess
-import os 
+import os
 import stat
 from os.path import expanduser
 

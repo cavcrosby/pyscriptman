@@ -40,10 +40,7 @@ def clone_repo(repo_path, repo_name):
 def mirror_repo(repo_path, repo_name):
 
     try:
-        subprocess.run(
-            ["git", "clone", "--mirror", repo_path, repo_name],
-            check=True
-        )
+        subprocess.run(["git", "clone", "--mirror", repo_path, repo_name], check=True)
     except subprocess.CalledProcessError:
         raise
 
@@ -62,7 +59,7 @@ def bundle_repo(repo_path, repo_name):
                 f"{repo_name}.bundle",
                 "--all",
             ],
-            check=True
+            check=True,
         )
         shutil.rmtree(repo_name)
     except subprocess.CalledProcessError:

@@ -48,7 +48,7 @@ class Fetch(Action):
                         f"{self.host.get_location_from_repo_name(repo_name)}",
                         f"{repo_name}",
                     ],
-                    check=True
+                    check=True,
                 )
         except subprocess.CalledProcessError:
             raise
