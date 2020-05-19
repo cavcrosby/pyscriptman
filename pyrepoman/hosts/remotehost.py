@@ -82,7 +82,7 @@ class RemoteHost(Host):
         try:
             target_path = expand_target_path_on_host(
                 target, self.target_path
-            )  # target_path really is endpoint path we are looking to manipulate repos from
+            )
             remote_script_target_path = (
                 f"{target_path}{REMOTE_SCRIPT_GET_BARE_REPOS_NAME}"
             )

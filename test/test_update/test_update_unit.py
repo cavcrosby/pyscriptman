@@ -80,7 +80,7 @@ class TestUpdateUnit:
             [
                 realpath(
                     join(UPDATE_TARGET, ".git")
-                ),  # testing pyrepoman update with a working directory's .git directory having no write access
+                ),  # testing update with a working directory's .git directory having no write access
                 stat.S_IRUSR
                 | stat.S_IXUSR
                 | stat.S_IRGRP

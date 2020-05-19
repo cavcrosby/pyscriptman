@@ -49,16 +49,16 @@ def generate_localhost(configholder):
 
     # see localhost constructor, as it is expecting a configuration called 'path'
     target_path = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
-    configholder.add_config("path", target_path)
+    configholder.add_config(LocalHost.PATH_CMD_ARG_NAME, target_path)
     return LocalHost(configholder)
 
 
 def generate_github_host(configholder):
 
     # see github constructor, as it is currently expecting the following configurations
-    configholder.add_config("repo_type", GitHub.DEFAULT_REPO_TYPE_OWN)
-    configholder.add_config("repo_owner_type", GitHub.OWN_CMD_ARG_NAME)
-    configholder.add_config("username", configholder.get_config_value("GITHUB_NAME"))
+    configholder.add_config(GitHub.REPO_TYPE_CMD_ARG_NAME, GitHub.DEFAULT_REPO_TYPE_OWN)
+    configholder.add_config(GitHub.REPO_OWNER_TYPE_CMD_ARG_NAME, GitHub.OWN_CMD_ARG_NAME)
+    configholder.add_config(GitHub.USERNAME_CMD_ARG_NAME, configholder.get_config_value("GITHUB_NAME"))
 
     return GitHub(configholder)
 

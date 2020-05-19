@@ -10,7 +10,7 @@ from util.message import Message
 
 class Host(ABC):
 
-    HELP_DESC = NotImplemented  # this class var should be implemented in subclasses
+    HELP_DESC = NotImplemented
     HOST_CMD_ARG_NAME = "host"
 
     @property

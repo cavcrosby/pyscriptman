@@ -14,6 +14,7 @@ class Message:
     UNKNOWN_ERROR_OCCURRED = (
         "an unknown error occurred, please report the following below:"
     )
+    DEFAULT_TABLE_DOES_NOT_EXIST = "entry does not exist, check the configuration file"
     PERMISSION_DENIED_MESSAGE = "a particular file/path was unaccessable,"
     FILE_NOTFOUND_MESSAGE = "a particular file/path was unaccessable,"
     TOML_DECODEERROR_MESSAGE = (
@@ -38,6 +39,13 @@ class Message:
     def construct_helpdesc_notimplemented_msg(cls, class_name):
 
         return f"{cls.ERROR_PREFIX} {cls.HELP_DESC_NOT_IMPLEMENTED} {class_name}"
+
+    @classmethod
+    def print_default_table_does_notexist(cls, default_table_name, table_name):
+
+        print(
+            f"{cls.ERROR_PREFIX} [{table_name}.{default_table_name}] {cls.DEFAULT_TABLE_DOES_NOT_EXIST}"
+        )  # TODO CHANGE THAT THEY SHOULD INTERACT WITH THE INSTALLER FOR THE CONFIGS?
 
     @classmethod
     def print_unknown_error_occurred(cls, exception):

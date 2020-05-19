@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # Standard Library Imports
-from subprocess import CalledProcessError
+import subprocess
 
 # Third Party Imports
 import requests
-from toml import TomlDecodeError
+import toml
 
 # Local Application Imports
 from pyrepoman.generator import Generator
@@ -26,12 +26,12 @@ def pyrepoman():
         action = Generator.generate_action(configholder)
         action.run()
     except (
-        CalledProcessError,
         FileNotFoundError,
         PermissionError,
         SystemExit,
-        TomlDecodeError,
         AttributeError,
+        toml.TomlDecodeError,
+        subprocess.CalledProcessError,
         requests.exceptions.ConnectionError,
         requests.exceptions.HTTPError,
     ):

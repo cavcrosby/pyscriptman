@@ -11,7 +11,7 @@ from util.message import Message
 
 class Action(ABC):
 
-    HELP_DESC = NotImplemented  # this class var should be implemented in subclasses
+    HELP_DESC = NotImplemented
     ACTION_CMD_ARG_NAME = "action"
 
     _HOST_SUBPARSER_TITLE = "[available hosts]"

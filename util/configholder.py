@@ -86,7 +86,7 @@ class ConfigHolder:
         except PermissionError as e:
             Message.print_permission_denied(e.filename)
             raise
-        except toml.decoder.TomlDecodeError as e:  # thrown in: load_toml() if configuration file has syntax error
+        except toml.decoder.TomlDecodeError as e:
             Message.print_toml_decodeerror(e)
             raise
 
@@ -104,9 +104,7 @@ class ConfigHolder:
                 table_entries, self._DEFAULTS_ENTRY_NAME
             )
         except KeyError:
-            print(
-                f"Error: {self._DEFAULTS_ENTRY_NAME} entry does not exist in the {table_name} table, check the configuration file"  # TODO PUT THIS IN MESSAGE CLASS
-            )
+            Message.print_default_table_does_notexist(self._DEFAULTS_ENTRY_NAME, table_name)
             raise
 
     def table_func_retrieve_additional_configs(self, table_name, func_name):
@@ -121,7 +119,7 @@ class ConfigHolder:
             return type(tables)()
         elif (
             len(table_entries[func_name]) == 0
-        ):  # empty [func_name] ... [another_func_name] key: value
+        ):  # empty is considered [func_name] () vs. [another_func_name] (key: value) ...
             return type(tables)()
         else:
             return table_entries[func_name]

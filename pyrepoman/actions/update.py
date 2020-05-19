@@ -38,5 +38,5 @@ class Update(Action):
             raise
         except subprocess.CalledProcessError:
             os.chdir("..")
-            # incase CalledProcessError forces program to eject before going back up the dir
+            # git pull forces program to eject before going back up the dir
             raise
