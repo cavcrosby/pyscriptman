@@ -2,6 +2,7 @@
 
 # Third Party Imports
 import requests
+import toml
 
 # Local Application Imports
 from pyrepoman.hosts.webhosts.webhost import WebHost

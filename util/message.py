@@ -66,10 +66,10 @@ class Message:
         print(f"{cls.ERROR_PREFIX} {cls.FILE_NOTFOUND_MESSAGE} '{realpath(filename)}'")
 
     @classmethod
-    def print_toml_decodeerror(cls, exception):
+    def print_toml_decodeerror(cls, excep_obj):
 
         print(f"{cls.ERROR_PREFIX} {cls.TOML_DECODEERROR_MESSAGE}")
-        print(exception)
+        print(excep_obj)
 
     @classmethod
     def print_table_not_exist(cls, table_name):

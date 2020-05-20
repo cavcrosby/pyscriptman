@@ -22,7 +22,6 @@ from test.test_fetch.conftest import (
     MODEL_TARGET,
     configholder,
     unit_test_setup,
-    configholder,
 )
 
 
