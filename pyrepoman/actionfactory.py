@@ -6,8 +6,8 @@ import subprocess
 import toml
 
 # Local Application Imports
+from pyrepoman.actions import update, fetch, backup, archive
 from pyrepoman.actions.action import Action
-from pyrepoman.actions import *
 from util.message import Message
 from pyrepoman.hostfactory import HostFactory
 

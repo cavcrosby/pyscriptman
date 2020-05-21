@@ -6,9 +6,9 @@ import subprocess
 import toml
 
 # Local Application Imports
+from pyrepoman.hosts import localhost, remotehost
+from pyrepoman.hosts.webhosts import github
 from pyrepoman.hosts.host import Host
-from pyrepoman.hosts.webhosts import *
-from pyrepoman.hosts import *
 from util.message import Message
 
 

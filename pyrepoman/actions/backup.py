@@ -5,8 +5,8 @@ import subprocess
 import requests
 
 # Local Application Imports
-from pyrepoman.hosts import *
-from pyrepoman.hosts.webhosts import *
+from pyrepoman.hosts import localhost, remotehost
+from pyrepoman.hosts.webhosts import github
 from pyrepoman.actions.action import Action
 from util.message import Message
 from util.helpers import mirror_repo

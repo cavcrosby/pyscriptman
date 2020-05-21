@@ -4,7 +4,7 @@ import argparse
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.actions import *
+from pyrepoman.actions import update, fetch, backup, archive
 
 
 class Cmd:
