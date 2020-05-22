@@ -25,7 +25,7 @@ class Backup(Action):
     def _modify_parser(cls, parser):
 
         backup_host_subparsers = parser.add_subparsers(
-            title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_TITLE
+            title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
         )
         backup_host_subparsers.required = cls._REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(backup_host_subparsers, github.GitHub.HELP_DESC)
