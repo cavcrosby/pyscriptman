@@ -33,13 +33,13 @@ def integration_test_setup(request):
     os.mkdir(BACKUP_TARGET)
     os.mkdir(MODEL_TARGET)
 
-    def normal_teardown():
+    def integration_test_teardown():
         os.chdir(ROOT_DIR)
         shutil.rmtree(BACKUP_TARGET)
         shutil.rmtree(MODEL_TARGET)
         delete_configs(configholder, configs)
 
-    request.addfinalizer(normal_teardown)
+    request.addfinalizer(integration_test_teardown)
 
 
 @pytest.fixture(scope="function")
