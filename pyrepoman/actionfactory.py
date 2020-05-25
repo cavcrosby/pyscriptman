@@ -23,29 +23,29 @@ class ActionFactory:
 
     """
     @staticmethod
-    def _return_update_type():
-        """Returns 'Update' class
+    def _return_update_constructor():
+        """Returns 'Update' class.
 
         """
         return update.Update
 
     @staticmethod
-    def _return_fetch_type(host):
-        """Returns 'Fetch' class wrapped in lambda to fufill parameters
+    def _return_fetch_constructor(host):
+        """Returns 'Fetch' class wrapped in lambda to fufill parameters.
 
         """
         return lambda: fetch.Fetch(host)
 
     @staticmethod
-    def _return_backup_type(host):
-        """Returns 'Backup' class wrapped in lambda to fufill parameters
+    def _return_backup_constructor(host):
+        """Returns 'Backup' class wrapped in lambda to fufill parameters.
 
         """
         return lambda: backup.Backup(host)
 
     @staticmethod
-    def _return_archive_type(host):
-        """Returns 'Archive' class wrapped in lambda to fufill parameters
+    def _return_archive_constructor(host):
+        """Returns 'Archive' class wrapped in lambda to fufill parameters.
 
         """
         return lambda: archive.Archive(host)
@@ -101,8 +101,8 @@ class ActionFactory:
         """
         try:
             action_name = configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
-            action = cls._get_action_type(action_name, configholder)
-            return action()
+            action_constructor = cls._get_action_constructor(action_name, configholder)
+            return action_constructor()
         except toml.decoder.TomlDecodeError:
             raise
         except subprocess.CalledProcessError:
@@ -111,8 +111,8 @@ class ActionFactory:
             raise
 
     @classmethod
-    def _get_action_type(cls, action_name, configholder):
-        """Finds correct action type then returns an 'Action' subclass.
+    def _get_action_constructor(cls, action_name, configholder):
+        """Finds correct action constructor then returns an 'Action' subclass.
 
         Parameters
         --------
@@ -133,16 +133,16 @@ class ActionFactory:
         """
         try:
             if update.Update.is_action_type(action_name):
-                return cls._return_update_type()
+                return cls._return_update_constructor()
             elif fetch.Fetch.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
-                return cls._return_fetch_type(host)
+                return cls._return_fetch_constructor(host)
             elif archive.Archive.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
-                return cls._return_archive_type(host)
+                return cls._return_archive_constructor(host)
             elif backup.Backup.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
-                return cls._return_backup_type(host)
+                return cls._return_backup_constructor(host)
             else:
                 Message.print_generator_invalid_action(
                     configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
