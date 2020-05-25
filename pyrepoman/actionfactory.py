@@ -12,16 +12,43 @@ import subprocess
 import toml
 
 # Local Application Imports
+from pyrepoman.hostfactory import HostFactory
 from pyrepoman.actions import update, fetch, backup, archive
 from pyrepoman.actions.action import Action
 from util.message import Message
-from pyrepoman.hostfactory import HostFactory
 
 
 class ActionFactory:
     """The way of creating action objects in pyrepoman.
 
     """
+    @staticmethod
+    def _return_update_type():
+        """Returns 'Update' class
+
+        """
+        return update.Update
+
+    @staticmethod
+    def _return_fetch_type(host):
+        """Returns 'Fetch' class wrapped in lambda to fufill parameters
+
+        """
+        return lambda: fetch.Fetch(host)
+
+    @staticmethod
+    def _return_backup_type(host):
+        """Returns 'Backup' class wrapped in lambda to fufill parameters
+
+        """
+        return lambda: backup.Backup(host)
+
+    @staticmethod
+    def _return_archive_type(host):
+        """Returns 'Archive' class wrapped in lambda to fufill parameters
+
+        """
+        return lambda: archive.Archive(host)
 
     @classmethod
     def create_action(cls, configholder):
@@ -35,7 +62,7 @@ class ActionFactory:
         Returns
         --------
         Action
-            A subclass object of 'Action' should be returned.
+            A instantiation of a 'Action' subclass should be returned.
 
         Raises
         --------
@@ -73,8 +100,8 @@ class ActionFactory:
 
         """
         try:
-            identifier = configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
-            action = cls._determine_action_type(identifier, configholder)
+            action_name = configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
+            action = cls._get_action_type(action_name, configholder)
             return action()
         except toml.decoder.TomlDecodeError:
             raise
@@ -84,20 +111,38 @@ class ActionFactory:
             raise
 
     @classmethod
-    def _determine_action_type(cls, identifier, configholder):
+    def _get_action_type(cls, action_name, configholder):
+        """Finds correct action type then returns an 'Action' subclass.
 
+        Parameters
+        --------
+        action_name : str
+            This is the action chosen by the user from the command line.
+        configholder : ConfigHolder
+            An instantiation of ConfigHolder, used to hold program configurations.
+
+        Returns
+        --------
+        Action
+            A subclass of 'Action' should be returned.
+
+        Raises
+        --------
+        (see create_action 'Raises' section.)
+
+        """
         try:
-            if update.Update.is_action_type(identifier):
-                return lambda: update.Update()
-            elif fetch.Fetch.is_action_type(identifier):
+            if update.Update.is_action_type(action_name):
+                return cls._return_update_type()
+            elif fetch.Fetch.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
-                return lambda: fetch.Fetch(host)
-            elif archive.Archive.is_action_type(identifier):
+                return cls._return_fetch_type(host)
+            elif archive.Archive.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
-                return lambda: archive.Archive(host)
-            elif backup.Backup.is_action_type(identifier):
+                return cls._return_archive_type(host)
+            elif backup.Backup.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
-                return lambda: backup.Backup(host)
+                return cls._return_backup_type(host)
             else:
                 Message.print_generator_invalid_action(
                     configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
