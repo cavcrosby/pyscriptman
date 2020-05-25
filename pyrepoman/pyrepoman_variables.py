@@ -1,3 +1,4 @@
+"""These are variables that are specfic to the pyrepoman package."""
 # Standard Library Imports
 import os
 

@@ -1,3 +1,6 @@
+"""How pyrepoman interfaces with the command line.
+
+"""
 # Standard Library Imports
 import argparse
 
@@ -8,7 +11,17 @@ from pyrepoman.actions import update, fetch, backup, archive
 
 
 class Cmd:
+    """How pyrepoman interfaces with the command line.
 
+    Attributes
+    ----------
+    _DESC : str
+            Command line program description printed when --help/-h
+            is given with just the executable name.
+    _parser : ArgumentParser
+            This is the root parser for the program.
+
+    """
     _DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
     _parser = argparse.ArgumentParser(
         description=_DESC, prog="pyrepoman.py", allow_abbrev=False
@@ -16,7 +29,19 @@ class Cmd:
 
     @classmethod
     def retrieve_args(cls):
+        """How arguments are retrieved from the command line.
 
+        Returns
+        --------
+        Namespace
+            An object that holds attributes pulled from the command line.
+
+        Raises
+        --------
+        SystemExit
+            If user input is not considered valid when parsing args
+
+        """
         _action_subparsers = cls._parser.add_subparsers(
             title="available actions", metavar="action [options ...]"
         )
