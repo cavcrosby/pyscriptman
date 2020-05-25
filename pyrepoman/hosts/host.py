@@ -37,7 +37,7 @@ class Host(ABC):
             )
 
     @staticmethod
-    def _get_pwd_bare_repo_names(host_path):
+    def _get_bare_repo_names_from_path(host_path):
 
         return get_typeof_repo_names_no_path(host_path, True)
 

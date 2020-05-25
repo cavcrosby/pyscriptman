@@ -47,12 +47,12 @@ class TestBackupUnit:
 
         from pyrepoman.hosts.host import Host
 
-        def fake_get_pwd_local_nonbare_repo_names(arg1, arg2):
+        def fake_get_bare_repo_names_from_path(arg1, arg2):
 
             os.chdir("non-existing git repo")
 
         monkeypatch.setattr(
-            Host, "_get_pwd_bare_repo_names", fake_get_pwd_local_nonbare_repo_names,
+            Host, "_get_bare_repo_names_from_path", fake_get_bare_repo_names_from_path,
         )
 
         with pytest.raises(FileNotFoundError):

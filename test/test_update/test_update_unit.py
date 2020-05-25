@@ -45,14 +45,14 @@ class TestUpdateUnit:
 
         from pyrepoman.actions.action import Action
 
-        def fake_get_pwd_local_nonbare_repo_names(arg1):
+        def fake_get_bare_repo_names_from_path(arg1):
 
             return "non-existing git repo"
 
         monkeypatch.setattr(
             Action,
             "_get_pwd_local_nonbare_repo_names",
-            fake_get_pwd_local_nonbare_repo_names,
+            fake_get_bare_repo_names_from_path,
         )
 
         with pytest.raises(FileNotFoundError):

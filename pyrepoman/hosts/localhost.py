@@ -27,8 +27,10 @@ class LocalHost(Host):
         path = "" if path == configholder.NON_EXISTANT_CONFIG else expanduser(path)
 
         try:
-            return chosen_host == cls._get_host_name() and pathlib.Path(path).exists()
-        except PermissionError as e:
+            return (
+                chosen_host == cls._get_host_name() and pathlib.Path(path).exists()
+            )  # TODO pathlib.Path(path).exists() will have permission issues if directory does not have proper permissions. However, this is only the case of the 'dot' character is used vs the full path
+        except PermissionError as e:  # TODO THE 'dot' SYMBOL WILL NOT BE SUPPORTED CURRENTLY
             Message.print_permission_denied(e.filename)
             raise
 
@@ -45,7 +47,7 @@ class LocalHost(Host):
 
         local_path = os.path.expanduser(self.path)
         try:
-            repos = super()._get_pwd_bare_repo_names(local_path)
+            repos = super()._get_bare_repo_names_from_path(local_path)
             for repo in repos:
                 super().add_repo_name_and_location(repo, os.path.join(local_path, repo))
             return super().repo_names
