@@ -19,35 +19,25 @@ from util.message import Message
 
 
 class ActionFactory:
-    """The way of creating action objects in pyrepoman.
-
-    """
+    """The way of creating action objects in pyrepoman."""
     @staticmethod
     def _return_update_constructor():
-        """Returns 'Update' class.
-
-        """
+        """Returns 'Update' class."""
         return update.Update
 
     @staticmethod
     def _return_fetch_constructor(host):
-        """Returns 'Fetch' class wrapped in lambda to fufill parameters.
-
-        """
+        """Returns 'Fetch' class wrapped in lambda to fufill parameters."""
         return lambda: fetch.Fetch(host)
 
     @staticmethod
     def _return_backup_constructor(host):
-        """Returns 'Backup' class wrapped in lambda to fufill parameters.
-
-        """
+        """Returns 'Backup' class wrapped in lambda to fufill parameters."""
         return lambda: backup.Backup(host)
 
     @staticmethod
     def _return_archive_constructor(host):
-        """Returns 'Archive' class wrapped in lambda to fufill parameters.
-
-        """
+        """Returns 'Archive' class wrapped in lambda to fufill parameters."""
         return lambda: archive.Archive(host)
 
     @classmethod

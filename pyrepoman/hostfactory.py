@@ -19,21 +19,15 @@ from util.message import Message
 
 
 class HostFactory:
-    """The way of creating host objects in pyrepoman.
-
-    """
+    """The way of creating host objects in pyrepoman."""
     @staticmethod
     def _return_localhost_constructor(configholder):
-        """Returns 'LocalHost' class wrapped in lambda to fufill parameters.
-
-        """
+        """Returns 'LocalHost' class wrapped in lambda to fufill parameters."""
         return lambda: localhost.LocalHost(configholder)
 
     @staticmethod
     def _return_remotehost_constructor(configholder):
-        """Returns 'RemoteHost' class wrapped in lambda to fufill parameters.
-
-        """
+        """Returns 'RemoteHost' class wrapped in lambda to fufill parameters."""
         return lambda: remotehost.RemoteHost(configholder)
 
     @staticmethod
