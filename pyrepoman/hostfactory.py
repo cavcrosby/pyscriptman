@@ -65,8 +65,8 @@ class HostFactory:
             syntax error when loaded.
         subprocess.CalledProcessError
             If the user chooses to communicate with
-            a remotehost and the program fails to talk
-            to the remotehost (see notes).
+            a remotehost and the program fails to
+            have initial communcations to the remotehost.
         SystemExit
             If invalid additional host argument(s) are
             passed in (see notes).
@@ -79,16 +79,9 @@ class HostFactory:
 
         Notes
         --------
-        In regards to the 'subprocess.CalledProcessError'.
-        When determining if a user has chosen a remotehost
-        to retrieve Git repos from, two calls are made to the remotehost.
-        Both calls are through the subprocess library.
-
-        In regards to the 'SystemExit'.
-        It is possible that a user can request a valid host but pass
-        in a invalid argument (e.g. localhost with a path that does
-        not exist on the system). This will result in cause the
-        HostFactory to raise SystemExit.
+        In regards to the 'SystemExit'. An example of this
+        would be when a user chooses to pull repos from a localhost
+        with a path that does not exist on the system.
 
         """
         try:
