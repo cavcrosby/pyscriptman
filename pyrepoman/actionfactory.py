@@ -20,6 +20,7 @@ from util.message import Message
 
 class ActionFactory:
     """The way of creating action objects in pyrepoman."""
+
     @staticmethod
     def _return_update_constructor():
         """Returns 'Update' class."""

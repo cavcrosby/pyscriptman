@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+
+"""This is the main entry for pyrepoman."""
 # Standard Library Imports
 import subprocess
 
@@ -18,7 +20,7 @@ from pyrepoman.pyrepoman_variables import (
 
 
 def pyrepoman():
-
+    """The main of the pyrepoman program."""
     try:
         configholder = ConfigHolder.from_object_dict(
             Cmd.retrieve_args(), CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH
@@ -26,14 +28,14 @@ def pyrepoman():
         action = ActionFactory.create_action(configholder)
         action.run()
     except (
-            FileNotFoundError,
-            PermissionError,
-            SystemExit,
-            AttributeError,
-            toml.TomlDecodeError,
-            subprocess.CalledProcessError,
-            requests.exceptions.ConnectionError,
-            requests.exceptions.HTTPError,
+        FileNotFoundError,
+        PermissionError,
+        SystemExit,
+        AttributeError,
+        toml.TomlDecodeError,
+        subprocess.CalledProcessError,
+        requests.exceptions.ConnectionError,
+        requests.exceptions.HTTPError,
     ):
         pass
     except Exception as e:

@@ -1,6 +1,6 @@
+"""These are variables that are used by the entire project."""
 # Standard Library Imports
 import os
-import sys
 
 # Third Party Imports
 
