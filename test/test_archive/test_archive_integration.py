@@ -62,9 +62,7 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
-        diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff_bundle_contents() == False 
 
     @pytest.mark.parametrize(
         "github_setup",
@@ -103,9 +101,7 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
-        diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff_bundle_contents() == False
 
     @pytest.mark.parametrize(
         "github_setup",
@@ -152,6 +148,4 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        dcmp = filecmp.dircmp(ARCHIVE_TARGET, MODEL_TARGET)
-        diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff_bundle_contents() == False
