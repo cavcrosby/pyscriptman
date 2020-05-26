@@ -130,7 +130,7 @@ class ActionFactory:
                 host = HostFactory.create_host(configholder)
                 return cls._return_backup_constructor(host)
             else:
-                Message.print_generator_invalid_action(
+                Message.print_factory_invalid_action(
                     configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
                 )
                 sys.exit(1)

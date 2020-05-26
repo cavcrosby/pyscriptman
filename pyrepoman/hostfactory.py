@@ -123,5 +123,5 @@ class HostFactory:
         elif remotehost.RemoteHost.is_host_type(host_name, configholder):
             return cls._return_remotehost_constructor(configholder)
         else:
-            Message.print_generator_invalid_host(configholder)
+            Message.print_factory_invalid_host(configholder)
             sys.exit(1)

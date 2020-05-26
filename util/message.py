@@ -32,8 +32,8 @@ class Message:
         "configholder was given a duplicate configuration to store:"
     )
     CONFIGHOLDER_CONFIG_NOT_EXIST = "configuration does not exist,"
-    GENERATOR_INVALID_ACTION = "Invalid action target; action"
-    GENERATOR_INVALID_HOST = "Invalid host target; Configs passed in:"
+    FACTORY_INVALID_ACTION = "Invalid action target; action"
+    FACTORY_INVALID_HOST = "Invalid host target; Configs passed in:"
 
     @classmethod
     def construct_helpdesc_notimplemented_msg(cls, class_name):
@@ -108,11 +108,11 @@ class Message:
         print(f"{cls.ERROR_PREFIX} {cls.CONFIGHOLDER_CONFIG_NOT_EXIST} {config_name}")
 
     @classmethod
-    def print_generator_invalid_action(cls, action_name):
+    def print_factory_invalid_action(cls, action_name):
 
-        print(f"{cls.ERROR_PREFIX} {cls.GENERATOR_INVALID_ACTION} {action_name}")
+        print(f"{cls.ERROR_PREFIX} {cls.FACTORY_INVALID_ACTION} {action_name}")
 
     @classmethod
-    def print_generator_invalid_host(cls, configholder):
+    def print_factory_invalid_host(cls, configholder):
 
-        print(f"{cls.ERROR_PREFIX} {cls.GENERATOR_INVALID_HOST} {configholder}")
+        print(f"{cls.ERROR_PREFIX} {cls.FACTORY_INVALID_HOST} {configholder}")
