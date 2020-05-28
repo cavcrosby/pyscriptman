@@ -2,12 +2,14 @@
 import subprocess
 import os
 import shutil
+import pathlib
 
 # Third Party Imports
 import pytest
 
 # Local Application Imports
 from util.configholder import ConfigHolder
+from global_variables import ROOT_DIR
 from test.conftest import (
     load_configs,
     delete_configs,
@@ -36,6 +38,7 @@ def integration_test_setup(request):
     os.mkdir(MODEL_TARGET)
 
     def integration_test_teardown():
+        os.chdir(ROOT_DIR)
         os.chdir(MODEL_TARGET)
         for repo in os.listdir():
             os.chdir(repo)
@@ -43,7 +46,8 @@ def integration_test_setup(request):
             git_add_commit_push("test done, now deleting any additional files added...")
             os.chdir("..")
         os.chdir("..")
-        shutil.rmtree(UPDATE_TARGET)
+        if(pathlib.Path(UPDATE_TARGET).exists()):
+            shutil.rmtree(UPDATE_TARGET)
         shutil.rmtree(MODEL_TARGET)
         delete_configs(configholder, configs)
 
