@@ -52,7 +52,7 @@ class ActionFactory:
 
         Parameters
         --------
-        configholder : ConfigHolder
+        configholder : util.configholder.ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns

@@ -15,7 +15,7 @@ class Action(ABC):
 
     Action subclasses are created under the assumption
     that their abstract methods are defined and `HELP_DESC`
-    is also defined in class scope.
+    is also defined in class scope (see __init_subclass__).
 
     # reference to __init_subclass__
     Parameters
@@ -40,14 +40,14 @@ class Action(ABC):
     add_parser : subparser_container
         How actions are added to the command line to be used.
         Used to enforce consistent structure.
+    run
+        To be implemented, what you want the action to do.
     
     Notes
     ----------
     _modify_parser : parser
         To be implemented, allows the action parser to
         take custom arguments.
-    run
-        To be implemented, what you want the action to do.
 
     """
     _HOST_SUBPARSER_TITLE = "available hosts"

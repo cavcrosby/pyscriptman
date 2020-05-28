@@ -53,7 +53,7 @@ class HostFactory:
 
         Parameters
         --------
-        configholder : ConfigHolder
+        configholder : util.configholder.ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns
@@ -107,7 +107,7 @@ class HostFactory:
         --------
         host_name : str
             This is the host chosen by the user from the command line.
-        configholder : ConfigHolder
+        configholder : util.configholder.ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns
