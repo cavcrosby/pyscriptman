@@ -77,7 +77,7 @@ def get_pwd_local_dir_names():
         raise
 
 
-def get_typeof_repo_names_no_path(host_path, barerepo):
+def get_typeof_repo_names(host_path, barerepo):
 
     pred1, pred2 = ("true", "false") if barerepo else ("false", "true")
     repos = list()

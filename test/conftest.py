@@ -16,7 +16,7 @@ from global_variables import (
     REMOTE_SCRIPT_GET_BARE_REPOS_NAME,
 )
 from util.helpers import (
-    get_typeof_repo_names_no_path,
+    get_typeof_repo_names,
     copy_script_to_host,
     execute_script_on_host,
     expand_target_path_on_host,
@@ -118,7 +118,7 @@ def get_localhost_repos(git_command, configholder, dest):
     BARE_REPOS_DIR_PATH = expanduser(
         configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
     )
-    bare_repos = get_typeof_repo_names_no_path(BARE_REPOS_DIR_PATH, True)
+    bare_repos = get_typeof_repo_names(BARE_REPOS_DIR_PATH, True)
     for bare_repo_name in bare_repos:
         git_command(join(BARE_REPOS_DIR_PATH, bare_repo_name), bare_repo_name)
     os.chdir("..")

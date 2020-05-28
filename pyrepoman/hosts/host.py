@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod, abstractclassmethod
 # Third Party Imports
 
 # Local Application Imports
-from util.helpers import get_typeof_repo_names_no_path
+from util.helpers import get_typeof_repo_names
 from util.message import Message
 
 
@@ -39,7 +39,7 @@ class Host(ABC):
     @staticmethod
     def _get_bare_repo_names_from_path(host_path):
 
-        return get_typeof_repo_names_no_path(host_path, True)
+        return get_typeof_repo_names(host_path, True)
 
     @classmethod
     def add_parser(cls, subparser_container, help_desc):

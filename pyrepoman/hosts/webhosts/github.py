@@ -6,6 +6,7 @@ import toml
 
 # Local Application Imports
 from pyrepoman.hosts.webhosts.webhost import WebHost
+from pyrepoman.pyrepoman_variables import REQUIRE_SUBCOMMANDS
 from util.message import Message
 from util.githubauth import GitHubAuth
 
@@ -43,11 +44,11 @@ class GitHub(WebHost):
         repo_type_cmd_name_dash = cls.REPO_TYPE_CMD_ARG_NAME.replace("_", "-")
 
         subparser_container = github_parser.add_subparsers(
-            title="[available repo-owner-types]",
+            title="available repo-owner-types",
             metavar="repo-owner-type [options ...]",
             dest=f"{cls.REPO_OWNER_TYPE_CMD_ARG_NAME}",
         )
-        subparser_container.required = True
+        subparser_container.required = REQUIRE_SUBCOMMANDS
 
         own = subparser_container.add_parser(
             cls.OWN_CMD_ARG_NAME,

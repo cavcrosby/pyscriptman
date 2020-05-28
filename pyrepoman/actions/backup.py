@@ -8,6 +8,7 @@ import requests
 from pyrepoman.hosts import localhost, remotehost
 from pyrepoman.hosts.webhosts import github
 from pyrepoman.actions.action import Action
+from pyrepoman.pyrepoman_variables import REQUIRE_SUBCOMMANDS
 from util.message import Message
 from util.helpers import mirror_repo
 
@@ -27,7 +28,7 @@ class Backup(Action):
         backup_host_subparsers = parser.add_subparsers(
             title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
         )
-        backup_host_subparsers.required = cls._REQUIRE_SUBCOMMANDS
+        backup_host_subparsers.required = REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(backup_host_subparsers, github.GitHub.HELP_DESC)
         remotehost.RemoteHost.add_parser(
             backup_host_subparsers, remotehost.RemoteHost.HELP_DESC

@@ -13,13 +13,19 @@ import toml
 
 # Local Application Imports
 from pyrepoman.hostfactory import HostFactory
-from pyrepoman.actions import update, fetch, backup, archive
-from pyrepoman.actions.action import Action
 from util.message import Message
+from pyrepoman.actions.action import Action
+from pyrepoman.actions import (
+    update,
+    fetch,
+    backup,
+    archive,
+)
 
 
 class ActionFactory:
     """The way of creating action objects in pyrepoman."""
+
     @staticmethod
     def _return_update_constructor():
         """Returns 'Update' class."""

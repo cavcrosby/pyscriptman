@@ -12,10 +12,13 @@ import subprocess
 import toml
 
 # Local Application Imports
-from pyrepoman.hosts import localhost, remotehost
+from util.message import Message
 from pyrepoman.hosts.webhosts import github
 from pyrepoman.hosts.host import Host
-from util.message import Message
+from pyrepoman.hosts import (
+    localhost,
+    remotehost,
+)
 
 
 class HostFactory:
