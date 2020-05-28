@@ -56,7 +56,7 @@ class HostFactory:
         Returns
         --------
         Host
-            A instantiation of a 'host' subclass should be returned.
+            An instantiated 'Host' subclass.
 
         Raises
         --------
@@ -74,7 +74,8 @@ class HostFactory:
             If a webhost is unable to load 'default'
             configurations from the configuration file.
         PermissionError
-            If the dot character (alone anyways) is passed as
+            If the present working directory has insufficient permissions
+            and the dot character (alone anyways) is passed as
             the localhost argument.
 
         Notes
@@ -97,7 +98,7 @@ class HostFactory:
 
     @classmethod
     def _get_host_constructor(cls, host_name, configholder):
-        """Finds correct host constructor then returns an 'Host' subclass.
+        """Finds correct host type then returns an 'Host' subclass constructor.
 
         Parameters
         --------
@@ -109,7 +110,7 @@ class HostFactory:
         Returns
         --------
         Host
-            A subclass of 'Host' should be returned.
+            A subclass constructor of 'Host' should be returned.
 
         Raises
         --------

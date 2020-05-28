@@ -17,9 +17,9 @@ class Cmd:
     ----------
     _DESC : str
             Command line program description printed when --help/-h
-            is given with just the executable name.
+            is given with no other arguments/flags.
     _parser : ArgumentParser
-            This is the root parser for the program.
+            This is the root parser for command line arguments.
 
     """
     _DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
@@ -39,7 +39,7 @@ class Cmd:
         Raises
         --------
         SystemExit
-            If user input is not considered valid when parsing args
+            If user input is not considered valid when parsing arguments.
 
         """
         _action_subparsers = cls._parser.add_subparsers(

@@ -20,7 +20,6 @@ from util.message import Message
 
 class ActionFactory:
     """The way of creating action objects in pyrepoman."""
-
     @staticmethod
     def _return_update_constructor():
         """Returns 'Update' class."""
@@ -53,7 +52,7 @@ class ActionFactory:
         Returns
         --------
         Action
-            A instantiation of a 'Action' subclass should be returned.
+            An instantiated 'Action' subclass.
 
         Raises
         --------
@@ -71,7 +70,8 @@ class ActionFactory:
             If a webhost is unable to load 'default'
             configurations from the configuration file.
         PermissionError
-            If the dot character (alone anyways) is passed as
+            If the present working directory has insufficient permissions
+            and the dot character (alone anyways) is passed as
             the localhost argument.
 
         See Also
@@ -82,7 +82,7 @@ class ActionFactory:
         --------
         In regards to the 'SystemExit'. An example of this
         would be when a user chooses to pull repos from a localhost
-        with a path that does not exist on the system.
+        with a path that does not exist on the system. # TODO MAKE THIS AN EXAMPLE?
 
         """
         try:
@@ -98,7 +98,7 @@ class ActionFactory:
 
     @classmethod
     def _get_action_constructor(cls, action_name, configholder):
-        """Finds correct action constructor then returns an 'Action' subclass.
+        """Finds correct action type then returns an 'Action' subclass constructor.
 
         Parameters
         --------
@@ -110,7 +110,7 @@ class ActionFactory:
         Returns
         --------
         Action
-            A subclass of 'Action' should be returned.
+            A subclass constructor of 'Action' should be returned.
 
         Raises
         --------
