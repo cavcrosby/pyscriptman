@@ -40,6 +40,12 @@ class Update(Action):
             A normal argparse.ArgumentParser parser that
             can take additional positional/optional arguments.
 
+        Returns
+        --------
+        parser : argparse.ArgumentParser
+            A normal argparse.ArgumentParser parser that
+            can additional positional/optional arguments.
+
         """
         return parser
 

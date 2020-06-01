@@ -78,7 +78,7 @@ class ActionFactory:
         PermissionError
             If the present working directory has insufficient permissions
             and the dot character (alone anyways) is passed as
-            the localhost argument.
+            the localhost argument. # TODO MAKE THIS AN EXAMPLE?
 
         See Also
         --------

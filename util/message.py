@@ -45,7 +45,7 @@ class Message:
 
         print(
             f"{cls.ERROR_PREFIX} [{table_name}.{default_table_name}] {cls.DEFAULT_TABLE_DOES_NOT_EXIST}"
-        )  # TODO CHANGE THAT THEY SHOULD INTERACT WITH THE INSTALLER FOR THE CONFIGS?
+        )
 
     @classmethod
     def print_unknown_error_occurred(cls, exception):
