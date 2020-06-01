@@ -33,7 +33,7 @@ class Backup(Action):
     ----------
     HELP_DESC : str
         Description provided for an action when using
-        -h/--help with on other arguments provided.
+        -h/--help with no action provided.
 
     """
     HELP_DESC = "backup all Git repos, done by mirroring repos fully"
@@ -53,11 +53,11 @@ class Backup(Action):
         ----------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
-            can additional positional/optional arguments.
+            can take additional positional/optional arguments.
 
         """
         backup_host_subparsers = parser.add_subparsers(
-            title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
+            title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
         )
         backup_host_subparsers.required = REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(backup_host_subparsers, github.GitHub.HELP_DESC)

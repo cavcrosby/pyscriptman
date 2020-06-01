@@ -32,7 +32,7 @@ class Fetch(Action):
     ----------
     HELP_DESC : str
         Description provided for an action when using
-        -h/--help with on other arguments provided.
+        -h/--help with no action provided.
 
     """
     HELP_DESC = "fetch all Git repos through a web provider"
@@ -52,11 +52,11 @@ class Fetch(Action):
         ----------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
-            can additional positional/optional arguments.
+            can take additional positional/optional arguments.
 
         """
         fetch_host_subparsers = parser.add_subparsers(
-            title=cls._HOST_SUBPARSER_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
+            title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
         )
         fetch_host_subparsers.required = REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(fetch_host_subparsers, github.GitHub.HELP_DESC)

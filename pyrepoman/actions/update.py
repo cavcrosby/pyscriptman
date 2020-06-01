@@ -21,7 +21,7 @@ class Update(Action):
     ----------
     HELP_DESC : str
         Description provided for an action when using
-        -h/--help with on other arguments provided.
+        -h/--help with no action provided.
 
     """
     HELP_DESC = "update all Git repos in your current directory from remote repos"
@@ -38,7 +38,7 @@ class Update(Action):
         ----------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
-            can additional positional/optional arguments.
+            can take additional positional/optional arguments.
 
         """
         return parser

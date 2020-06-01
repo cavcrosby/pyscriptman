@@ -16,22 +16,16 @@ class Action(ABC):
     Action subclasses are created under the assumption
     that their abstract methods are defined and `HELP_DESC`
     is also defined in class scope (see __init_subclass__).
-
-    # reference to __init_subclass__
-    Parameters
-    ----------
-    *args : optional
-    **kwargs : optional
    
     Attributes
     ----------
-    _HOST_SUBPARSER_TITLE : str
-        Selection of choices title for hosts.
+    _HOST_SUBPARSERS_TITLE : str
+        Title for selection of hosts.
     _HOST_SUBPARSER_METAVAR : str
         Action's host argument name.
     HELP_DESC : NotImplemented
         Description provided for an action when using
-        -h/--help with on other arguments provided.
+        -h/--help with no action provided.
     ACTION_CMD_ARG_NAME : str
         Chosen action is stored under this name.
     
@@ -50,7 +44,7 @@ class Action(ABC):
         take custom arguments.
 
     """
-    _HOST_SUBPARSER_TITLE = "available hosts"
+    _HOST_SUBPARSERS_TITLE = "available hosts"
     _HOST_SUBPARSER_METAVAR = "host [options ...]"
 
     HELP_DESC = NotImplemented
