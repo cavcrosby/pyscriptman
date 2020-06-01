@@ -51,7 +51,7 @@ class Action(ABC):
     ACTION_CMD_ARG_NAME = "action"
 
     def __init_subclass__(cls, *args, **kwargs):
-
+        """Specifications required by future action subclasses."""
         super().__init_subclass__(*args, **kwargs)
 
         if cls.HELP_DESC is NotImplemented:
@@ -61,12 +61,26 @@ class Action(ABC):
 
     @staticmethod
     def _get_pwd_local_nonbare_repo_names():
-        """Returns bare repos in the current present working directory."""
+        """Returns bare repos in the current present working directory.
+        
+        Returns
+        --------
+        list of str(s)
+            A list of git repo name(s).
+        
+        """
         return get_typeof_repo_names(os.getcwd(), False)
 
     @classmethod
     def _get_action_name(cls):
-        """How the action name is returned."""
+        """How the action name is returned.
+        
+        Returns
+        --------
+        str
+            A lower case action name.
+        
+        """
         return cls.__name__.lower()
 
     @classmethod
@@ -77,6 +91,11 @@ class Action(ABC):
         ----------
         chosen_action : str
             Input received from the command line.
+
+        Returns
+        --------
+        bool
+            Whether the action was chosen or not.
 
         """
         return chosen_action == cls._get_action_name()
@@ -90,7 +109,12 @@ class Action(ABC):
         subparser_container : argparse._SubParsersAction
             The 'container' that the action subparser is added to
             (see notes).
-            
+
+        Returns
+        --------
+        parser : argparse.ArgumentParser
+            A normal argparse.ArgumentParser parser that
+            can additional positional/optional arguments.
 
         Notes
         ----------

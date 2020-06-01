@@ -55,6 +55,12 @@ class Archive(Action):
             A normal argparse.ArgumentParser parser that
             can take additional positional/optional arguments.
 
+        Returns
+        --------
+        parser : argparse.ArgumentParser
+            A normal argparse.ArgumentParser parser that
+            can additional positional/optional arguments.
+
         """
         archive_host_subparsers = parser.add_subparsers(
             title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
