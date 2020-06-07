@@ -69,7 +69,7 @@ class Action(ABC):
             A list of git repo name(s).
         
         """
-        return get_typeof_repo_names(os.getcwd(), False)
+        return get_typeof_repo_names(os.getcwd(), barerepo=False)
 
     @classmethod
     def _get_action_name(cls):

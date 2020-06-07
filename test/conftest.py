@@ -49,7 +49,7 @@ def generate_localhost(configholder):
 
     # see localhost constructor, as it is expecting a configuration called 'path'
     target_path = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
-    configholder.add_config(LocalHost.PATH_CMD_ARG_NAME, target_path)
+    configholder.add_config(LocalHost.PATH_KEY, target_path)
     return LocalHost(configholder)
 
 
@@ -118,7 +118,7 @@ def get_localhost_repos(git_command, configholder, dest):
     BARE_REPOS_DIR_PATH = expanduser(
         configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
     )
-    bare_repos = get_typeof_repo_names(BARE_REPOS_DIR_PATH, True)
+    bare_repos = get_typeof_repo_names(BARE_REPOS_DIR_PATH, barerepo=True)
     for bare_repo_name in bare_repos:
         git_command(join(BARE_REPOS_DIR_PATH, bare_repo_name), bare_repo_name)
     os.chdir("..")

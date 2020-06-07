@@ -89,7 +89,7 @@ class HostFactory:
 
         """
         try:
-            host_name = configholder.get_config_value(Host.HOST_CMD_ARG_NAME)
+            host_name = configholder.get_config_value(Host.HOST_KEY)
             host_constructor = cls._get_host_constructor(host_name, configholder)
             return host_constructor()
         except toml.decoder.TomlDecodeError:

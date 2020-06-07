@@ -19,15 +19,15 @@ class Host(ABC):
     Attributes
     ----------
     HELP_DESC : NotImplemented
-        Description provided for an host when using
-        -h/--help with no host provided.
-    HOST_CMD_ARG_NAME : str
+        Parser description provided of a host # TODO PROVIDE EXAMPLE
+        when using -h/--help.
+    HOST_KEY : str
         Chosen host is stored under this name.
     
     Methods
     ----------
     add_parser : subparser_container
-        How hostss are added to the command line to be used.
+        How hosts are added to the command line to be used.
         Used to enforce consistent structure.
     
     Notes
@@ -39,7 +39,7 @@ class Host(ABC):
     """
 
     HELP_DESC = NotImplemented
-    HOST_CMD_ARG_NAME = "host"
+    HOST_KEY = "host"
 
     @property
     def repo_names_and_locations(self):
@@ -70,11 +70,11 @@ class Host(ABC):
 
         Parameters
         ----------
-        host_path : str
+        dir_path : str
             A directory path.
 
         """
-        return get_typeof_repo_names(dir_path, True)
+        return get_typeof_repo_names(dir_path, barerepo=True)
 
     @classmethod
     def add_parser(cls, subparser_container, help_desc):
@@ -98,7 +98,7 @@ class Host(ABC):
             subcommand, help=help_desc, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
-        parser.set_defaults(**{cls.HOST_CMD_ARG_NAME: subcommand})
+        parser.set_defaults(**{cls.HOST_KEY: subcommand})
         return parser
 
     @classmethod

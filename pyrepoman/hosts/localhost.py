@@ -12,7 +12,7 @@ from util.message import Message
 
 
 class LocalHost(Host):
-    """The 'Host' host class.
+    """The 'LocalHost' host class.
 
     This host allows you interact
     with your local system/machine.
@@ -25,19 +25,19 @@ class LocalHost(Host):
     Attributes
     ----------
     HELP_DESC : str
-        Description provided for an host argument when using
-        -h/--help with other arguments provided.
-    PATH_CMD_ARG_NAME : str
+        Parser description provided of a host
+        when using -h/--help.
+    PATH_KEY : str
         Chosen path is stored under this name.
 
     """
     HELP_DESC = "can manipulate local directories containing git repos"
-    PATH_CMD_ARG_NAME = "path"
+    PATH_KEY = "path"
 
     def __init__(self, configholder):
 
         super().__init__()
-        self.path = configholder.get_config_value(self.PATH_CMD_ARG_NAME)
+        self.path = configholder.get_config_value(self.PATH_KEY)
 
     @classmethod
     def is_host_type(cls, chosen_host, configholder):
@@ -65,7 +65,7 @@ class LocalHost(Host):
             the localhost argument. # TODO MAKE THIS AN EXAMPLE?
 
         """
-        path = configholder.get_config_value(cls.PATH_CMD_ARG_NAME)
+        path = configholder.get_config_value(cls.PATH_KEY)
         path = "" if path == configholder.NON_EXISTANT_CONFIG else expanduser(path)
 
         try:
@@ -94,7 +94,7 @@ class LocalHost(Host):
 
         """
         parser.add_argument(
-            cls.PATH_CMD_ARG_NAME, help="specifies what directory you wish to target"
+            cls.PATH_KEY, help="specifies what directory you wish to target"
         )
 
         return parser

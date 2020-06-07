@@ -21,14 +21,14 @@ class RemoteHost(Host):
 
     HELP_DESC = "can target directories on remote hosts"
     TARGET_CMD_ARG_NAME = "target"
-    TARGET_PATH_CMD_ARG_NAME = "target_path"
+    TARGET_PATH_KEY = "target_path"
     DEFAULT_TARGET_PATH = "$HOME"
 
     def __init__(self, configholder):
 
         super().__init__()
         self.target = configholder.get_config_value(self.TARGET_CMD_ARG_NAME)
-        self.target_path = configholder.get_config_value(self.TARGET_PATH_CMD_ARG_NAME)
+        self.target_path = configholder.get_config_value(self.TARGET_PATH_KEY)
 
     @classmethod
     def is_host_type(cls, chosen_host, configholder):
@@ -52,7 +52,7 @@ class RemoteHost(Host):
         try:
             target = configholder.get_config_value(cls.TARGET_CMD_ARG_NAME)
             expanded_path = expand_target_path_on_host(
-                target, configholder.get_config_value(cls.TARGET_PATH_CMD_ARG_NAME)
+                target, configholder.get_config_value(cls.TARGET_PATH_KEY)
             )
             return can_reach_remote_dir(target, expanded_path)
         except subprocess.CalledProcessError:
@@ -61,7 +61,7 @@ class RemoteHost(Host):
     @classmethod
     def _modify_parser(cls, parser):
 
-        target_path_cmd_name_dash = cls.TARGET_PATH_CMD_ARG_NAME.replace("_", "-")
+        target_path_cmd_name_dash = cls.TARGET_PATH_KEY.replace("_", "-")
 
         parser.add_argument(
             cls.TARGET_CMD_ARG_NAME,
