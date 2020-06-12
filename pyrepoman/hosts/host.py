@@ -1,4 +1,4 @@
-"""The abstract class module for allhosts."""
+"""The abstract class module for all hosts."""
 # Standard Library Imports
 from abc import ABC, abstractmethod, abstractclassmethod
 
