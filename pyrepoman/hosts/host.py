@@ -19,8 +19,8 @@ class Host(ABC):
     Attributes
     ----------
     HELP_DESC : NotImplemented
-        Parser description provided of a host # TODO PROVIDE EXAMPLE
-        when using -h/--help.
+        Parser description provided of a host
+        when using -h/--help (See Also).
     HOST_KEY : str
         Chosen host is stored under this name.
     
@@ -29,6 +29,12 @@ class Host(ABC):
     add_parser : subparser_container
         How hosts are added to the command line to be used.
         Used to enforce consistent structure.
+
+    See Also
+    ----------
+    pyrepoman.LocalHost --> HELP_DESC Example
+    pyrepoman.RemoteHost --> HELP_DESC Example
+    pyrepoman.GitHub --> HELP_DESC Example
     
     Notes
     ----------

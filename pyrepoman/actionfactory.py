@@ -78,7 +78,7 @@ class ActionFactory:
         PermissionError
             If the present working directory has insufficient permissions
             and the dot character (alone anyways) is passed as
-            the localhost argument. # TODO MAKE THIS AN EXAMPLE?
+            the localhost argument.
 
         See Also
         --------
@@ -88,7 +88,12 @@ class ActionFactory:
         --------
         In regards to the 'SystemExit'. An example of this
         would be when a user chooses to pull repos from a localhost
-        with a path that does not exist on the system. # TODO MAKE THIS AN EXAMPLE?
+        with a path that does not exist on the system (see Examples).
+
+        Examples
+        ----------
+        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch localhost /foo/thispathdoesnotexist # TODO FINALIZE EXAMPLE
+        Error: Invalid host target; Configs passed in: {'path': '/foo/thispathdoesnotexist', 'host': 'localhost'}
 
         """
         try:

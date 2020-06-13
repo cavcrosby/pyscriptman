@@ -14,7 +14,7 @@ from util.message import Message
 class LocalHost(Host):
     """The 'LocalHost' host class.
 
-    This host allows you interact
+    This interface allows you to interact
     with your local system/machine.
 
     Parameters
@@ -26,11 +26,12 @@ class LocalHost(Host):
     ----------
     HELP_DESC : str
         Parser description provided of a host
-        when using -h/--help.
+        when using -h/--help (see Examples).
     PATH_KEY : str
         Chosen path is stored under this name.
 
     """
+
     HELP_DESC = "can manipulate local directories containing git repos"
     PATH_KEY = "path"
 
@@ -62,16 +63,22 @@ class LocalHost(Host):
         PermissionError
             If the present working directory has insufficient permissions
             and the dot character (alone anyways) is passed as
-            the localhost argument. # TODO MAKE THIS AN EXAMPLE?
+            the localhost argument.
+
+        Examples
+        ----------
+        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
+        available hosts:
+            host [options ...]
+                [...]
+                localhost         can manipulate local directories containing git repos
 
         """
         path = configholder.get_config_value(cls.PATH_KEY)
         path = "" if path == configholder.NON_EXISTANT_CONFIG else expanduser(path)
 
         try:
-            return (
-                chosen_host == cls._get_host_name() and pathlib.Path(path).exists()
-            )
+            return chosen_host == cls._get_host_name() and pathlib.Path(path).exists()
         except PermissionError as e:
             Message.print_permission_denied(e.filename)
             raise
@@ -103,12 +110,14 @@ class LocalHost(Host):
         """Used to determine repo names and locations for localhost.
         
         This method is the 'how' in getting
-        the repo names and locations.
+        the repo names and locations. Host
+        object will store the locations of
+        the repos.
 
         Returns
         --------
         repo_names : list of str
-            Git repo names are returned in a list. # TODO WHY NOT LOCATIONS?
+            Git repo names are returned in a list.
 
         Raises
         --------
