@@ -36,6 +36,7 @@ class Backup(Action):
         -h/--help with no action provided.
 
     """
+
     HELP_DESC = "backup all Git repos, done by mirroring repos fully"
 
     def __init__(self, host):
@@ -66,13 +67,9 @@ class Backup(Action):
             title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
         )
         backup_host_subparsers.required = REQUIRE_SUBCOMMANDS
-        github.GitHub.add_parser(backup_host_subparsers, github.GitHub.HELP_DESC)
-        remotehost.RemoteHost.add_parser(
-            backup_host_subparsers, remotehost.RemoteHost.HELP_DESC
-        )
-        localhost.LocalHost.add_parser(
-            backup_host_subparsers, localhost.LocalHost.HELP_DESC
-        )
+        github.GitHub.add_parser(backup_host_subparsers)
+        remotehost.RemoteHost.add_parser(backup_host_subparsers)
+        localhost.LocalHost.add_parser(backup_host_subparsers)
         return parser
 
     def run(self):

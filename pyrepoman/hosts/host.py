@@ -26,19 +26,19 @@ class Host(ABC):
     
     Methods
     ----------
-    add_parser : subparser_container
+    add_parser : argparse._SubParsersAction
         How hosts are added to the command line to be used.
         Used to enforce consistent structure.
 
     See Also
     ----------
-    pyrepoman.LocalHost --> HELP_DESC Example
-    pyrepoman.RemoteHost --> HELP_DESC Example
-    pyrepoman.GitHub --> HELP_DESC Example
+    pyrepoman.LocalHost.HELP_DESC
+    pyrepoman.RemoteHost.HELP_DESC
+    pyrepoman.GitHub.HELP_DESC
     
     Notes
     ----------
-    _modify_parser : parser
+    _modify_parser : argparse.ArgumentParser
         To be implemented, allows the host parser to
         take custom arguments.
 
@@ -83,7 +83,7 @@ class Host(ABC):
         return get_typeof_repo_names(dir_path, barerepo=True)
 
     @classmethod
-    def add_parser(cls, subparser_container, help_desc):
+    def add_parser(cls, subparser_container):
         """How hosts are added to the command line.
 
         Parameters
@@ -101,7 +101,7 @@ class Host(ABC):
         """
         subcommand = cls._get_host_name()
         parser = subparser_container.add_parser(
-            subcommand, help=help_desc, allow_abbrev=False
+            subcommand, help=cls.HELP_DESC, allow_abbrev=False
         )
         parser = cls._modify_parser(parser)
         parser.set_defaults(**{cls.HOST_KEY: subcommand})
@@ -180,7 +180,7 @@ class Host(ABC):
 
         See Also
         ----------
-        add_repo_name_and_location : For location definition
+        pyrepoman.hosts.host.add_repo_name_and_location : For location definition
 
         """
         NotImplemented

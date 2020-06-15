@@ -24,6 +24,7 @@ class Update(Action):
         -h/--help with no action provided.
 
     """
+
     HELP_DESC = "update all Git repos in your current directory from remote repos"
 
     def __init__(self):

@@ -46,7 +46,7 @@ def integration_test_setup(request):
             git_add_commit_push("test done, now deleting any additional files added...")
             os.chdir("..")
         os.chdir("..")
-        if(pathlib.Path(UPDATE_TARGET).exists()):
+        if pathlib.Path(UPDATE_TARGET).exists():
             shutil.rmtree(UPDATE_TARGET)
         shutil.rmtree(MODEL_TARGET)
         delete_configs(configholder, configs)

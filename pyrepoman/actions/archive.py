@@ -36,6 +36,7 @@ class Archive(Action):
         -h/--help with no action provided.
 
     """
+
     HELP_DESC = "archive all Git repos, done by bundling repos"
 
     def __init__(self, host):
@@ -66,13 +67,9 @@ class Archive(Action):
             title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
         )
         archive_host_subparsers.required = REQUIRE_SUBCOMMANDS
-        github.GitHub.add_parser(archive_host_subparsers, github.GitHub.HELP_DESC)
-        remotehost.RemoteHost.add_parser(
-            archive_host_subparsers, remotehost.RemoteHost.HELP_DESC
-        )
-        localhost.LocalHost.add_parser(
-            archive_host_subparsers, localhost.LocalHost.HELP_DESC
-        )
+        github.GitHub.add_parser(archive_host_subparsers)
+        remotehost.RemoteHost.add_parser(archive_host_subparsers)
+        localhost.LocalHost.add_parser(archive_host_subparsers)
         return parser
 
     def run(self):

@@ -57,8 +57,12 @@ def generate_github_host(configholder):
 
     # see github constructor, as it is currently expecting the following configurations
     configholder.add_config(GitHub.REPO_TYPE_CMD_ARG_NAME, GitHub.DEFAULT_REPO_TYPE_OWN)
-    configholder.add_config(GitHub.REPO_OWNER_TYPE_CMD_ARG_NAME, GitHub.OWN_CMD_ARG_NAME)
-    configholder.add_config(GitHub.USERNAME_CMD_ARG_NAME, configholder.get_config_value("GITHUB_NAME"))
+    configholder.add_config(
+        GitHub.REPO_OWNER_TYPE_CMD_ARG_NAME, GitHub.OWN_CMD_ARG_NAME
+    )
+    configholder.add_config(
+        GitHub.USERNAME_CMD_ARG_NAME, configholder.get_config_value("GITHUB_NAME")
+    )
 
     return GitHub(configholder)
 

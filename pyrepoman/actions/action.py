@@ -31,7 +31,7 @@ class Action(ABC):
     
     Methods
     ----------
-    add_parser : subparser_container
+    add_parser : argparse._SubParsersAction
         How actions are added to the command line to be used.
         Used to enforce consistent structure.
     run
@@ -39,11 +39,12 @@ class Action(ABC):
     
     Notes
     ----------
-    _modify_parser : parser
+    _modify_parser : argparse.ArgumentParser
         To be implemented, allows the action parser to
         take custom arguments.
 
     """
+
     _HOST_SUBPARSERS_TITLE = "available hosts"
     _HOST_SUBPARSER_METAVAR = "host [options ...]"
 

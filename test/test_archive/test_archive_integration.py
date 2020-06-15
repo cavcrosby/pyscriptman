@@ -62,7 +62,7 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        assert diff_bundle_contents() == False 
+        assert diff_bundle_contents() == False
 
     @pytest.mark.parametrize(
         "github_setup",

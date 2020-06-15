@@ -104,7 +104,9 @@ class ConfigHolder:
                 table_entries, self._DEFAULTS_ENTRY_NAME
             )
         except KeyError:
-            Message.print_default_table_does_notexist(self._DEFAULTS_ENTRY_NAME, table_name)
+            Message.print_default_table_does_notexist(
+                self._DEFAULTS_ENTRY_NAME, table_name
+            )
             raise
 
     def table_func_retrieve_additional_configs(self, table_name, func_name):

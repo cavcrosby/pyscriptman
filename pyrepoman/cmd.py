@@ -15,6 +15,7 @@ from pyrepoman.actions import (
     archive,
 )
 
+
 class Cmd:
     """How pyrepoman interfaces with the command line.
 

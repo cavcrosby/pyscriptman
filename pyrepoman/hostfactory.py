@@ -23,6 +23,7 @@ from pyrepoman.hosts import (
 
 class HostFactory:
     """The way of creating host objects in pyrepoman."""
+
     @staticmethod
     def _return_localhost_constructor(configholder):
         """Returns 'LocalHost' class wrapped in lambda to fufill parameters."""
