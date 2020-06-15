@@ -32,7 +32,7 @@ class RemoteHost(Host):
     Attributes
     ----------
     HELP_DESC : str
-        Parser description provided of a host
+        Parser description of RemoteHost
         when using -h/--help.
     TARGET_KEY : str
         Target is the user and machine. Format should be

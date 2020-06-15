@@ -25,7 +25,7 @@ class LocalHost(Host):
     Attributes
     ----------
     HELP_DESC : str
-        Parser description provided of a host
+        Parser description of LocalHost
         when using -h/--help (see Examples).
     PATH_KEY : str
         Chosen path is stored under this name.
