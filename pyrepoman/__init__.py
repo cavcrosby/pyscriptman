@@ -1,0 +1,1 @@
+from pyrepoman import main
