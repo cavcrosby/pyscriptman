@@ -63,7 +63,7 @@ class ActionFactory:
         Raises
         --------
         toml.decoder.TomlDecodeError
-            If the configuration file for the program has a
+            If the configuration file loaded has a
             syntax error when loaded.
         subprocess.CalledProcessError
             If the user chooses to communicate with

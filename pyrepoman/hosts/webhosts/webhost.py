@@ -59,7 +59,8 @@ class WebHost(Host):
         ----------
         KeyError
             If the webhost does not have a table in the
-            configuration file.
+            configuration file or the 'default' table
+            where default configurations are stored does not exist.
 
         """
         try:
