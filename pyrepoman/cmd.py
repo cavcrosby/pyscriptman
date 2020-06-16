@@ -39,12 +39,12 @@ class Cmd:
         """How arguments are retrieved from the command line.
 
         Returns
-        --------
+        -------
         Namespace
             An object that holds attributes pulled from the command line.
 
         Raises
-        --------
+        ------
         SystemExit
             If user input is not considered valid when parsing arguments.
 

@@ -52,21 +52,21 @@ class LocalHost(Host):
             An instantiation of ConfigHolder, used to hold program configurations.
             
         Returns
-        --------
+        -------
         bool
             Whether or not the user has chosen this host type
             and that other requirements were also met for
             it to be this host type.
 
         Raises
-        --------
+        ------
         PermissionError
             If the present working directory has insufficient permissions
             and the dot character (alone anyways) is passed as
             the localhost argument.
 
         Examples
-        ----------
+        --------
         (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
         available hosts:
             host [options ...]
@@ -94,7 +94,7 @@ class LocalHost(Host):
             can additional positional/optional arguments.
 
         Returns
-        --------
+        -------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
             can additional positional/optional arguments.
@@ -115,12 +115,12 @@ class LocalHost(Host):
         the repos.
 
         Returns
-        --------
+        -------
         repo_names : list of str
             Git repo names are returned in a list.
 
         Raises
-        --------
+        ------
         PermissionError
             If the target directory (to pull repos from)
             does not have read or execute permissions. # TODO WINDOWS PERMISSIONS?

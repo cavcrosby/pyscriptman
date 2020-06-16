@@ -57,7 +57,7 @@ class Backup(Action):
             can take additional positional/optional arguments.
 
         Returns
-        --------
+        -------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
             can additional positional/optional arguments.
@@ -76,7 +76,7 @@ class Backup(Action):
         """Mirrors git repos from a specified target and directory if applicable.
 
         Raises
-        --------
+        ------
         subprocess.CalledProcessError
             If the user chooses to communicate with
             a remotehost and the program fails to

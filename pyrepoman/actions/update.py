@@ -42,7 +42,7 @@ class Update(Action):
             can take additional positional/optional arguments.
 
         Returns
-        --------
+        -------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
             can additional positional/optional arguments.
@@ -54,7 +54,7 @@ class Update(Action):
         """Updates git repos in the present working directory.
 
         Raises
-        --------
+        ------
         subprocess.CalledProcessError
             If the git repos to be updated directories
             do not have write access or if the .git directory

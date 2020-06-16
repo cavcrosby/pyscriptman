@@ -26,7 +26,7 @@ class ConfigHolder:
         """How a config that does not exist is represented.
         
         Returns
-        ----------
+        -------
         NoneType
             How nonexistant configs are represented.
         
@@ -38,7 +38,7 @@ class ConfigHolder:
         """The table name that default configurations are stored under.
         
         Returns
-        ----------
+        -------
         str
             The default table name that stores default configurations.
         
@@ -74,12 +74,12 @@ class ConfigHolder:
             Table name to slice by.
 
         Returns
-        ----------
+        -------
         dict
             Key pairs and/or tables will be returned.
 
         See Also
-        ----------
+        --------
         https://github.com/toml-lang/toml
         
         """
@@ -94,7 +94,7 @@ class ConfigHolder:
             Configuration name to search by.
 
         Returns
-        ----------
+        -------
         util.config.Config
             A config object.
         NoneType
@@ -119,7 +119,7 @@ class ConfigHolder:
             The value of the configuration.
 
         Notes
-        ----------
+        -----
         Warning is printed if a Config object with the same name
         exists in the configholder. This duplicate Config object will
         also be overwritten.
@@ -154,7 +154,7 @@ class ConfigHolder:
             Configuration name to search by.
 
         Returns
-        ----------
+        -------
         bool
             Whether or not the Config object exists in the configholder.
         
@@ -170,7 +170,7 @@ class ConfigHolder:
             Configuration name to search by.
 
         Returns
-        ----------
+        -------
         str
             One possible value type of the Config object.
         int
@@ -190,7 +190,7 @@ class ConfigHolder:
         """How toml files are added to configholder.
 
         Raises
-        ----------
+        ------
         toml.decoder.TomlDecodeError
             If the configuration file loaded has a
             syntax error when loaded.
@@ -216,12 +216,12 @@ class ConfigHolder:
             Table name to search by.
 
         Returns
-        ----------
+        -------
         dict
             Key pairs will be returned.
 
         Raises
-        ----------
+        ------
         toml.decoder.TomlDecodeError
             If the table requested does not exist or
             the 'default' table where default configurations
@@ -260,13 +260,13 @@ class ConfigHolder:
             Function name to search by.
 
         Returns
-        ----------
+        -------
         dict
             Either an empty dict (or table) will be
             returned or key pairs will be returned.
 
         Raises
-        ----------
+        ------
         toml.decoder.TomlDecodeError
             If the table requested does not exist.
 
@@ -290,7 +290,7 @@ class ConfigHolder:
         """Returns values of Config objects selected in debug_configs_names.
         
         Returns
-        ----------
+        -------
         str
             A dictionary that will be represented as a string.
             That will be of the Config object names and values.

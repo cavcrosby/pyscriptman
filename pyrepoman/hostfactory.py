@@ -53,17 +53,17 @@ class HostFactory:
         """Creates and returns a host object.
 
         Parameters
-        --------
+        ----------
         configholder : util.configholder.ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns
-        --------
+        -------
         Host
             An instantiated 'Host' subclass.
 
         Raises
-        --------
+        ------
         toml.decoder.TomlDecodeError
             If the configuration file loaded has a
             syntax error when loaded.
@@ -83,7 +83,7 @@ class HostFactory:
             the localhost argument.
 
         Notes
-        --------
+        -----
         In regards to the 'SystemExit'. An example of this
         would be when a user chooses to pull repos from a localhost
         with a path that does not exist on the system.
@@ -105,19 +105,19 @@ class HostFactory:
         """Finds correct host type then returns an 'Host' subclass constructor.
 
         Parameters
-        --------
+        ----------
         host_name : str
             This is the host chosen by the user from the command line.
         configholder : util.configholder.ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns
-        --------
+        -------
         Host
             A subclass constructor of 'Host' should be returned.
 
         Raises
-        --------
+        ------
         (see create_host 'Raises' section.)
 
         """

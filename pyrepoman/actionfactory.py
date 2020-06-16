@@ -51,17 +51,17 @@ class ActionFactory:
         """Creates and returns a action object.
 
         Parameters
-        --------
+        ----------
         configholder : util.configholder.ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns
-        --------
+        -------
         Action
             An instantiated 'Action' subclass.
 
         Raises
-        --------
+        ------
         toml.decoder.TomlDecodeError
             If the configuration file loaded has a
             syntax error when loaded.
@@ -85,13 +85,13 @@ class ActionFactory:
         pyrepoman.hostfactory
 
         Notes
-        --------
+        -----
         In regards to the 'SystemExit'. An example of this
         would be when a user chooses to pull repos from a localhost
         with a path that does not exist on the system (see Examples).
 
         Examples
-        ----------
+        --------
         (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch localhost /foo/thispathdoesnotexist # TODO FINALIZE EXAMPLE
         Error: Invalid host target; Configs passed in: {'path': '/foo/thispathdoesnotexist', 'host': 'localhost'}
 
@@ -112,19 +112,19 @@ class ActionFactory:
         """Finds correct action type then returns an 'Action' subclass constructor.
 
         Parameters
-        --------
+        ----------
         action_name : str
             This is the action chosen by the user from the command line.
         configholder : ConfigHolder
             An instantiation of ConfigHolder, used to hold program configurations.
 
         Returns
-        --------
+        -------
         Action
             A subclass constructor of 'Action' should be returned.
 
         Raises
-        --------
+        ------
         (see create_action 'Raises' section.)
 
         """

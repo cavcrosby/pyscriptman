@@ -28,19 +28,19 @@ class WebHost(Host):
         An instantiation of ConfigHolder, used to hold program configurations.
     
     Methods
-    ----------
+    -------
     get_user_repo_names_and_locations
         How function configurations are loaded when
         the function is called. Used to enforce consistent
         structure.
 
     See Also
-    ----------
+    --------
     pyrepoman.hosts.host
     pyrepoman.hosts.host.add_repo_name_and_location
 
     Notes
-    ----------
+    -----
     _get_user_repo_names_and_locations
         To be implemented, retrieves and stores
         bare Git repo names and locations (See Also).
@@ -56,7 +56,7 @@ class WebHost(Host):
         """How default configurations are loaded.
 
         Raises
-        ----------
+        ------
         KeyError
             If the webhost does not have a table in the
             configuration file or the 'default' table
@@ -76,10 +76,20 @@ class WebHost(Host):
         """How additional configurations are loaded for the function.
 
         Raises
-        ----------
+        ------
         KeyError
             If the webhost does not have a table in the
             configuration file.
+
+        Returns
+        -------
+        repo_names : list of str
+            Repo names are returned, while repo names
+            and locations are stored in the webhost object (See Also).
+
+        See Also
+        --------
+        pyrepoman.hosts.host
 
         """
         try:

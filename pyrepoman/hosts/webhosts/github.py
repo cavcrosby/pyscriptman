@@ -78,14 +78,14 @@ class GitHub(WebHost):
             Input received from the command line.
             
         Returns
-        --------
+        -------
         bool
             Whether or not the user has chosen this host type
             and that other requirements were also met for
             it to be this host type.
 
         Examples
-        ----------
+        --------
         (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
         available hosts:
             host [options ...]
@@ -106,7 +106,7 @@ class GitHub(WebHost):
             can additional positional/optional arguments.
 
         Returns
-        --------
+        -------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
             can additional positional/optional arguments.
@@ -170,7 +170,7 @@ class GitHub(WebHost):
         RESTv3 API.
 
         Returns
-        --------
+        -------
         repo_names : list of str
             Git repo names are returned in a list.
 

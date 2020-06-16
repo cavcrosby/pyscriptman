@@ -68,14 +68,14 @@ class RemoteHost(Host):
             An instantiation of ConfigHolder, used to hold program configurations.
             
         Returns
-        --------
+        -------
         bool
             Whether or not the user has chosen this host type
             and that other requirements were also met for
             it to be this host type.
 
         Raises
-        --------
+        ------
         subprocess.CalledProcessError
 
             A generic error thrown by the subprocess
@@ -87,7 +87,7 @@ class RemoteHost(Host):
             --> If the directory on the target does not exist.
 
         Examples
-        ----------
+        --------
         (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
         available hosts:
             host [options ...]
@@ -142,7 +142,7 @@ class RemoteHost(Host):
             can additional positional/optional arguments.
 
         Returns
-        --------
+        -------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
             can additional positional/optional arguments.
@@ -172,12 +172,12 @@ class RemoteHost(Host):
         the repos.
 
         Returns
-        --------
+        -------
         repo_names : list of str
             Git repo names are returned in a list.
 
         Raises
-        --------
+        ------
         subprocess.CalledProcessError
 
             A generic error thrown by the subprocess

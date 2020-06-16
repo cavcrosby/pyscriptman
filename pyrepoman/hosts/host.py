@@ -49,7 +49,16 @@ class Host(ABC):
 
     @property
     def repo_names_and_locations(self):
-        """Getter for returning repo names and locations"""
+        """Getter for returning repo names and locations
+        
+        Returns
+        -------
+        dict
+            repo names and locations are returned,
+            where repo names are the keys with locations
+            as the values.
+        
+        """
         return self._repo_names_and_locations
 
     @property
@@ -149,7 +158,7 @@ class Host(ABC):
             (see notes).
 
         Notes
-        ----------
+        -----
         The signature implemented in each host subclass
         does not have to be exact according to the base
         method and may not contain `configholder`.
@@ -179,7 +188,7 @@ class Host(ABC):
         and locations.
 
         See Also
-        ----------
+        --------
         pyrepoman.hosts.host.add_repo_name_and_location : For location definition
 
         """

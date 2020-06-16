@@ -30,7 +30,7 @@ class Action(ABC):
         Chosen action is stored under this name.
     
     Methods
-    ----------
+    -------
     add_parser : argparse._SubParsersAction
         How actions are added to the command line to be used.
         Used to enforce consistent structure.
@@ -38,7 +38,7 @@ class Action(ABC):
         To be implemented, what you want the action to do.
     
     Notes
-    ----------
+    -----
     _modify_parser : argparse.ArgumentParser
         To be implemented, allows the action parser to
         take custom arguments.
@@ -65,7 +65,7 @@ class Action(ABC):
         """Returns bare repos in the current present working directory.
         
         Returns
-        --------
+        -------
         list of str(s)
             A list of git repo name(s).
         
@@ -77,7 +77,7 @@ class Action(ABC):
         """How the action name is returned.
         
         Returns
-        --------
+        -------
         str
             A lower case action name.
         
@@ -94,7 +94,7 @@ class Action(ABC):
             Input received from the command line.
 
         Returns
-        --------
+        -------
         bool
             Whether the action was chosen or not.
 
@@ -112,13 +112,13 @@ class Action(ABC):
             (see notes).
 
         Returns
-        --------
+        -------
         parser : argparse.ArgumentParser
             A normal argparse.ArgumentParser parser that
             can additional positional/optional arguments.
 
         Notes
-        ----------
+        -----
         It should be noted that subparser_container is
         technically not actually an container, but
         a 'special action object' (see argparser documentation).
