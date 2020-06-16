@@ -1,3 +1,10 @@
+"""The class module for diff and related classes.
+
+The purpose of this module is to replicate the Unix
+program 'diff' found in diffutils. Also look at 'See Also'
+in the Diff class.
+
+"""
 # Standard Library Imports
 from queue import Queue
 
@@ -7,17 +14,47 @@ from queue import Queue
 
 
 class Diff:
+    """The class Diff.
+
+    Parameters
+    ----------
+    dcmp : filecmp.dircmp
+        A new directory comparsion object.
+
+    See Also
+    --------
+    https://www.gnu.org/software/diffutils/
+
+    """
+
     def __init__(self, dcmp):
 
         self.dcmp = dcmp
 
     def run(self):
+        """Checking for differences between two directories.
+        
+        Returns
+        -------
+        bool
+            Whether or not any differences exist between
+            the two directories.
 
+        Raises
+        ------
+        util.diff.DiffException
+            If any differences exist between the two directories.
+        
+        """
         try:
             queue = Queue()
             queue.put(self.dcmp)
             diff_files, left_only, right_only = self._diff_iter(queue)
-            if diff_files != None or left_only != None or right_only != None:
+            if (
+                diff_files is not None
+                or left_only is not None
+                or right_only is not None
+            ):
                 raise DiffException(diff_files, left_only, right_only)
             return False
         except DiffException as e:
@@ -28,10 +65,40 @@ class Diff:
             return True
 
     @classmethod
-    def _diff_iter(
-        cls, dcmp_queue, diff_files=list(), left_only=dict(), right_only=dict()
-    ):
+    def _diff_iter(cls, dcmp_queue, diff_files=None, left_only=None, right_only=None):
+        """Iteration over the entire directory tree occurs here.
 
+        Parameters
+        ----------
+        dcmp_queue : queue.Queue of filecmp.dircmp objects
+            This is a collection of comparsion objects to iterate over.
+        diff_files : list of str
+            Each file that is different is recorded.
+        left_only, right_only : dict of str, str
+            This is to record what file was different
+            and which directory did it belong to.
+        
+        Returns
+        -------
+        (diff_files, left_only, right_only)
+            Once the recursion is over, the final results
+            are stored in to a tuple.
+        (None, None, None)
+            Incase no differences were found between the
+            directories.
+
+        Raises
+        ------
+        util.diff.DiffException
+            If any differences exist between the two directories.
+        
+        """
+        if diff_files is None:
+            diff_files = list()
+        if left_only is None:
+            left_only = dict()
+        if right_only is None:
+            right_only = dict()
         if dcmp_queue.empty():
             if not diff_files and not left_only and not right_only:
                 return (None, None, None)
@@ -57,6 +124,12 @@ class Diff:
 
 
 class DiffException(Exception):
+    """Custom exception that formats the body of the diff message.
+    
+    Title is printed out by the Diff class.
+
+    """
+
     def __init__(self, diff_files, left_only, right_only):
         self.message = f"Shared files differences: {str(diff_files)}\n"
         for (left_dir_name, left_dir_diff), (right_dir_name, right_dir_diff) in zip(
@@ -64,3 +137,4 @@ class DiffException(Exception):
         ):
             self.message += f"{left_dir_name} has exclusively: {str(left_dir_diff)}\n"
             self.message += f"{right_dir_name} has exclusively: {str(right_dir_diff)}\n"
+        super().__init__(self.message)
