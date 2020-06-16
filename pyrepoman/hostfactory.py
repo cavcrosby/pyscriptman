@@ -123,10 +123,9 @@ class HostFactory:
         """
         if github.GitHub.is_host_type(host_name):
             return cls._return_github_constructor(configholder)
-        elif localhost.LocalHost.is_host_type(host_name, configholder):
+        if localhost.LocalHost.is_host_type(host_name, configholder):
             return cls._return_localhost_constructor(configholder)
-        elif remotehost.RemoteHost.is_host_type(host_name, configholder):
+        if remotehost.RemoteHost.is_host_type(host_name, configholder):
             return cls._return_remotehost_constructor(configholder)
-        else:
-            Message.print_factory_invalid_host(configholder)
-            sys.exit(1)
+        Message.print_factory_invalid_host(configholder)
+        sys.exit(1)

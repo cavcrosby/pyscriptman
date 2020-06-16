@@ -6,9 +6,9 @@ import subprocess
 import requests
 
 # Local Application Imports
-from pyrepoman.pyrepoman_variables import REQUIRE_SUBCOMMANDS
 from util.message import Message
 from util.helpers import bundle_repo
+from pyrepoman.pyrepoman_variables import REQUIRE_SUBCOMMANDS
 from pyrepoman.hosts.webhosts import github
 from pyrepoman.actions.action import Action
 from pyrepoman.hosts import (

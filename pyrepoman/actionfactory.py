@@ -12,8 +12,8 @@ import subprocess
 import toml
 
 # Local Application Imports
-from pyrepoman.hostfactory import HostFactory
 from util.message import Message
+from pyrepoman.hostfactory import HostFactory
 from pyrepoman.actions.action import Action
 from pyrepoman.actions import (
     update,
@@ -131,20 +131,19 @@ class ActionFactory:
         try:
             if update.Update.is_action_type(action_name):
                 return cls._return_update_constructor()
-            elif fetch.Fetch.is_action_type(action_name):
+            if fetch.Fetch.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
                 return cls._return_fetch_constructor(host)
-            elif archive.Archive.is_action_type(action_name):
+            if archive.Archive.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
                 return cls._return_archive_constructor(host)
-            elif backup.Backup.is_action_type(action_name):
+            if backup.Backup.is_action_type(action_name):
                 host = HostFactory.create_host(configholder)
                 return cls._return_backup_constructor(host)
-            else:
-                Message.print_factory_invalid_action(
-                    configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
-                )
-                sys.exit(1)
+            Message.print_factory_invalid_action(
+                configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
+            )
+            sys.exit(1)
         except toml.decoder.TomlDecodeError:
             raise
         except subprocess.CalledProcessError:
