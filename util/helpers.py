@@ -1,3 +1,9 @@
+"""Contains useful functions for the entire project.
+
+These functions are meant to be used where
+needed in the project.
+
+"""
 # Standard Library Imports
 import subprocess
 import os
@@ -11,7 +17,20 @@ from util.message import Message
 
 
 def change_target_filemode_recursive(target, permissions):
+    """Changes an entire directory's (including the directory) permissions.
+    
+    This includes every node (file/directory) that is
+    in the tree.
 
+    Parameters
+    ----------
+    target : str
+        Can be a relative/absolute path.
+    permissions : int
+        Represented in an integer, test cases use
+        the stat module to represent permissions.
+
+    """
     walk_root = dirname(realpath(target))
 
     for root, dirs, files in os.walk(target):
@@ -24,13 +43,14 @@ def change_target_filemode_recursive(target, permissions):
 
 
 def git_add_commit_push(message):
+    """Does a git-add-commit-push with all files."""
     subprocess.run(["git", "add", "."])
     subprocess.run(["git", "commit", "-m", f"{message}"])
     subprocess.run(["git", "push", "origin", "master"])
 
 
 def clone_repo(repo_path, repo_name):
-
+    """Performs a git clone command."""
     try:
         subprocess.run(["git", "clone", repo_path, repo_name], check=True)
     except subprocess.CalledProcessError:
@@ -38,7 +58,7 @@ def clone_repo(repo_path, repo_name):
 
 
 def mirror_repo(repo_path, repo_name):
-
+    """Performs a git mirror command. Copying the entire Git repo."""
     try:
         subprocess.run(["git", "clone", "--mirror", repo_path, repo_name], check=True)
     except subprocess.CalledProcessError:
@@ -46,7 +66,7 @@ def mirror_repo(repo_path, repo_name):
 
 
 def bundle_repo(repo_path, repo_name):
-
+    """Like a mirror but archiving the Git repo into one file."""
     try:
         mirror_repo(repo_path, repo_name)
         subprocess.run(
@@ -67,7 +87,14 @@ def bundle_repo(repo_path, repo_name):
 
 
 def get_pwd_local_dir_names():
+    """Returns names of directories in the current present working directory.
+    
+    Returns
+    -------
+    list of str
+        Directory names in the current present working directory.
 
+    """
     root = os.getcwd()
     try:
         return [
@@ -78,9 +105,23 @@ def get_pwd_local_dir_names():
 
 
 def get_typeof_repo_names(host_path, barerepo):
+    """Gets Git repos from a particular path.
+    
+    Parameters
+    ----------
+    host_path : str
+        This will be the path to search for Git repos.
+    barerepo : bool
+        Whether or not to search for bare Git repos.
 
+    Returns
+    -------
+    list of str
+        Git repo names (not paths!).
+    
+    """
     pred1, pred2 = ("true", "false") if barerepo else ("false", "true")
-    repos = list()
+    repo_names = list()
     pwd = os.getcwd()
     try:
         os.chdir(host_path)
@@ -106,10 +147,10 @@ def get_typeof_repo_names(host_path, barerepo):
                 and is_bare_repo.stdout.rstrip() == pred1
                 and in_working_dir.stdout.rstrip() == pred2
             ):
-                repos.append(dir_node)
+                repo_names.append(dir_node)
             os.chdir("..")
         os.chdir(pwd)
-        return repos
+        return repo_names
     except PermissionError:
         raise
     except FileNotFoundError:
@@ -119,12 +160,23 @@ def get_typeof_repo_names(host_path, barerepo):
 
 
 def copy_script_to_host(target, target_path, script):
-
+    """Copies a file over to a remote host."""
     subprocess.run(["scp", script, f"{target}:{target_path}"], check=True)
 
 
 def execute_script_on_host(target, target_path, script_path):
+    """Runs python script on remote host.
+    
+    This script should search the target_path
+    for bare Git repos and print them to standard
+    out.
 
+    Returns
+    -------
+    list of str
+        Git repo names (not paths!).
+    
+    """
     completed_process = subprocess.run(
         ["ssh", target, f"cd {target_path}; python3 {script_path}"],
         stderr=subprocess.PIPE,
@@ -132,13 +184,13 @@ def execute_script_on_host(target, target_path, script_path):
         encoding="utf-8",
         check=True,
     )
-    repos = completed_process.stdout.split(",")
-    repos[-1] = repos[-1].strip()  # e.g. 'repo1,repo1 - Copy\n'
-    return repos
+    repos_names = completed_process.stdout.split(",")
+    repos_names[-1] = repos_names[-1].strip()  # e.g. 'repo1,repo1 - Copy\n'
+    return repos_names
 
 
 def remove_script_on_host(target, script):
-
+    """Attempts to remove script that was copied to remote host."""
     try:
         subprocess.run(
             [
@@ -153,7 +205,11 @@ def remove_script_on_host(target, script):
 
 
 def expand_target_path_on_host(target, target_path):
-
+    """Attempts to expand target path on remote host.
+    
+    This is incase ~ is used.
+    
+    """
     completed_process = subprocess.run(
         [
             "ssh",

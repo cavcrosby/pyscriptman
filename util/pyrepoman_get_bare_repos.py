@@ -1,3 +1,4 @@
+"""This is a script to be copied over by pyrepoman."""
 # Standard Library Imports
 import os
 import subprocess
@@ -8,7 +9,14 @@ import subprocess
 
 
 def get_pwd_local_dir_names():
+    """Returns names of directories in the current present working directory.
+    
+    Returns
+    -------
+    list of str
+        Directory names in the current present working directory.
 
+    """
     root = os.getcwd()
     return [
         item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))
@@ -16,8 +24,16 @@ def get_pwd_local_dir_names():
 
 
 def get_pwd_bare_repo_names():
+    """Gets Git repos from a present working directory.
 
-    repos = list()
+    Returns
+    -------
+    list of str
+        Git repo names (not paths!) concatenated together with a comma
+        (e.g. repo1,repo2).
+    
+    """
+    repo_names = list()
     dirs = get_pwd_local_dir_names()
     for dir in dirs:
         os.chdir(dir)
@@ -38,9 +54,9 @@ def get_pwd_bare_repo_names():
             and is_bare_repo.stdout.rstrip() == "true"
             and in_working_dir.stdout.rstrip() == "false"
         ):
-            repos.append(dir)
+            repo_names.append(dir)
         os.chdir("..")
-    return ",".join(repos)
+    return ",".join(repo_names)
 
 
 print(get_pwd_bare_repo_names())

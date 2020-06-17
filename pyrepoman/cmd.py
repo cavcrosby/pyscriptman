@@ -63,6 +63,8 @@ class Cmd:
 
         archive.Archive.add_parser(_action_subparsers)
 
+        # choosing an invalid action SHOULD NOT be possible.
+
         args = cls._parser.parse_args()
 
         return args
