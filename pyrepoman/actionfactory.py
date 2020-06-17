@@ -33,17 +33,17 @@ class ActionFactory:
 
     @staticmethod
     def _return_fetch_constructor(host):
-        """Returns 'Fetch' class wrapped in lambda to fufill parameters."""
+        """Returns 'Fetch' class wrapped in lambda."""
         return lambda: fetch.Fetch(host)
 
     @staticmethod
     def _return_backup_constructor(host):
-        """Returns 'Backup' class wrapped in lambda to fufill parameters."""
+        """Returns 'Backup' class wrapped in lambda."""
         return lambda: backup.Backup(host)
 
     @staticmethod
     def _return_archive_constructor(host):
-        """Returns 'Archive' class wrapped in lambda to fufill parameters."""
+        """Returns 'Archive' class wrapped in lambda."""
         return lambda: archive.Archive(host)
 
     @classmethod
@@ -53,7 +53,8 @@ class ActionFactory:
         Parameters
         ----------
         configholder : util.configholder.ConfigHolder
-            An instantiation of ConfigHolder, used to hold program configurations.
+            An instantiation of ConfigHolder, used to hold program
+            configurations.
 
         Returns
         -------
@@ -116,7 +117,8 @@ class ActionFactory:
         action_name : str
             This is the action chosen by the user from the command line.
         configholder : ConfigHolder
-            An instantiation of ConfigHolder, used to hold program configurations.
+            An instantiation of ConfigHolder, used to hold program
+            configurations.
 
         Returns
         -------

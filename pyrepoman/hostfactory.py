@@ -26,12 +26,12 @@ class HostFactory:
 
     @staticmethod
     def _return_localhost_constructor(configholder):
-        """Returns 'LocalHost' class wrapped in lambda to fufill parameters."""
+        """Returns 'LocalHost' class wrapped in lambda."""
         return lambda: localhost.LocalHost(configholder)
 
     @staticmethod
     def _return_remotehost_constructor(configholder):
-        """Returns 'RemoteHost' class wrapped in lambda to fufill parameters."""
+        """Returns 'RemoteHost' class wrapped in lambda."""
         return lambda: remotehost.RemoteHost(configholder)
 
     @staticmethod
@@ -55,7 +55,8 @@ class HostFactory:
         Parameters
         ----------
         configholder : util.configholder.ConfigHolder
-            An instantiation of ConfigHolder, used to hold program configurations.
+            An instantiation of ConfigHolder, used to hold program 
+            configurations.
 
         Returns
         -------
@@ -109,7 +110,8 @@ class HostFactory:
         host_name : str
             This is the host chosen by the user from the command line.
         configholder : util.configholder.ConfigHolder
-            An instantiation of ConfigHolder, used to hold program configurations.
+            An instantiation of ConfigHolder, used to hold program
+            configurations.
 
         Returns
         -------

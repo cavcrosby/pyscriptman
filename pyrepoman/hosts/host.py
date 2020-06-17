@@ -154,8 +154,8 @@ class Host(ABC):
         chosen_host : str
             Input received from the command line.
         configholder : util.configholder.ConfigHolder
-            An instantiation of ConfigHolder, used to hold program configurations
-            (see notes).
+            An instantiation of ConfigHolder, used to hold program 
+            configurations (see notes).
 
         Notes
         -----

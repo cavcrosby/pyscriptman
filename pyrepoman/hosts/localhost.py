@@ -49,7 +49,8 @@ class LocalHost(Host):
         chosen_host : str
             Input received from the command line.
         configholder : util.configholder.ConfigHolder
-            An instantiation of ConfigHolder, used to hold program configurations.
+            An instantiation of ConfigHolder, used to hold program
+            configurations.
             
         Returns
         -------
