@@ -39,11 +39,6 @@ class Diff:
         bool
             Whether or not any differences exist between
             the two directories.
-
-        Raises
-        ------
-        util.diff.DiffException
-            If any differences exist between the two directories.
         
         """
         try:
@@ -86,11 +81,6 @@ class Diff:
         (None, None, None)
             Incase no differences were found between the
             directories.
-
-        Raises
-        ------
-        util.diff.DiffException
-            If any differences exist between the two directories.
         
         """
         if diff_files is None:
@@ -126,7 +116,8 @@ class Diff:
 class DiffException(Exception):
     """Custom exception that formats the body of the diff message.
     
-    Title is printed out by the Diff class.
+    Error reporting title is printed out by the
+    Diff class.
 
     """
 

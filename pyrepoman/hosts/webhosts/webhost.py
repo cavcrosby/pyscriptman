@@ -75,17 +75,17 @@ class WebHost(Host):
     def get_user_repo_names_and_locations(self):
         """How additional configurations are loaded for the function.
 
-        Raises
-        ------
-        KeyError
-            If the webhost does not have a table in the
-            configuration file.
-
         Returns
         -------
         repo_names : list of str
             Repo names are returned, while repo names
             and locations are stored in the webhost object (See Also).
+
+        Raises
+        ------
+        KeyError
+            If the webhost does not have a table in the
+            configuration file.
 
         See Also
         --------

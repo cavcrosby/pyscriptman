@@ -222,7 +222,7 @@ class ConfigHolder:
 
         Raises
         ------
-        toml.decoder.TomlDecodeError
+        KeyError
             If the table requested does not exist or
             the 'default' table where default configurations
             are stored does not exist.
@@ -267,7 +267,7 @@ class ConfigHolder:
 
         Raises
         ------
-        toml.decoder.TomlDecodeError
+        KeyError
             If the table requested does not exist.
 
         """
