@@ -13,8 +13,6 @@ from pyrepoman.actions.archive import Archive
 from util.message import Message
 from util.helpers import bundle_repo
 from test.conftest import (
-    localhost_setup,
-    filemode_change_setup_win_linux,
     generate_localhost,
     generate_github_host,
     fake_get_user_repo_names_and_locations,
@@ -23,7 +21,6 @@ from test.test_archive.conftest import (
     ARCHIVE_TARGET,
     MODEL_TARGET,
     configholder,
-    unit_test_setup,
     diff_bundle_contents,
 )
 
@@ -33,20 +30,26 @@ class TestArchiveUnit:
         "localhost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_archive_localhost(self, localhost_setup):
+        """Testing the archive functionality with a LocalHost host."""
         os.chdir(ARCHIVE_TARGET)
         localhost = generate_localhost(configholder)
         archive = Archive(localhost)
         archive.run()
         os.chdir("..")
-        assert diff_bundle_contents() == False
+        assert diff_bundle_contents() is False
 
     def test_archive_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+        """Testing the archive functionality with a FileNotFound exception.
+        
+        To ensure such an exception is handled by the
+        archive action.
 
+        """
         from pyrepoman.hosts.host import Host
 
         def fake_get_bare_repo_names_from_path(arg1, arg2):
 
-            os.chdir("non-existing git repo")
+            os.chdir("non-existing Git repo")
 
         monkeypatch.setattr(
             Host, "_get_bare_repo_names_from_path", fake_get_bare_repo_names_from_path,
@@ -63,7 +66,13 @@ class TestArchiveUnit:
     def test_archive_requests_connectionerror_handled(
         self, unit_test_setup, capsys, monkeypatch
     ):
+        """Testing the archive functionality with a ConnectionError exception.
+        
+        Specifically the requests.excpetions.ConnectionError is 
+        tested for to ensure that the archive action handles 
+        the exception.
 
+        """
         from pyrepoman.hosts.webhosts import github
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
@@ -94,7 +103,13 @@ class TestArchiveUnit:
     def test_archive_requests_httperror_handled(
         self, unit_test_setup, capsys, monkeypatch
     ):
+        """Testing the archive functionality with a HttpError exception.
+        
+        Specifically the requests.exceptions.HttpError is
+        tested for to ensure that the archive action
+        handles the exception.
 
+        """
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
         monkeypatch.setattr(
@@ -134,7 +149,12 @@ class TestArchiveUnit:
     def test_archive_permissionerror_handled(
         self, filemode_change_setup_win_linux, capsys
     ):
+        """Testing the archive functionality with a PermissionError exception.
+        
+        To ensure such an exception is handled by the
+        archive action.
 
+        """
         with pytest.raises(PermissionError):
             localhost = generate_localhost(configholder)
             archive = Archive(localhost)
@@ -162,7 +182,13 @@ class TestArchiveUnit:
         indirect=["filemode_change_setup_win_linux"],
     )
     def test_archive_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+        """Testing the archive functionality with a CalledProcessError exception.
+        
+        Specifically the subprocess.CalledProcessError is
+        tested for to ensure that the archive action
+        handles the exception.
 
+        """
         os.chdir(ARCHIVE_TARGET)
 
         with pytest.raises(subprocess.CalledProcessError):

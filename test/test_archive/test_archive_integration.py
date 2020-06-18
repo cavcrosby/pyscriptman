@@ -1,21 +1,14 @@
 # Standard Library Imports
 import subprocess
 import os
-import filecmp
 import sys
 
 # Third Party Imports
 import pytest
 
 # Local Application Imports
-from util.diff import Diff
 from pyrepoman.hosts.webhosts.github import GitHub
 from util.helpers import bundle_repo
-from test.conftest import (
-    localhost_setup,
-    remotehost_setup,
-    github_setup,
-)
 from test.test_archive.conftest import (
     configholder,
     ACTION_IDENTIFIER,
@@ -31,6 +24,12 @@ class TestArchiveIntegration:
         "localhost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_archive_localhost(self, localhost_setup):
+        """Testing the archive functionality with a LocalHost host.
+        
+        Same as unit test but encompassed by the
+        entire program.
+        
+        """
         os.chdir(ARCHIVE_TARGET)
         subprocess.run(
             [
@@ -42,12 +41,13 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        assert diff_bundle_contents() == False
+        assert diff_bundle_contents() is False
 
     @pytest.mark.parametrize(
         "remotehost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_archive_remotehost(self, remotehost_setup):
+        """Testing the archive functionality with a RemoteHost host."""
         target = f"{configholder.get_config_value('REMOTE_USER')}@{configholder.get_config_value('REMOTE_ADDR')}"
         os.chdir(ARCHIVE_TARGET)
         subprocess.run(
@@ -62,7 +62,7 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        assert diff_bundle_contents() == False
+        assert diff_bundle_contents() is False
 
     @pytest.mark.parametrize(
         "github_setup",
@@ -86,6 +86,12 @@ class TestArchiveIntegration:
         indirect=True,
     )
     def test_archive_github_own(self, github_setup):
+        """Testing the archive functionality with a GitHub host.
+        
+        This includes all of the GitHub host
+        options with the own subcommand.
+        
+        """
         data = github_setup
         repo_owner_type, repo_type = data[0], data[1]
         os.chdir(ARCHIVE_TARGET)
@@ -101,7 +107,7 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        assert diff_bundle_contents() == False
+        assert diff_bundle_contents() is False
 
     @pytest.mark.parametrize(
         "github_setup",
@@ -131,6 +137,12 @@ class TestArchiveIntegration:
         indirect=True,
     )
     def test_archive_github_other(self, github_setup):
+        """Testing the archive functionality with a GitHub host.
+        
+        This includes all of the GitHub host
+        options with the other subcommand.
+        
+        """
         data = github_setup
         username = configholder.get_config_value("GITHUB_NAME")
         repo_owner_type, repo_type = data[0], data[1]
@@ -148,4 +160,4 @@ class TestArchiveIntegration:
             ]
         )
         os.chdir("..")
-        assert diff_bundle_contents() == False
+        assert diff_bundle_contents() is False
