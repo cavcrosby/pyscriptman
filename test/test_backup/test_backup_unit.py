@@ -15,8 +15,6 @@ from util.message import Message
 from util.diff import Diff
 from util.helpers import mirror_repo
 from test.conftest import (
-    localhost_setup,
-    filemode_change_setup_win_linux,
     generate_localhost,
     generate_github_host,
     fake_get_user_repo_names_and_locations,
@@ -25,7 +23,6 @@ from test.test_backup.conftest import (
     BACKUP_TARGET,
     MODEL_TARGET,
     configholder,
-    unit_test_setup,
 )
 
 
@@ -34,6 +31,7 @@ class TestBackupUnit:
         "localhost_setup", [(mirror_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_backup_localhost(self, localhost_setup):
+        """Testing the backup functionality with a LocalHost host."""
         os.chdir(BACKUP_TARGET)
         localhost = generate_localhost(configholder)
         backup = Backup(localhost)
@@ -41,10 +39,16 @@ class TestBackupUnit:
         os.chdir("..")
         dcmp = filecmp.dircmp(BACKUP_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False
 
     def test_backup_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+        """Testing the backup functionality with a FileNotFound exception.
+        
+        To ensure such an exception is handled by the
+        backup action. This involves printing a custom
+        message related to the FileNotFound error.
 
+        """
         from pyrepoman.hosts.host import Host
 
         def fake_get_bare_repo_names_from_path(arg1, arg2):
@@ -66,7 +70,14 @@ class TestBackupUnit:
     def test_backup_requests_connectionerror_handled(
         self, unit_test_setup, capsys, monkeypatch
     ):
+        """Testing the backup functionality with a ConnectionError exception.
+        
+        Specifically the requests.excpetions.ConnectionError is
+        tested for to ensure that the backup action handles
+        the exception. This involves printing a custom
+        message related to the requests.excpetions.ConnectionError.
 
+        """
         from pyrepoman.hosts.webhosts import github
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
@@ -97,7 +108,14 @@ class TestBackupUnit:
     def test_backup_requests_httperror_handled(
         self, unit_test_setup, capsys, monkeypatch
     ):
+        """Testing the backup functionality with a HttpError exception.
+        
+        Specifically the requests.excpetions.HttpError is
+        tested for to ensure that the backup action handles
+        the exception. This involves printing a custom
+        message related to the requests.excpetions.HttpError.
 
+        """
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
         monkeypatch.setattr(
@@ -137,7 +155,13 @@ class TestBackupUnit:
     def test_backup_permissionerror_handled(
         self, filemode_change_setup_win_linux, capsys
     ):
+        """Testing the backup functionality with a PermissionError exception.
+        
+        To ensure such an exception is handled by the
+        backup action. This involves printing a custom
+        message related to the PermissionError.
 
+        """
         with pytest.raises(PermissionError):
             localhost = generate_localhost(configholder)
             backup = Backup(localhost)
@@ -165,7 +189,13 @@ class TestBackupUnit:
         indirect=["filemode_change_setup_win_linux"],
     )
     def test_backup_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+        """Testing the backup functionality with a CalledProcessError exception.
+        
+        Specifically the subprocess.CalledProcessError is
+        tested for to ensure that the backup action
+        raises the exception.
 
+        """
         os.chdir(BACKUP_TARGET)
 
         with pytest.raises(subprocess.CalledProcessError):

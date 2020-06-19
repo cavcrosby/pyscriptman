@@ -42,7 +42,8 @@ class TestArchiveUnit:
         """Testing the archive functionality with a FileNotFound exception.
         
         To ensure such an exception is handled by the
-        archive action.
+        archive action. This involves printing a custom
+        message related to the FileNotFound error.
 
         """
         from pyrepoman.hosts.host import Host
@@ -68,9 +69,10 @@ class TestArchiveUnit:
     ):
         """Testing the archive functionality with a ConnectionError exception.
         
-        Specifically the requests.excpetions.ConnectionError is 
-        tested for to ensure that the archive action handles 
-        the exception.
+        Specifically the requests.excpetions.ConnectionError is
+        tested for to ensure that the archive action handles
+        the exception. This involves printing a custom
+        message related to the requests.excpetions.ConnectionError.
 
         """
         from pyrepoman.hosts.webhosts import github
@@ -105,9 +107,10 @@ class TestArchiveUnit:
     ):
         """Testing the archive functionality with a HttpError exception.
         
-        Specifically the requests.exceptions.HttpError is
-        tested for to ensure that the archive action
-        handles the exception.
+        Specifically the requests.excpetions.HttpError is
+        tested for to ensure that the archive action handles
+        the exception. This involves printing a custom
+        message related to the requests.excpetions.HttpError.
 
         """
         from pyrepoman.hosts.webhosts.webhost import WebHost
@@ -152,7 +155,8 @@ class TestArchiveUnit:
         """Testing the archive functionality with a PermissionError exception.
         
         To ensure such an exception is handled by the
-        archive action.
+        archive action. This involves printing a custom
+        message related to the PermissionError.
 
         """
         with pytest.raises(PermissionError):
@@ -186,7 +190,7 @@ class TestArchiveUnit:
         
         Specifically the subprocess.CalledProcessError is
         tested for to ensure that the archive action
-        handles the exception.
+        raises the exception.
 
         """
         os.chdir(ARCHIVE_TARGET)
