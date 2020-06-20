@@ -16,7 +16,7 @@ class GitHub(WebHost):
     """The 'GitHub' host class.
 
     This interface allows you to interact
-    with Git repos from github.com
+    with Git repos from github.com.
 
     Parameters
     ----------

@@ -122,7 +122,7 @@ class Host(ABC):
         return cls.__name__.lower()
 
     def add_repo_name_and_location(self, repo_name, location):
-        """How to add repo name and location to host's repos names and locations
+        """How to add repo name and location to host's repos names and locations.
         
         Parameters
         ----------
@@ -135,7 +135,7 @@ class Host(ABC):
         self.repo_names_and_locations[repo_name] = location
 
     def get_location_from_repo_name(self, repo_name):
-        """How to get the host's repo location from the repo name
+        """How to get the host's repo location from the repo name.
         
         Parameters
         ----------

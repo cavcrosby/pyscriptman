@@ -98,14 +98,14 @@ class RemoteHost(Host):
         """
 
         def can_reach_target(target):
-            """To determine if target can be communicated with"""
+            """To determine if target can be communicated with."""
             subprocess.run(
                 ["ssh", target, "exit"], check=True,
             )
             return True
 
         def can_reach_remote_dir(target, target_path):
-            """To determine if the remote directory exists on the target"""
+            """To determine if the remote directory exists on the target."""
             completed_process = subprocess.run(
                 [
                     "ssh",

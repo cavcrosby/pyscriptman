@@ -55,7 +55,7 @@ class HostFactory:
         Parameters
         ----------
         configholder : util.configholder.ConfigHolder
-            An instantiation of ConfigHolder, used to hold program 
+            An instantiation of ConfigHolder, used to hold program
             configurations.
 
         Returns

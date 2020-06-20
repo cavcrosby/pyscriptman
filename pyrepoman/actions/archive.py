@@ -90,7 +90,7 @@ class Archive(Action):
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
                 bundle_repo(self.host.get_location_from_repo_name(repo_name), repo_name)
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError:
             raise
         except PermissionError as e:
             Message.print_permission_denied(e.filename)
