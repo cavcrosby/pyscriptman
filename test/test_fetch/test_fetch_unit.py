@@ -1,9 +1,13 @@
 # Standard Library Imports
-import subprocess, os, stat, filecmp
-from os.path import join, expanduser, dirname
+import subprocess
+import os
+import stat
+import filecmp
+from os.path import expanduser
 
 # Third Party Imports
-import pytest, requests
+import pytest
+import requests
 
 # Local Application Imports
 from pyrepoman.actions.fetch import Fetch
@@ -11,8 +15,6 @@ from util.message import Message
 from util.diff import Diff
 from util.helpers import clone_repo
 from test.conftest import (
-    localhost_setup,
-    filemode_change_setup_win_linux,
     generate_localhost,
     generate_github_host,
     fake_get_user_repo_names_and_locations,
@@ -21,7 +23,6 @@ from test.test_fetch.conftest import (
     FETCH_TARGET,
     MODEL_TARGET,
     configholder,
-    unit_test_setup,
 )
 
 
@@ -30,6 +31,7 @@ class TestFetchUnit:
         "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_fetch_localhost(self, localhost_setup):
+        """Testing the fetch functionality with a LocalHost host."""
         os.chdir(FETCH_TARGET)
         localhost = generate_localhost(configholder)
         fetch = Fetch(localhost)
@@ -37,10 +39,16 @@ class TestFetchUnit:
         os.chdir("..")
         dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False
 
     def test_fetch_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+        """Testing the fetch functionality with a FileNotFound exception.
+        
+        To ensure such an exception is handled by the
+        fetch action. This involves printing a custom
+        message related to the FileNotFound error.
 
+        """
         from pyrepoman.hosts.host import Host
 
         def fake_get_bare_repo_names_from_path(arg1, arg2):
@@ -62,7 +70,14 @@ class TestFetchUnit:
     def test_fetch_requests_connectionerror_handled(
         self, unit_test_setup, capsys, monkeypatch
     ):
+        """Testing the fetch functionality with a ConnectionError exception.
+        
+        Specifically the requests.excpetions.ConnectionError is
+        tested for to ensure that the fetch action handles
+        the exception. This involves printing a custom
+        message related to the requests.excpetions.ConnectionError.
 
+        """
         from pyrepoman.hosts.webhosts import github
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
@@ -93,7 +108,14 @@ class TestFetchUnit:
     def test_fetch_requests_httperror_handled(
         self, unit_test_setup, capsys, monkeypatch
     ):
+        """Testing the fetch functionality with a HttpError exception.
+        
+        Specifically the requests.excpetions.HttpError is
+        tested for to ensure that the fetch action handles
+        the exception. This involves printing a custom
+        message related to the requests.excpetions.HttpError.
 
+        """
         from pyrepoman.hosts.webhosts.webhost import WebHost
 
         monkeypatch.setattr(
@@ -133,7 +155,13 @@ class TestFetchUnit:
     def test_fetch_permissionerror_handled(
         self, filemode_change_setup_win_linux, capsys
     ):
+        """Testing the fetch functionality with a PermissionError exception.
+        
+        To ensure such an exception is handled by the
+        fetch action. This involves printing a custom
+        message related to the PermissionError.
 
+        """
         with pytest.raises(PermissionError):
             localhost = generate_localhost(configholder)
             fetch = Fetch(localhost)
@@ -161,7 +189,13 @@ class TestFetchUnit:
         indirect=["filemode_change_setup_win_linux"],
     )
     def test_fetch_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+        """Testing the fetch functionality with a CalledProcessError exception.
+        
+        Specifically the subprocess.CalledProcessError is
+        tested for to ensure that the fetch action
+        raises the exception.
 
+        """
         os.chdir(FETCH_TARGET)
 
         with pytest.raises(subprocess.CalledProcessError):

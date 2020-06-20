@@ -26,6 +26,7 @@ ACTION_IDENTIFIER = "fetch"
 
 @pytest.fixture(scope="function")
 def integration_test_setup(request):
+    """To setup a mock environment for integration tests."""
     configs = configholder.table_func_retrieve_additional_configs(
         ACTION_IDENTIFIER, request.function.__name__
     )
@@ -44,6 +45,7 @@ def integration_test_setup(request):
 
 @pytest.fixture(scope="function")
 def unit_test_setup(request):
+    """To setup a mock environment for unit tests."""
     configs = configholder.table_func_retrieve_additional_configs(
         ACTION_IDENTIFIER, request.function.__name__
     )

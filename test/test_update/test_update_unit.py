@@ -13,16 +13,11 @@ from pyrepoman.actions.update import Update
 from util.message import Message
 from util.diff import Diff
 from util.helpers import clone_repo
-from test.conftest import (
-    localhost_setup,
-    filemode_change_setup_win_linux,
-)
 from test.test_update.conftest import (
     UPDATE_TARGET,
     MODEL_TARGET,
     configholder,
     finish_setup,
-    unit_test_setup,
 )
 
 
@@ -31,7 +26,12 @@ class TestUpdateUnit:
         "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_update(self, localhost_setup):
-
+        """Testing the update functionality with a Git repo.
+        
+        This Git repo is also on the local
+        computer.
+        
+        """
         finish_setup()
         os.chdir(UPDATE_TARGET)
         update = Update()
@@ -39,10 +39,16 @@ class TestUpdateUnit:
         os.chdir("..")
         dcmp = filecmp.dircmp(UPDATE_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False
 
     def test_update_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+        """Testing the update functionality with a FileNotFound exception.
+        
+        To ensure such an exception is handled by the
+        update action. This involves printing a custom
+        message related to the FileNotFound error.
 
+        """
         from pyrepoman.actions.action import Action
 
         def fake_get_bare_repo_names_from_path(arg1):
@@ -95,7 +101,13 @@ class TestUpdateUnit:
         indirect=["filemode_change_setup_win_linux"],
     )
     def test_update_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+        """Testing the update functionality with a CalledProcessError exception.
+        
+        Specifically the subprocess.CalledProcessError is
+        tested for to ensure that the update action
+        raises the exception.
 
+        """
         with pytest.raises(subprocess.CalledProcessError):
             update = Update()
             update.run()
@@ -135,7 +147,13 @@ class TestUpdateUnit:
     def test_update_permissionerror_handled(
         self, filemode_change_setup_win_linux, capsys
     ):
+        """Testing the update functionality with a PermissionError exception.
+        
+        To ensure such an exception is handled by the
+        update action. This involves printing a custom
+        message related to the PermissionError.
 
+        """
         with pytest.raises(PermissionError):
             update = Update()
             update.run()

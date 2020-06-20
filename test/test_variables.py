@@ -1,11 +1,10 @@
 # Standard Library Imports
-import os, sys
+import os
 
 # Third Party Imports
 
 # Local Application Imports
-from global_variables import ROOT_DIR, CONFIGS_PATH, UTIL_PATH
-from util.configholder import ConfigHolder
+from global_variables import ROOT_DIR, CONFIGS_PATH
 
 PYREPOMAN_MAIN_PATH = os.path.join(ROOT_DIR, "pyrepoman/main.py")
 CONFIGURATION_FILE_NAME = "test_configs.toml"

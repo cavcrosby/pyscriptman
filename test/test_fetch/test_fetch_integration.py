@@ -11,11 +11,6 @@ import pytest
 from util.diff import Diff
 from pyrepoman.hosts.webhosts.github import GitHub
 from util.helpers import clone_repo
-from test.conftest import (
-    localhost_setup,
-    remotehost_setup,
-    github_setup,
-)
 from test.test_fetch.conftest import (
     configholder,
     ACTION_IDENTIFIER,
@@ -30,6 +25,12 @@ class TestFetchIntegration:
         "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_fetch_localhost(self, localhost_setup):
+        """Testing the fetch functionality with a LocalHost host.
+        
+        Same as unit test but encompassed by the
+        entire program.
+        
+        """
         os.chdir(FETCH_TARGET)
         subprocess.run(
             [
@@ -43,12 +44,13 @@ class TestFetchIntegration:
         os.chdir("..")
         dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False
 
     @pytest.mark.parametrize(
         "remotehost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
     )
     def test_fetch_remotehost(self, remotehost_setup):
+        """Testing the fetch functionality with a RemoteHost host."""
         target = f"{configholder.get_config_value('REMOTE_USER')}@{configholder.get_config_value('REMOTE_ADDR')}"
         os.chdir(FETCH_TARGET)
         subprocess.run(
@@ -65,7 +67,7 @@ class TestFetchIntegration:
         os.chdir("..")
         dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False
 
     @pytest.mark.parametrize(
         "github_setup",
@@ -89,6 +91,12 @@ class TestFetchIntegration:
         indirect=True,
     )
     def test_fetch_github_own(self, github_setup):
+        """Testing the fetch functionality with a GitHub host.
+        
+        This includes all of the GitHub host
+        options with the own subcommand.
+        
+        """
         data = github_setup
         repo_owner_type, repo_type = data[0], data[1]
         os.chdir(FETCH_TARGET)
@@ -106,7 +114,7 @@ class TestFetchIntegration:
         os.chdir("..")
         dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False
 
     @pytest.mark.parametrize(
         "github_setup",
@@ -130,6 +138,12 @@ class TestFetchIntegration:
         indirect=True,
     )
     def test_fetch_github_other(self, github_setup):
+        """Testing the fetch functionality with a GitHub host.
+        
+        This includes all of the GitHub host
+        options with the other subcommand.
+        
+        """
         data = github_setup
         username = configholder.get_config_value("GITHUB_NAME")
         repo_owner_type, repo_type = data[0], data[1]
@@ -149,4 +163,4 @@ class TestFetchIntegration:
         os.chdir("..")
         dcmp = filecmp.dircmp(FETCH_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
-        assert diff.run() == False
+        assert diff.run() is False

@@ -25,19 +25,23 @@ from util.helpers import (
 
 
 def load_configs(configholder, configs):
-
+    """Adds configs to configholder."""
     for config_name, value in configs.items():
         configholder.add_config(config_name, value)
 
 
 def delete_configs(configholder, configs):
-
+    """Deletes configs from configholder."""
     for config_name in configs:
         configholder.delete_config(config_name)
 
 
 def load_init_configs(ACTION_IDENTIFIER, configholder):
-
+    """Loads default test configurations.
+    
+    This includes action specific configurations.
+    
+    """
     configs = configholder.retrieve_table_defaults("test")
     load_configs(configholder, configs)
 
@@ -46,15 +50,15 @@ def load_init_configs(ACTION_IDENTIFIER, configholder):
 
 
 def generate_localhost(configholder):
-
-    # see localhost constructor, as it is expecting a configuration called 'path'
+    """Generates a LocalHost host object for test cases."""
+    # see localhost constructor, expecting a configuration called 'path'
     target_path = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
     configholder.add_config(LocalHost.PATH_KEY, target_path)
     return LocalHost(configholder)
 
 
 def generate_github_host(configholder):
-
+    """Generates a GitHub host object for test cases."""
     # see github constructor, as it is currently expecting the following configurations
     configholder.add_config(GitHub.REPO_TYPE_CMD_ARG_NAME, GitHub.DEFAULT_REPO_TYPE_OWN)
     configholder.add_config(
@@ -68,12 +72,13 @@ def generate_github_host(configholder):
 
 
 def fake_get_user_repo_names_and_locations(self):
-
+    """Bypassing front facing API interface."""
     self._get_user_repo_names_and_locations()
 
 
 @pytest.fixture(scope="function")
 def localhost_setup(request, integration_test_setup):
+    """Used to help setup environments model for LocalHost testing."""
     git_command = request.param[0]
     configholder = request.param[1]
     target = request.param[2]
@@ -82,6 +87,7 @@ def localhost_setup(request, integration_test_setup):
 
 @pytest.fixture(scope="function")
 def remotehost_setup(request, integration_test_setup):
+    """Used to help setup environments model for RemoteHost testing."""
     git_command = request.param[0]
     configholder = request.param[1]
     target = request.param[2]
@@ -90,6 +96,7 @@ def remotehost_setup(request, integration_test_setup):
 
 @pytest.fixture(scope="function")
 def github_setup(request, integration_test_setup):
+    """Used to help setup environments model for GitHub testing."""
     repo_owner_type = request.param[0]
     repo_type = request.param[1]
     git_command = request.param[2]
@@ -102,6 +109,7 @@ def github_setup(request, integration_test_setup):
 
 @pytest.fixture(scope="function")
 def filemode_change_setup_win_linux(request, unit_test_setup):
+    """Used to help setup environments model for filemode changes."""
     target = request.param[0]
     permissions = request.param[1]
     win_permissions = request.param[2]
@@ -118,6 +126,7 @@ def filemode_change_setup_win_linux(request, unit_test_setup):
 
 
 def get_localhost_repos(git_command, configholder, dest):
+    """How setup environments get local Git repos."""
     os.chdir(dest)
     BARE_REPOS_DIR_PATH = expanduser(
         configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
@@ -129,6 +138,7 @@ def get_localhost_repos(git_command, configholder, dest):
 
 
 def get_remotehost_repos(git_command, configholder, dest):
+    """How setup environments get remote host Git repos."""
     os.chdir(dest)
     REMOTE_USER = configholder.get_config_value("REMOTE_USER")
     REMOTE_ADDR = configholder.get_config_value("REMOTE_ADDR")
@@ -149,6 +159,7 @@ def get_remotehost_repos(git_command, configholder, dest):
 
 
 def get_github_repos(repo_owner_type, repo_type, git_command, configholder, dest):
+    """How setup environments get Github Git repos."""
     os.chdir(dest)
     username = configholder.get_config_value("GITHUB_NAME")
     url = (

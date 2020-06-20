@@ -29,6 +29,7 @@ ACTION_IDENTIFIER = "update"
 
 @pytest.fixture(scope="function")
 def integration_test_setup(request):
+    """To setup a mock environment for integration tests."""
     configs = configholder.table_func_retrieve_additional_configs(
         ACTION_IDENTIFIER, request.function.__name__
     )
@@ -56,6 +57,7 @@ def integration_test_setup(request):
 
 @pytest.fixture(scope="function")
 def unit_test_setup(request):
+    """To setup a mock environment for unit tests."""
     configs = configholder.table_func_retrieve_additional_configs(
         ACTION_IDENTIFIER, request.function.__name__
     )
@@ -72,11 +74,13 @@ def unit_test_setup(request):
 
 
 def finish_setup():
+    """Used to make an exact directory copy and add a new file to it."""
     shutil.copytree(MODEL_TARGET, UPDATE_TARGET)
     add_additional_file()
 
 
 def add_additional_file():
+    """Creates a new file and pushes a commit to a Git repo."""
     os.chdir(MODEL_TARGET)
     for repo in os.listdir():
         os.chdir(repo)
