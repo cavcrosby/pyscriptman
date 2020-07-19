@@ -68,7 +68,7 @@ class LocalHost(Host):
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
+        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h
         available hosts:
             host [options ...]
                 [...]
@@ -76,10 +76,17 @@ class LocalHost(Host):
 
         """
         path = configholder.get_config_value(cls.PATH_KEY)
-        path = "" if path == configholder.NON_EXISTANT_CONFIG else expanduser(path)
+        path = (
+            ""
+            if path == configholder.NON_EXISTANT_CONFIG
+            else expanduser(path)
+        )
 
         try:
-            return chosen_host == cls._get_host_name() and pathlib.Path(path).exists()
+            return (
+                chosen_host == cls._get_host_name()
+                and pathlib.Path(path).exists()
+            )
         except PermissionError as e:
             Message.print_permission_denied(e.filename)
             raise
@@ -124,14 +131,16 @@ class LocalHost(Host):
         ------
         PermissionError
             If the target directory (to pull repos from)
-            does not have read or execute permissions. # TODO WINDOWS PERMISSIONS?
+            does not have read or execute permissions. # TODO DOES THIS APPLY FOR WINDOWS PERMISSIONS?
 
         """
         local_path = os.path.expanduser(self.path)
         try:
             repos = super()._get_bare_repo_names_from_path(local_path)
             for repo in repos:
-                super().add_repo_name_and_location(repo, os.path.join(local_path, repo))
+                super().add_repo_name_and_location(
+                    repo, os.path.join(local_path, repo)
+                )
             return super().repo_names
         except PermissionError:
             raise

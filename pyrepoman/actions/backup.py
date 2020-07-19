@@ -64,7 +64,8 @@ class Backup(Action):
 
         """
         backup_host_subparsers = parser.add_subparsers(
-            title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
+            title=cls._HOST_SUBPARSERS_TITLE,
+            metavar=cls._HOST_SUBPARSER_METAVAR,
         )
         backup_host_subparsers.required = REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(backup_host_subparsers)
@@ -83,16 +84,17 @@ class Backup(Action):
             have communcations to the remotehost.
         PermissionError
             If the target directory (to pull repos from)
-            does not have read or execute permissions. # TODO WINDOWS PERMISSIONS?
+            does not have read or execute permissions. # TODO DOES THIS APPLY FOR WINDOWS PERMISSIONS?
 
         """
         try:
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
                 mirror_repo(
-                    self.host.get_location_from_repo_name(repo_name), repo_name,
+                    self.host.get_location_from_repo_name(repo_name),
+                    repo_name,
                 )
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError:
             raise
         except PermissionError as e:
             Message.print_permission_denied(e.filename)

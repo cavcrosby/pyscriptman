@@ -60,7 +60,9 @@ class Diff:
             return True
 
     @classmethod
-    def _diff_iter(cls, dcmp_queue, diff_files=None, left_only=None, right_only=None):
+    def _diff_iter(
+        cls, dcmp_queue, diff_files=None, left_only=None, right_only=None
+    ):
         """Iteration over the entire directory tree occurs here.
 
         Parameters
@@ -110,7 +112,9 @@ class Diff:
                 if sub_dir_name == ".git":
                     continue
                 dcmp_queue.put(sub_dir_dcmp)
-            return cls._diff_iter(dcmp_queue, diff_files, left_only, right_only)
+            return cls._diff_iter(
+                dcmp_queue, diff_files, left_only, right_only
+            )
 
 
 class DiffException(Exception):
@@ -123,9 +127,14 @@ class DiffException(Exception):
 
     def __init__(self, diff_files, left_only, right_only):
         self.message = f"Shared files differences: {str(diff_files)}\n"
-        for (left_dir_name, left_dir_diff), (right_dir_name, right_dir_diff) in zip(
-            left_only.items(), right_only.items()
-        ):
-            self.message += f"{left_dir_name} has exclusively: {str(left_dir_diff)}\n"
-            self.message += f"{right_dir_name} has exclusively: {str(right_dir_diff)}\n"
+        for (
+            (left_dir_name, left_dir_diff),
+            (right_dir_name, right_dir_diff),
+        ) in zip(left_only.items(), right_only.items()):
+            self.message += (
+                f"{left_dir_name} has exclusively: {str(left_dir_diff)}\n"
+            )
+            self.message += (
+                f"{right_dir_name} has exclusively: {str(right_dir_diff)}\n"
+            )
         super().__init__(self.message)

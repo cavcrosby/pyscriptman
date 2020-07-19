@@ -22,7 +22,9 @@ from test.test_update.conftest import (
 
 class TestUpdateIntegration:
     @pytest.mark.parametrize(
-        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_update_localhost(self, localhost_setup):
         """Testing the update functionality with Git repo.
@@ -34,14 +36,18 @@ class TestUpdateIntegration:
         """
         finish_setup()
         os.chdir(UPDATE_TARGET)
-        subprocess.run([sys.executable, PYREPOMAN_MAIN_PATH, ACTION_IDENTIFIER])
+        subprocess.run(
+            [sys.executable, PYREPOMAN_MAIN_PATH, ACTION_IDENTIFIER]
+        )
         os.chdir("..")
         dcmp = filecmp.dircmp(UPDATE_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)
         assert diff.run() is False
 
     @pytest.mark.parametrize(
-        "remotehost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
+        "remotehost_setup",
+        [(clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_update_remotehost(self, remotehost_setup):
         """Testing the update functionality with a Git repo.
@@ -51,7 +57,9 @@ class TestUpdateIntegration:
         """
         finish_setup()
         os.chdir(UPDATE_TARGET)
-        subprocess.run([sys.executable, PYREPOMAN_MAIN_PATH, ACTION_IDENTIFIER])
+        subprocess.run(
+            [sys.executable, PYREPOMAN_MAIN_PATH, ACTION_IDENTIFIER]
+        )
         os.chdir("..")
         dcmp = filecmp.dircmp(UPDATE_TARGET, MODEL_TARGET)
         diff = Diff(dcmp)

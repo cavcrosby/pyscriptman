@@ -44,7 +44,9 @@ def integration_test_setup(request):
         for repo in os.listdir():
             os.chdir(repo)
             os.remove(ADDITIONAL_FILE1)
-            git_add_commit_push("test done, now deleting any additional files added...")
+            git_add_commit_push(
+                "test done, now deleting any additional files added..."
+            )
             os.chdir("..")
         os.chdir("..")
         if pathlib.Path(UPDATE_TARGET).exists():

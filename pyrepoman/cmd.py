@@ -1,6 +1,4 @@
-"""How pyrepoman interfaces with the command line.
-
-"""
+"""How pyrepoman interfaces with the command line."""
 # Standard Library Imports
 import argparse
 

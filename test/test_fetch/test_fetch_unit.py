@@ -28,7 +28,9 @@ from test.test_fetch.conftest import (
 
 class TestFetchUnit:
     @pytest.mark.parametrize(
-        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_fetch_localhost(self, localhost_setup):
         """Testing the fetch functionality with a LocalHost host."""
@@ -41,7 +43,9 @@ class TestFetchUnit:
         diff = Diff(dcmp)
         assert diff.run() is False
 
-    def test_fetch_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+    def test_fetch_file_notfound_handled(
+        self, unit_test_setup, capsys, monkeypatch
+    ):
         """Testing the fetch functionality with a FileNotFound exception.
         
         To ensure such an exception is handled by the
@@ -56,7 +60,9 @@ class TestFetchUnit:
             os.chdir("non-existing git repo")
 
         monkeypatch.setattr(
-            Host, "_get_bare_repo_names_from_path", fake_get_bare_repo_names_from_path,
+            Host,
+            "_get_bare_repo_names_from_path",
+            fake_get_bare_repo_names_from_path,
         )
 
         with pytest.raises(FileNotFoundError):
@@ -137,7 +143,9 @@ class TestFetchUnit:
         "filemode_change_setup_win_linux",
         [
             [
-                expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")),
+                expanduser(
+                    configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
+                ),
                 # testing fetch with a path that does not have execute permissions
                 stat.S_IRUSR
                 | stat.S_IWUSR
@@ -188,7 +196,9 @@ class TestFetchUnit:
         ],
         indirect=["filemode_change_setup_win_linux"],
     )
-    def test_fetch_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+    def test_fetch_calledprocesserror_handled(
+        self, filemode_change_setup_win_linux
+    ):
         """Testing the fetch functionality with a CalledProcessError exception.
         
         Specifically the subprocess.CalledProcessError is

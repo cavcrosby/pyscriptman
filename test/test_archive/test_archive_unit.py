@@ -27,7 +27,9 @@ from test.test_archive.conftest import (
 
 class TestArchiveUnit:
     @pytest.mark.parametrize(
-        "localhost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(bundle_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_archive_localhost(self, localhost_setup):
         """Testing the archive functionality with a LocalHost host."""
@@ -38,7 +40,9 @@ class TestArchiveUnit:
         os.chdir("..")
         assert diff_bundle_contents() is False
 
-    def test_archive_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+    def test_archive_file_notfound_handled(
+        self, unit_test_setup, capsys, monkeypatch
+    ):
         """Testing the archive functionality with a FileNotFound exception.
         
         To ensure such an exception is handled by the
@@ -53,7 +57,9 @@ class TestArchiveUnit:
             os.chdir("non-existing Git repo")
 
         monkeypatch.setattr(
-            Host, "_get_bare_repo_names_from_path", fake_get_bare_repo_names_from_path,
+            Host,
+            "_get_bare_repo_names_from_path",
+            fake_get_bare_repo_names_from_path,
         )
 
         with pytest.raises(FileNotFoundError):
@@ -134,7 +140,9 @@ class TestArchiveUnit:
         "filemode_change_setup_win_linux",
         [
             [
-                expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")),
+                expanduser(
+                    configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
+                ),
                 # testing archive with a path that does not have execute permissions
                 stat.S_IRUSR
                 | stat.S_IWUSR
@@ -185,7 +193,9 @@ class TestArchiveUnit:
         ],
         indirect=["filemode_change_setup_win_linux"],
     )
-    def test_archive_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+    def test_archive_calledprocesserror_handled(
+        self, filemode_change_setup_win_linux
+    ):
         """Testing the archive functionality with a CalledProcessError exception.
         
         Specifically the subprocess.CalledProcessError is

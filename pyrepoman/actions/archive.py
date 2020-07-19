@@ -64,7 +64,8 @@ class Archive(Action):
 
         """
         archive_host_subparsers = parser.add_subparsers(
-            title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
+            title=cls._HOST_SUBPARSERS_TITLE,
+            metavar=cls._HOST_SUBPARSER_METAVAR,
         )
         archive_host_subparsers.required = REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(archive_host_subparsers)
@@ -89,7 +90,9 @@ class Archive(Action):
         try:
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
-                bundle_repo(self.host.get_location_from_repo_name(repo_name), repo_name)
+                bundle_repo(
+                    self.host.get_location_from_repo_name(repo_name), repo_name
+                )
         except subprocess.CalledProcessError:
             raise
         except PermissionError as e:

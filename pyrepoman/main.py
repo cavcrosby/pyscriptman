@@ -25,7 +25,7 @@ def pyrepoman():
         configholder = ConfigHolder.from_object_dict(
             Cmd.retrieve_args(),
             CONFIGURATION_FILE_NAME,
-            CONFIGURATION_FILE_PATH
+            CONFIGURATION_FILE_PATH,
         )
         action = ActionFactory.create_action(configholder)
         action.run()

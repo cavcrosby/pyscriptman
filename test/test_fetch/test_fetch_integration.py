@@ -22,7 +22,9 @@ from test.test_variables import PYREPOMAN_MAIN_PATH
 
 class TestFetchIntegration:
     @pytest.mark.parametrize(
-        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_fetch_localhost(self, localhost_setup):
         """Testing the fetch functionality with a LocalHost host.
@@ -47,7 +49,9 @@ class TestFetchIntegration:
         assert diff.run() is False
 
     @pytest.mark.parametrize(
-        "remotehost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
+        "remotehost_setup",
+        [(clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_fetch_remotehost(self, remotehost_setup):
         """Testing the fetch functionality with a RemoteHost host."""
@@ -72,7 +76,13 @@ class TestFetchIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            (GitHub.OWN_CMD_ARG_NAME, "all", clone_repo, configholder, MODEL_TARGET,),
+            (
+                GitHub.OWN_CMD_ARG_NAME,
+                "all",
+                clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
             (
                 GitHub.OWN_CMD_ARG_NAME,
                 "public",
@@ -119,7 +129,13 @@ class TestFetchIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            (GitHub.OTHER_CMD_ARG_NAME, "all", clone_repo, configholder, MODEL_TARGET,),
+            (
+                GitHub.OTHER_CMD_ARG_NAME,
+                "all",
+                clone_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
             (
                 GitHub.OTHER_CMD_ARG_NAME,
                 "owner",

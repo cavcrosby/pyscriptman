@@ -62,11 +62,15 @@ class GitHub(WebHost):
     def __init__(self, configholder):
 
         super().__init__(configholder)
-        self.payload = configholder.get_config_value(self.REPO_TYPE_CMD_ARG_NAME)
+        self.payload = configholder.get_config_value(
+            self.REPO_TYPE_CMD_ARG_NAME
+        )
         self.repo_owner_type = configholder.get_config_value(
             self.REPO_OWNER_TYPE_CMD_ARG_NAME
         )
-        self.username = configholder.get_config_value(self.USERNAME_CMD_ARG_NAME)
+        self.username = configholder.get_config_value(
+            self.USERNAME_CMD_ARG_NAME
+        )
 
     @classmethod
     def is_host_type(cls, chosen_host):
@@ -86,7 +90,7 @@ class GitHub(WebHost):
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
+        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h
         available hosts:
             host [options ...]
                 [...]
@@ -187,10 +191,14 @@ class GitHub(WebHost):
                 and getattr(self, "API_TOKEN", "") != ""
                 else None
             )
-            response = requests.get(url, auth=auth, params={"type": self.payload})
+            response = requests.get(
+                url, auth=auth, params={"type": self.payload}
+            )
             response.raise_for_status()
             for repo in response.json():
-                super().add_repo_name_and_location(repo["name"], repo["svn_url"])
+                super().add_repo_name_and_location(
+                    repo["name"], repo["svn_url"]
+                )
             return super().repo_names
         except (requests.exceptions.ConnectionError):
             Message.print_requests_connectionerror(self._get_host_name())

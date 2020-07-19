@@ -23,7 +23,9 @@ from test.test_update.conftest import (
 
 class TestUpdateUnit:
     @pytest.mark.parametrize(
-        "localhost_setup", [(clone_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(clone_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_update(self, localhost_setup):
         """Testing the update functionality with a Git repo.
@@ -41,7 +43,9 @@ class TestUpdateUnit:
         diff = Diff(dcmp)
         assert diff.run() is False
 
-    def test_update_file_notfound_handled(self, unit_test_setup, capsys, monkeypatch):
+    def test_update_file_notfound_handled(
+        self, unit_test_setup, capsys, monkeypatch
+    ):
         """Testing the update functionality with a FileNotFound exception.
         
         To ensure such an exception is handled by the
@@ -100,7 +104,9 @@ class TestUpdateUnit:
         ],
         indirect=["filemode_change_setup_win_linux"],
     )
-    def test_update_calledprocesserror_handled(self, filemode_change_setup_win_linux):
+    def test_update_calledprocesserror_handled(
+        self, filemode_change_setup_win_linux
+    ):
         """Testing the update functionality with a CalledProcessError exception.
         
         Specifically the subprocess.CalledProcessError is

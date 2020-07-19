@@ -1,6 +1,6 @@
 """Serves as a factory for action objects.
 
-Types of 'Action's exist in the 'actions' subpackage. These
+Types of "'Action's" exist in the 'actions' subpackage. These
 actions are instantiated through this module.
 
 """
@@ -93,13 +93,17 @@ class ActionFactory:
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch localhost /foo/thispathdoesnotexist # TODO FINALIZE EXAMPLE
+        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch localhost /foo/thispathdoesnotexist
         Error: Invalid host target; Configs passed in: {'path': '/foo/thispathdoesnotexist', 'host': 'localhost'}
 
         """
         try:
-            action_name = configholder.get_config_value(Action.ACTION_CMD_ARG_NAME)
-            action_constructor = cls._get_action_constructor(action_name, configholder)
+            action_name = configholder.get_config_value(
+                Action.ACTION_CMD_ARG_NAME
+            )
+            action_constructor = cls._get_action_constructor(
+                action_name, configholder
+            )
             return action_constructor()
         except toml.decoder.TomlDecodeError:
             raise

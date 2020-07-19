@@ -19,7 +19,9 @@ def get_pwd_local_dir_names():
     """
     root = os.getcwd()
     return [
-        item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))
+        item
+        for item in os.listdir(root)
+        if os.path.isdir(os.path.join(root, item))
     ]
 
 

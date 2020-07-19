@@ -52,7 +52,9 @@ def load_init_configs(ACTION_IDENTIFIER, configholder):
 def generate_localhost(configholder):
     """Generates a LocalHost host object for test cases."""
     # see localhost constructor, expecting a configuration called 'path'
-    target_path = expanduser(configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH"))
+    target_path = expanduser(
+        configholder.get_config_value("LOCAL_BARE_REPOS_DIR_PATH")
+    )
     configholder.add_config(LocalHost.PATH_KEY, target_path)
     return LocalHost(configholder)
 
@@ -60,12 +62,15 @@ def generate_localhost(configholder):
 def generate_github_host(configholder):
     """Generates a GitHub host object for test cases."""
     # see github constructor, as it is currently expecting the following configurations
-    configholder.add_config(GitHub.REPO_TYPE_CMD_ARG_NAME, GitHub.DEFAULT_REPO_TYPE_OWN)
+    configholder.add_config(
+        GitHub.REPO_TYPE_CMD_ARG_NAME, GitHub.DEFAULT_REPO_TYPE_OWN
+    )
     configholder.add_config(
         GitHub.REPO_OWNER_TYPE_CMD_ARG_NAME, GitHub.OWN_CMD_ARG_NAME
     )
     configholder.add_config(
-        GitHub.USERNAME_CMD_ARG_NAME, configholder.get_config_value("GITHUB_NAME")
+        GitHub.USERNAME_CMD_ARG_NAME,
+        configholder.get_config_value("GITHUB_NAME"),
     )
 
     return GitHub(configholder)
@@ -146,19 +151,27 @@ def get_remotehost_repos(git_command, configholder, dest):
         "REMOTE_BARE_REPOS_DIR_PATH"
     )
     target = f"{REMOTE_USER}@{REMOTE_ADDR}"
-    target_path = expand_target_path_on_host(target, REMOTE_BARE_REPOS_DIR_PATH)
+    target_path = expand_target_path_on_host(
+        target, REMOTE_BARE_REPOS_DIR_PATH
+    )
     remote_script_target_path = (
         f"{REMOTE_BARE_REPOS_DIR_PATH}{REMOTE_SCRIPT_GET_BARE_REPOS_NAME}"
     )
     copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
-    bare_repos = execute_script_on_host(target, target_path, remote_script_target_path)
+    bare_repos = execute_script_on_host(
+        target, target_path, remote_script_target_path
+    )
     remove_script_on_host(target, remote_script_target_path)
     for bare_repo_name in bare_repos:
-        git_command(join(f"{target}:{target_path}", bare_repo_name), bare_repo_name)
+        git_command(
+            join(f"{target}:{target_path}", bare_repo_name), bare_repo_name
+        )
     os.chdir("..")
 
 
-def get_github_repos(repo_owner_type, repo_type, git_command, configholder, dest):
+def get_github_repos(
+    repo_owner_type, repo_type, git_command, configholder, dest
+):
     """How setup environments get Github Git repos."""
     os.chdir(dest)
     username = configholder.get_config_value("GITHUB_NAME")

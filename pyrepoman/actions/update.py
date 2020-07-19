@@ -25,7 +25,9 @@ class Update(Action):
 
     """
 
-    HELP_DESC = "update all Git repos in your current directory from remote repos"
+    HELP_DESC = (
+        "update all Git repos in your current directory from remote repos"
+    )
 
     def __init__(self):
 
@@ -61,7 +63,7 @@ class Update(Action):
             in the working directory does not have write access.
         PermissionError
             If the present working directory
-            does not have read or execute permissions. # TODO WINDOWS PERMISSIONS?
+            does not have read or execute permissions. # TODO DOES THIS APPLY FOR WINDOWS PERMISSIONS?
 
         """
         try:

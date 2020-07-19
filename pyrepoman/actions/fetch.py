@@ -63,7 +63,8 @@ class Fetch(Action):
 
         """
         fetch_host_subparsers = parser.add_subparsers(
-            title=cls._HOST_SUBPARSERS_TITLE, metavar=cls._HOST_SUBPARSER_METAVAR
+            title=cls._HOST_SUBPARSERS_TITLE,
+            metavar=cls._HOST_SUBPARSER_METAVAR,
         )
         fetch_host_subparsers.required = REQUIRE_SUBCOMMANDS
         github.GitHub.add_parser(fetch_host_subparsers)
@@ -82,7 +83,7 @@ class Fetch(Action):
             have communcations to the remotehost.
         PermissionError
             If the target directory (to pull repos from)
-            does not have read or execute permissions. # TODO WINDOWS PERMISSIONS?
+            does not have read or execute permissions. # TODO DOES THIS APPLY FOR WINDOWS PERMISSIONS?
 
         """
         try:

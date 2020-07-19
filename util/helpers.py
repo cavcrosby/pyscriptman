@@ -60,7 +60,9 @@ def clone_repo(repo_path, repo_name):
 def mirror_repo(repo_path, repo_name):
     """Performs a git mirror command. Copying the entire Git repo."""
     try:
-        subprocess.run(["git", "clone", "--mirror", repo_path, repo_name], check=True)
+        subprocess.run(
+            ["git", "clone", "--mirror", repo_path, repo_name], check=True
+        )
     except subprocess.CalledProcessError:
         raise
 
@@ -98,7 +100,9 @@ def get_pwd_local_dir_names():
     root = os.getcwd()
     try:
         return [
-            item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item))
+            item
+            for item in os.listdir(root)
+            if os.path.isdir(os.path.join(root, item))
         ]
     except PermissionError:
         raise

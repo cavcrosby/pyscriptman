@@ -21,7 +21,9 @@ from test.test_variables import PYREPOMAN_MAIN_PATH
 
 class TestArchiveIntegration:
     @pytest.mark.parametrize(
-        "localhost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(bundle_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_archive_localhost(self, localhost_setup):
         """Testing the archive functionality with a LocalHost host.
@@ -44,7 +46,9 @@ class TestArchiveIntegration:
         assert diff_bundle_contents() is False
 
     @pytest.mark.parametrize(
-        "remotehost_setup", [(bundle_repo, configholder, MODEL_TARGET)], indirect=True,
+        "remotehost_setup",
+        [(bundle_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_archive_remotehost(self, remotehost_setup):
         """Testing the archive functionality with a RemoteHost host."""
@@ -67,7 +71,13 @@ class TestArchiveIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            (GitHub.OWN_CMD_ARG_NAME, "all", bundle_repo, configholder, MODEL_TARGET,),
+            (
+                GitHub.OWN_CMD_ARG_NAME,
+                "all",
+                bundle_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
             (
                 GitHub.OWN_CMD_ARG_NAME,
                 "public",

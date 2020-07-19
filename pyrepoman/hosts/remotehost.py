@@ -89,7 +89,7 @@ class RemoteHost(Host):
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h # TODO FINALIZE EXAMPLE
+        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h
         available hosts:
             host [options ...]
                 [...]
@@ -188,7 +188,7 @@ class RemoteHost(Host):
 
             --> If either the target is unreachable.
             --> If the directory on the target does not exist.
-            --> If the target directory does not have write/execute # TODO WINDOWS PERMISSIONS
+            --> If the target directory does not have write/execute # TODO DOES THIS APPLY FOR WINDOWS PERMISSIONS
             permissions.
 
         """
@@ -198,7 +198,9 @@ class RemoteHost(Host):
             remote_script_target_path = (
                 f"{target_path}{REMOTE_SCRIPT_GET_BARE_REPOS_NAME}"
             )
-            copy_script_to_host(target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH)
+            copy_script_to_host(
+                target, target_path, REMOTE_SCRIPT_GET_BARE_REPOS_PATH
+            )
             bare_repos = execute_script_on_host(
                 target, target_path, remote_script_target_path
             )

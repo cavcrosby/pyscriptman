@@ -22,7 +22,9 @@ from test.test_variables import PYREPOMAN_MAIN_PATH
 
 class TestBackupIntegration:
     @pytest.mark.parametrize(
-        "localhost_setup", [(mirror_repo, configholder, MODEL_TARGET)], indirect=True,
+        "localhost_setup",
+        [(mirror_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_backup_localhost(self, localhost_setup):
         """Testing the backup functionality with a LocalHost host.
@@ -47,7 +49,9 @@ class TestBackupIntegration:
         assert diff.run() is False
 
     @pytest.mark.parametrize(
-        "remotehost_setup", [(mirror_repo, configholder, MODEL_TARGET)], indirect=True,
+        "remotehost_setup",
+        [(mirror_repo, configholder, MODEL_TARGET)],
+        indirect=True,
     )
     def test_backup_remotehost(self, remotehost_setup):
         """Testing the backup functionality with a RemoteHost host."""
@@ -72,7 +76,13 @@ class TestBackupIntegration:
     @pytest.mark.parametrize(
         "github_setup",
         [
-            (GitHub.OWN_CMD_ARG_NAME, "all", mirror_repo, configholder, MODEL_TARGET,),
+            (
+                GitHub.OWN_CMD_ARG_NAME,
+                "all",
+                mirror_repo,
+                configholder,
+                MODEL_TARGET,
+            ),
             (
                 GitHub.OWN_CMD_ARG_NAME,
                 "public",

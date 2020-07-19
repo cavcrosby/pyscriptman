@@ -52,7 +52,9 @@ class ConfigHolder:
         self.CONFIGURATION_FILE_PATH = CONFIGURATION_FILE_PATH
 
     @classmethod
-    def from_object_dict(cls, obj, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH):
+    def from_object_dict(
+        cls, obj, CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH
+    ):
         """Additional constructor."""
         configholder = cls(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_PATH)
         transformed_args = vars(obj)
@@ -126,7 +128,9 @@ class ConfigHolder:
         
         """
         if self.config_exist(config_name):
-            Message.print_configholder_duplicate_config_inserted(config_name, value)
+            Message.print_configholder_duplicate_config_inserted(
+                config_name, value
+            )
             self.delete_config(config_name)
         self.configs.append(Config(config_name, value))
 
@@ -198,7 +202,8 @@ class ConfigHolder:
         """
         try:
             self.add_config(
-                self.CONFIGURATION_FILE_NAME, toml.load(self.CONFIGURATION_FILE_PATH)
+                self.CONFIGURATION_FILE_NAME,
+                toml.load(self.CONFIGURATION_FILE_PATH),
             )
         except PermissionError as e:
             Message.print_permission_denied(e.filename)
@@ -301,6 +306,7 @@ class ConfigHolder:
             {
                 debug_configs_name: self.get_config_value(debug_configs_name)
                 for debug_configs_name in debug_configs_names
-                if self.get_config_value(debug_configs_name) != self.NON_EXISTANT_CONFIG
+                if self.get_config_value(debug_configs_name)
+                != self.NON_EXISTANT_CONFIG
             }
         )

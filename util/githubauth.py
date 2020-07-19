@@ -20,6 +20,7 @@ class GitHubAuth(requests.auth.AuthBase):
         Taken from the pyrepoman_configs.toml file.
 
     """
+
     def __init__(self, API_TOKEN):
 
         self.API_TOKEN = API_TOKEN
