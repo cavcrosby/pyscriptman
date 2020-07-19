@@ -161,7 +161,7 @@ class TestBackupIntegration:
         
         """
         data = github_setup
-        username = configholder.get_config_value("GITHUB_NAME")
+        username = configholder.get_config_value("GITHUB_USERNAME")
         repo_owner_type, repo_type = data[0], data[1]
         os.chdir(BACKUP_TARGET)
         subprocess.run(

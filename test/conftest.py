@@ -70,7 +70,7 @@ def generate_github_host(configholder):
     )
     configholder.add_config(
         GitHub.USERNAME_CMD_ARG_NAME,
-        configholder.get_config_value("GITHUB_NAME"),
+        configholder.get_config_value("GITHUB_USERNAME"),
     )
 
     return GitHub(configholder)
@@ -174,7 +174,7 @@ def get_github_repos(
 ):
     """How setup environments get Github Git repos."""
     os.chdir(dest)
-    username = configholder.get_config_value("GITHUB_NAME")
+    username = configholder.get_config_value("GITHUB_USERNAME")
     url = (
         "https://api.github.com/user/repos"
         if repo_owner_type == GitHub.OWN_CMD_ARG_NAME

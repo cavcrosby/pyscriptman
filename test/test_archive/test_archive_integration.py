@@ -154,7 +154,7 @@ class TestArchiveIntegration:
         
         """
         data = github_setup
-        username = configholder.get_config_value("GITHUB_NAME")
+        username = configholder.get_config_value("GITHUB_USERNAME")
         repo_owner_type, repo_type = data[0], data[1]
         os.chdir(ARCHIVE_TARGET)
         subprocess.run(
