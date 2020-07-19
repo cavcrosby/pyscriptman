@@ -22,7 +22,7 @@ class PyrepomanInstaller:
     def __init__(self):
 
         self.os_name = platform.system().lower()
-        self.system_python_path = os.getenv("PYTHONPATH")
+        self.pythonpath = os.getenv("PYTHONPATH")
         self.user_bin_path = os.path.expanduser("~/bin")
         self.user_bin_exist = pathlib.Path(self.user_bin_path).exists()
         self.link_path = join(self.user_bin_path, self.LINK_NAME)
