@@ -84,7 +84,7 @@ class Archive(Action):
             have communcations to the remotehost.
         PermissionError
             If the target directory (to pull repos from)
-            does not have read or execute permissions. # TODO WINDOWS PERMISSIONS?
+            does not have read or execute permissions. # TODO DOES THIS APPLY FOR WINDOWS PERMISSIONS?
 
         """
         try:
