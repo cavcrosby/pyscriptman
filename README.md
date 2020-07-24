@@ -11,7 +11,7 @@
 ```python
 git clone https://github.com/reap2sow1/pyscriptman.git
 cd pyscriptman
-python -m pip install requirements.txt
+python -m pip install -r requirements.txt
 ```
 For desktops (or OSES with an DE):
 ```python
