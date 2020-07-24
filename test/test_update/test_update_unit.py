@@ -9,7 +9,7 @@ from os.path import join, realpath, dirname
 import pytest
 
 # Local Application Imports
-from pyrepoman.actions.update import Update
+from pyscriptman.actions.update import Update
 from util.message import Message
 from util.diff import Diff
 from util.helpers import clone_repo
@@ -53,7 +53,7 @@ class TestUpdateUnit:
         message related to the FileNotFound error.
 
         """
-        from pyrepoman.actions.action import Action
+        from pyscriptman.actions.action import Action
 
         def fake_get_bare_repo_names_from_path(arg1):
 

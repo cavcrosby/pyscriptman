@@ -32,9 +32,9 @@ class Host(ABC):
 
     See Also
     ----------
-    pyrepoman.LocalHost.HELP_DESC
-    pyrepoman.RemoteHost.HELP_DESC
-    pyrepoman.GitHub.HELP_DESC
+    pyscriptman.LocalHost.HELP_DESC
+    pyscriptman.RemoteHost.HELP_DESC
+    pyscriptman.GitHub.HELP_DESC
     
     Notes
     ----------
@@ -189,7 +189,7 @@ class Host(ABC):
 
         See Also
         --------
-        pyrepoman.hosts.host.add_repo_name_and_location : For location definition
+        pyscriptman.hosts.host.add_repo_name_and_location : For location definition
 
         """
         NotImplemented

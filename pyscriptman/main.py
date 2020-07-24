@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""This is the main entry for pyrepoman."""
+"""This is the main entry for pyscriptman."""
 # Standard Library Imports
 import subprocess
 
@@ -9,18 +9,18 @@ import requests
 import toml
 
 # Local Application Imports
-from pyrepoman.actionfactory import ActionFactory
-from pyrepoman.cmd import Cmd
+from pyscriptman.actionfactory import ActionFactory
+from pyscriptman.cmd import Cmd
 from util.configholder import ConfigHolder
 from util.message import Message
-from pyrepoman.pyrepoman_variables import (
+from pyscriptman.pyscriptman_variables import (
     CONFIGURATION_FILE_NAME,
     CONFIGURATION_FILE_PATH,
 )
 
 
-def pyrepoman():
-    """The main of the pyrepoman program."""
+def pyscriptman():
+    """The main of the pyscriptman program."""
     try:
         configholder = ConfigHolder.from_object_dict(
             Cmd.retrieve_args(),
@@ -45,4 +45,4 @@ def pyrepoman():
 
 
 if __name__ == "__main__":
-    pyrepoman()
+    pyscriptman()

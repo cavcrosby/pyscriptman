@@ -13,9 +13,9 @@ import toml
 
 # Local Application Imports
 from util.message import Message
-from pyrepoman.hostfactory import HostFactory
-from pyrepoman.actions.action import Action
-from pyrepoman.actions import (
+from pyscriptman.hostfactory import HostFactory
+from pyscriptman.actions.action import Action
+from pyscriptman.actions import (
     update,
     fetch,
     backup,
@@ -24,7 +24,7 @@ from pyrepoman.actions import (
 
 
 class ActionFactory:
-    """The way of creating action objects in pyrepoman."""
+    """The way of creating action objects in pyscriptman."""
 
     @staticmethod
     def _return_update_constructor():
@@ -83,7 +83,7 @@ class ActionFactory:
 
         See Also
         --------
-        pyrepoman.hostfactory
+        pyscriptman.hostfactory
 
         Notes
         -----
@@ -93,7 +93,7 @@ class ActionFactory:
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch localhost /foo/thispathdoesnotexist
+        (pyscriptman) reap2sow1@Ron:~$ pyscriptman fetch localhost /foo/thispathdoesnotexist
         Error: Invalid host target; Configs passed in: {'path': '/foo/thispathdoesnotexist', 'host': 'localhost'}
 
         """

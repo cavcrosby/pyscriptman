@@ -1,0 +1,1 @@
+from pyscriptman import main

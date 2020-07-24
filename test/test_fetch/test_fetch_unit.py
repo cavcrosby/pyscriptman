@@ -10,7 +10,7 @@ import pytest
 import requests
 
 # Local Application Imports
-from pyrepoman.actions.fetch import Fetch
+from pyscriptman.actions.fetch import Fetch
 from util.message import Message
 from util.diff import Diff
 from util.helpers import clone_repo
@@ -53,7 +53,7 @@ class TestFetchUnit:
         message related to the FileNotFound error.
 
         """
-        from pyrepoman.hosts.host import Host
+        from pyscriptman.hosts.host import Host
 
         def fake_get_bare_repo_names_from_path(arg1, arg2):
 
@@ -84,8 +84,8 @@ class TestFetchUnit:
         message related to the requests.excpetions.ConnectionError.
 
         """
-        from pyrepoman.hosts.webhosts import github
-        from pyrepoman.hosts.webhosts.webhost import WebHost
+        from pyscriptman.hosts.webhosts import github
+        from pyscriptman.hosts.webhosts.webhost import WebHost
 
         class FakeGitHubAuth:
             def __init__(self, arg1):
@@ -122,7 +122,7 @@ class TestFetchUnit:
         message related to the requests.excpetions.HttpError.
 
         """
-        from pyrepoman.hosts.webhosts.webhost import WebHost
+        from pyscriptman.hosts.webhosts.webhost import WebHost
 
         monkeypatch.setattr(
             WebHost,

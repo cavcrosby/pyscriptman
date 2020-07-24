@@ -11,7 +11,7 @@ import inspect
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.hosts.host import Host
+from pyscriptman.hosts.host import Host
 
 
 class WebHost(Host):
@@ -36,8 +36,8 @@ class WebHost(Host):
 
     See Also
     --------
-    pyrepoman.hosts.host
-    pyrepoman.hosts.host.add_repo_name_and_location
+    pyscriptman.hosts.host
+    pyscriptman.hosts.host.add_repo_name_and_location
 
     Notes
     -----
@@ -89,7 +89,7 @@ class WebHost(Host):
 
         See Also
         --------
-        pyrepoman.hosts.host
+        pyscriptman.hosts.host
 
         """
         try:

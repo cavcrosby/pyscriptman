@@ -7,7 +7,7 @@ import sys
 import pytest
 
 # Local Application Imports
-from pyrepoman.hosts.webhosts.github import GitHub
+from pyscriptman.hosts.webhosts.github import GitHub
 from util.helpers import bundle_repo
 from test.test_archive.conftest import (
     configholder,

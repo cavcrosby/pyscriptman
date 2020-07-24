@@ -5,7 +5,7 @@ import subprocess
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.hosts.host import Host
+from pyscriptman.hosts.host import Host
 from util.helpers import (
     copy_script_to_host,
     execute_script_on_host,
@@ -89,7 +89,7 @@ class RemoteHost(Host):
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h
+        (pyscriptman) reap2sow1@Ron:~$ pyscriptman fetch -h
         available hosts:
             host [options ...]
                 [...]

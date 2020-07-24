@@ -1,4 +1,4 @@
-"""This is a script to be copied over by pyrepoman."""
+"""This is a script to be copied over by pyscriptman."""
 # Standard Library Imports
 import os
 import subprocess

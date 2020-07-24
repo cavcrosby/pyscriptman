@@ -7,7 +7,7 @@ from os.path import expanduser
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.hosts.host import Host
+from pyscriptman.hosts.host import Host
 from util.message import Message
 
 
@@ -68,7 +68,7 @@ class LocalHost(Host):
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h
+        (pyscriptman) reap2sow1@Ron:~$ pyscriptman fetch -h
         available hosts:
             host [options ...]
                 [...]

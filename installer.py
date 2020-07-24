@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""This is installer manager for pyrepoman."""
+"""This is installer manager for pyscriptman."""
 # Standard Library Imports
 import platform
 import os
@@ -13,9 +13,9 @@ from os.path import join
 # Local Application Imports
 
 ERROR_PREFIX = "Error:"
-PROGRAM_NAME = "pyrepoman"
+PROGRAM_NAME = "pyscriptman"
 ROOTDIR = os.path.dirname(os.path.abspath(__file__))
-EXECUTABLE_LOCATION = os.path.join(ROOTDIR, "pyrepoman/main.py")
+EXECUTABLE_LOCATION = os.path.join(ROOTDIR, "pyscriptman/main.py")
 
 
 class Installer:

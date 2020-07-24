@@ -1,4 +1,4 @@
-"""These are variables that are specfic to the pyrepoman package."""
+"""These are variables that are specfic to the pyscriptman package."""
 # Standard Library Imports
 import os
 
@@ -7,7 +7,7 @@ import os
 # Local Application Imports
 from global_variables import ROOT_DIR, CONFIGS_PATH
 
-CONFIGURATION_FILE_NAME = "pyrepoman_configs.toml"
+CONFIGURATION_FILE_NAME = "pyscriptman_configs.toml"
 CONFIGURATION_FILE_PATH = os.path.join(
     ROOT_DIR, os.path.join(CONFIGS_PATH, CONFIGURATION_FILE_NAME)
 )

@@ -1,12 +1,12 @@
-"""How pyrepoman interfaces with the command line."""
+"""How pyscriptman interfaces with the command line."""
 # Standard Library Imports
 import argparse
 
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.pyrepoman_variables import REQUIRE_SUBCOMMANDS
-from pyrepoman.actions import (
+from pyscriptman.pyscriptman_variables import REQUIRE_SUBCOMMANDS
+from pyscriptman.actions import (
     update,
     fetch,
     backup,
@@ -15,7 +15,7 @@ from pyrepoman.actions import (
 
 
 class Cmd:
-    """How pyrepoman interfaces with the command line.
+    """How pyscriptman interfaces with the command line.
 
     Attributes
     ----------
@@ -30,7 +30,7 @@ class Cmd:
     _DESC = """Description: This python application helps /
                manage web-hosted/local Git repos with various actions."""
     _parser = argparse.ArgumentParser(
-        description=_DESC, prog="pyrepoman.py", allow_abbrev=False
+        description=_DESC, prog="pyscriptman.py", allow_abbrev=False
     )
 
     @classmethod

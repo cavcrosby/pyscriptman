@@ -9,7 +9,7 @@ import pytest
 
 # Local Application Imports
 from util.diff import Diff
-from pyrepoman.hosts.webhosts.github import GitHub
+from pyscriptman.hosts.webhosts.github import GitHub
 from util.helpers import clone_repo
 from test.test_fetch.conftest import (
     configholder,

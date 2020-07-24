@@ -6,7 +6,7 @@ import subprocess
 # Third Party Imports
 
 # Local Application Imports
-from pyrepoman.actions.action import Action
+from pyscriptman.actions.action import Action
 from util.message import Message
 
 

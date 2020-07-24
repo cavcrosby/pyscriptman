@@ -13,16 +13,16 @@ import toml
 
 # Local Application Imports
 from util.message import Message
-from pyrepoman.hosts.webhosts import github
-from pyrepoman.hosts.host import Host
-from pyrepoman.hosts import (
+from pyscriptman.hosts.webhosts import github
+from pyscriptman.hosts.host import Host
+from pyscriptman.hosts import (
     localhost,
     remotehost,
 )
 
 
 class HostFactory:
-    """The way of creating host objects in pyrepoman."""
+    """The way of creating host objects in pyscriptman."""
 
     @staticmethod
     def _return_localhost_constructor(configholder):

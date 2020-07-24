@@ -9,8 +9,8 @@ import requests
 
 # Local Application Imports
 from util.githubauth import GitHubAuth
-from pyrepoman.hosts.localhost import LocalHost
-from pyrepoman.hosts.webhosts.github import GitHub
+from pyscriptman.hosts.localhost import LocalHost
+from pyscriptman.hosts.webhosts.github import GitHub
 from global_variables import (
     REMOTE_SCRIPT_GET_BARE_REPOS_PATH,
     REMOTE_SCRIPT_GET_BARE_REPOS_NAME,

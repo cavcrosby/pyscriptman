@@ -17,7 +17,7 @@ class GitHubAuth(requests.auth.AuthBase):
     Parameters
     ----------
     API_TOKEN : str
-        Taken from the pyrepoman_configs.toml file.
+        Taken from the pyscriptman_configs.toml file.
 
     """
 

@@ -6,8 +6,8 @@ import requests
 import toml
 
 # Local Application Imports
-from pyrepoman.hosts.webhosts.webhost import WebHost
-from pyrepoman.pyrepoman_variables import REQUIRE_SUBCOMMANDS
+from pyscriptman.hosts.webhosts.webhost import WebHost
+from pyscriptman.pyscriptman_variables import REQUIRE_SUBCOMMANDS
 from util.message import Message
 from util.githubauth import GitHubAuth
 
@@ -90,7 +90,7 @@ class GitHub(WebHost):
 
         Examples
         --------
-        (pyrepoman) reap2sow1@Ron:~$ pyrepoman fetch -h
+        (pyscriptman) reap2sow1@Ron:~$ pyscriptman fetch -h
         available hosts:
             host [options ...]
                 [...]
