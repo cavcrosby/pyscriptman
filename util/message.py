@@ -28,13 +28,17 @@ class Message:
     UNKNOWN_ERROR_OCCURRED = (
         "an unknown error occurred, please report the following below:"
     )
-    DEFAULT_TABLE_DOES_NOT_EXIST = "entry does not exist, check the configuration file"
+    DEFAULT_TABLE_DOES_NOT_EXIST = (
+        "entry does not exist, check the configuration file"
+    )
     PERMISSION_DENIED_MESSAGE = "a particular file/path was unaccessable,"
     FILE_NOTFOUND_MESSAGE = "a particular file/path was unaccessable,"
     TOML_DECODEERROR_MESSAGE = (
         "the configuration file contains syntax error(s), more details below"
     )
-    TABLE_DOES_NOT_EXIST_MESSAGE = "table does not exist in the configuration file"
+    TABLE_DOES_NOT_EXIST_MESSAGE = (
+        "table does not exist in the configuration file"
+    )
     REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE = (
         "check network settings or try again later, failed to connect to:"
     )
@@ -52,7 +56,9 @@ class Message:
     @classmethod
     def construct_helpdesc_notimplemented_msg(cls, class_name):
         """Message for when a subclass does not implement HELP_DESC."""
-        return f"{cls.ERROR_PREFIX} {cls.HELP_DESC_NOT_IMPLEMENTED} {class_name}"
+        return (
+            f"{cls.ERROR_PREFIX} {cls.HELP_DESC_NOT_IMPLEMENTED} {class_name}"
+        )
 
     @classmethod
     def print_default_table_does_notexist(cls, default_table_name, table_name):
@@ -71,13 +77,15 @@ class Message:
     def print_permission_denied(cls, filename):
         """Message for when permission is denied."""
         print(
-            f"{cls.ERROR_PREFIX} {cls.PERMISSION_DENIED_MESSAGE} '{realpath(filename)}'"
+            f"{cls.ERROR_PREFIX} {cls.PERMISSION_DENIED_MESSAGE} '{realpath(filename)}'."
         )
 
     @classmethod
     def print_file_notfound(cls, filename):
         """Message for when a file is not found."""
-        print(f"{cls.ERROR_PREFIX} {cls.FILE_NOTFOUND_MESSAGE} '{realpath(filename)}'")
+        print(
+            f"{cls.ERROR_PREFIX} {cls.FILE_NOTFOUND_MESSAGE} '{realpath(filename)}'."
+        )
 
     @classmethod
     def print_toml_decodeerror(cls, excep_obj):
@@ -88,13 +96,15 @@ class Message:
     @classmethod
     def print_table_not_exist(cls, table_name):
         """Message for when a table does not exist in the toml file."""
-        print(f"{cls.ERROR_PREFIX} '{table_name}' {cls.TABLE_DOES_NOT_EXIST_MESSAGE}")
+        print(
+            f"{cls.ERROR_PREFIX} '{table_name}' {cls.TABLE_DOES_NOT_EXIST_MESSAGE}."
+        )
 
     @classmethod
     def print_requests_connectionerror(cls, class_name):
         """Message for when requests library has a connection error."""
         print(
-            f"{cls.ERROR_PREFIX} {cls.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE} '{class_name}'"
+            f"{cls.ERROR_PREFIX} {cls.REQUESTS_PACKAGE_CONNECTIONERROR_MESSAGE} '{class_name}'."
         )
 
     @classmethod
@@ -107,31 +117,32 @@ class Message:
     @classmethod
     def print_script_removal_fail(cls, target):
         """Message for when program fails to remove script from remote host."""
-        print(f"{cls.WARNING_PREFIX} {cls.SCRIPT_REMOVAL_FAILED_MESSAGE} '{target}'")
+        print(
+            f"{cls.WARNING_PREFIX} {cls.SCRIPT_REMOVAL_FAILED_MESSAGE} '{target}'."
+        )
 
     @classmethod
     def print_configholder_duplicate_config_inserted(cls, config_name, value):
         """Message for when configholder receives a duplicate config to store."""
         print(
-            f"{cls.WARNING_PREFIX} {cls.CONFIGHOLDER_RECEIVED_DUP_CONFIG_MESSAGE} {config_name} {value}"
+            f"{cls.WARNING_PREFIX} {cls.CONFIGHOLDER_RECEIVED_DUP_CONFIG_MESSAGE} {config_name} {value}."
         )
 
     @classmethod
     def print_configuration_not_exist(cls, config_name):
         """Message for when requested config does not exist in configholder."""
-        print(f"{cls.ERROR_PREFIX} {cls.CONFIGHOLDER_CONFIG_NOT_EXIST} {config_name}")
+        print(
+            f"{cls.ERROR_PREFIX} {cls.CONFIGHOLDER_CONFIG_NOT_EXIST} {config_name}."
+        )
 
     @classmethod
     def print_factory_invalid_action(cls, action_name):
         """Message for when a invalid action is selected from command line."""
-        print(f"{cls.ERROR_PREFIX} {cls.FACTORY_INVALID_ACTION} {action_name}")
+        print(
+            f"{cls.ERROR_PREFIX} {cls.FACTORY_INVALID_ACTION} {action_name}."
+        )
 
     @classmethod
     def print_factory_invalid_host(cls, configholder):
         """Message for when a invalid host is selected from command line."""
-        print(f"{cls.ERROR_PREFIX} {cls.FACTORY_INVALID_HOST} {configholder}")
-
-    @classmethod
-    def print_non_supported_os(cls, os_name):
-        """Message for when an user attempts to install the application on a non-supported os."""
-        print(f"{cls.ERROR_PREFIX} '{os_name}' is not currently supported for pyrepoman.")
+        print(f"{cls.ERROR_PREFIX} {cls.FACTORY_INVALID_HOST} {configholder}.")
