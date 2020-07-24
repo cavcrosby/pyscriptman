@@ -11,7 +11,7 @@
 ```python
 git clone https://github.com/reap2sow1/pyscriptman.git
 cd pyscriptman
-python -m pip install requirements.txt
+python -m pip install -r requirements.txt
 ```
 For desktops (or OSES with an DE):
 ```python
@@ -31,6 +31,10 @@ python installer.py --uninstall
 
 
 ## NOTES
+
+### Post-Install
+
+Restart the shell or re-read the startup file to have the PYTHONPATH appended with pyscriptman.
 
 ### Other Configurations
     - To use actions involving GitHub.com, an api_token will need to be generated and added to the etc/pyscriptman_configs.toml file.
