@@ -33,4 +33,4 @@ python installer.py --uninstall
 
 ### Other Configurations
     - To use actions involving GitHub.com, an api_token will need to be generated and added to the etc/pyscriptman_configs.toml file.
-    - To run the tests in 'test', configuration variables will need values in etc/test_configs.toml file.
+    - To run the tests in 'test', configuration variables will need values in the etc/test_configs.toml file.
