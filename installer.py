@@ -45,7 +45,7 @@ class Installer:
 
         self.current_user_home = os.path.expanduser("~")
         self.user_bin_path = os.path.expanduser(
-            f"{self.current_user_home}/bin"
+            f"{self.current_user_home}/.local/bin"
         )
         self.user_bin_exist = pathlib.Path(self.user_bin_path).exists()
 
