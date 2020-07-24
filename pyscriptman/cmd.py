@@ -27,8 +27,7 @@ class Cmd:
 
     """
 
-    _DESC = """Description: This python application helps /
-               manage web-hosted/local Git repos with various actions."""
+    _DESC = """Description: This python application helps manage web-hosted/local Git repos with various actions."""
     _parser = argparse.ArgumentParser(
         description=_DESC, prog="pyscriptman.py", allow_abbrev=False
     )
