@@ -2,36 +2,35 @@
 
 # Brief
 
-**pyrepoman** is a python application used to perform Git actions on local Git repos (e.g. Git server provided on a Linux platform), and web host Git repos.
-
-## Description
-
-**py_indeed.py** is the script that does majority of the work. It is currently configured to use a headless browser to:
- * Login in to Indeed
- * Iterate over each page pulling jobs to apply for
- * Parse for jobs that can be applied for using an Indeed resume
- * Attempts to apply to each job
-    - Each job could have supplement questions, the questions that the script cannot answer are stored into a database file
- * Continues to until the end of the page, goes to the next page and repeats
-
-**py_answer.py** is the script to use for interfacing with questions pulled from py_indeed.
-
-## Usage
+**pyrepoman** is a python application used to perform scripting actions on particular hosts.
 
 ## Installation
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+***Installs for the current user (or at the user level).***
 
-## NOTES TO ADD LATER
+```python
+git clone https://github.com/reap2sow1/pyrepoman.git
+python -m pip install requirements.txt
+```
+For desktops (or OSES with an DE):
+```python
+python installer.py --desktop
+```
 
-# Linux Git Server Requirements
+For servers (or OSES ***without*** an DE):
+```python
+python installer.py
+```
 
-    # OPENSSH SERVER, FIREWALL SHOULD ALLOW PORT 22, SSHD SHOULD BE ON
-    # GIT SHOULD BE INSTALLED
-    # PYTHON 3 SHOULD BE INSTALLED
-    # PUBLIC KEY AUTHENTICATION ENABLED AND SET (KEYS ARE IN THE PROPER PLACE, WITH CORRECT PERMISSIONS), PASSWORD AUTH DISABLED
-    # ENDS FOR LINUX
+To uninstall:
+```python
+python installer.py --uninstall
+```
 
-# LINUX PATH SHOULD BE LIKE /usr/local/... default behavior is the same
 
+
+## NOTES
+
+### Other Configurations
+    - To use actions involving GitHub.com, an api_token will need to be generated and added to the etc/pyrepoman_configs.toml file.
+    - To run the tests in 'test', configuration variables will need values in etc/test_configs.toml file.
