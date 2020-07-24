@@ -1,0 +1,34 @@
+[test]
+
+    [test.defaults]
+    LOCAL_BARE_REPOS_DIR_PATH = ""
+    REMOTE_BARE_REPOS_DIR_PATH = ""
+    REMOTE_USER = ""
+    REMOTE_ADDR = ""
+    GITHUB_USERNAME = ""
+    GITHUB_API_TOKEN = ""
+
+[update]
+
+    [update.defaults]
+    UPDATE_TARGET = "update_tmp_package"
+    MODEL_TARGET = "update_tmp_setup" 
+    ADDITIONAL_FILE1 = "testing.txt"
+
+[fetch]
+
+    [fetch.defaults]
+    FETCH_TARGET = "fetch_tmp_package"
+    MODEL_TARGET = "fetch_tmp_setup"
+
+[backup]
+
+    [backup.defaults]
+    BACKUP_TARGET = "backup_tmp_package"
+    MODEL_TARGET = "backup_tmp_setup"
+
+[archive]
+
+    [archive.defaults]
+    ARCHIVE_TARGET = "archive_tmp_package"
+    MODEL_TARGET = "archive_tmp_setup"

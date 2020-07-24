@@ -1,0 +1,6 @@
+[github]
+
+    [github.defaults]
+    API_TOKEN = ""
+
+    [github.get_repo_names_and_locations]
