@@ -32,6 +32,10 @@ python installer.py --uninstall
 
 ## NOTES
 
+### Post-Install
+
+Restart the shell or re-read the startup file to have the PYTHONPATH appended with pyscriptman.
+
 ### Other Configurations
     - To use actions involving GitHub.com, an api_token will need to be generated and added to the etc/pyscriptman_configs.toml file.
     - To run the tests in 'test', configuration variables will need values in the etc/test_configs.toml file.
