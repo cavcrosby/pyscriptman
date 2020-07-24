@@ -45,7 +45,7 @@ class RemoteHost(Host):
         for bare Git repos.
     """
 
-    HELP_DESC = "can target directories on remote hosts"
+    HELP_DESC = "can interact with systems on your LAN"
     TARGET_KEY = "target"
     TARGET_PATH_KEY = "target_path"
     DEFAULT_TARGET_PATH = "$HOME"
@@ -93,7 +93,7 @@ class RemoteHost(Host):
         available hosts:
             host [options ...]
                 [...]
-                remotehost        can target directories on remote hosts
+                remotehost        can interact with systems on your LAN
 
         """
 

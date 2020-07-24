@@ -32,7 +32,7 @@ class LocalHost(Host):
 
     """
 
-    HELP_DESC = "can manipulate local directories containing git repos"
+    HELP_DESC = "can interact with the system you are currently using"
     PATH_KEY = "path"
 
     def __init__(self, configholder):
@@ -72,7 +72,7 @@ class LocalHost(Host):
         available hosts:
             host [options ...]
                 [...]
-                localhost         can manipulate local directories containing git repos
+                localhost         can interact with the system you are currently using
 
         """
         path = configholder.get_config_value(cls.PATH_KEY)
