@@ -1,6 +1,8 @@
 """The 'Backup' action class module."""
 # Standard Library Imports
 import subprocess
+import shutil
+import pathlib
 
 # Third Party Imports
 import requests
@@ -90,6 +92,8 @@ class Backup(Action):
         try:
             repo_names = self.host.get_user_repo_names_and_locations()
             for repo_name in repo_names:
+                if(pathlib.Path(repo_name).exists()):
+                    shutil.rmtree(repo_name)
                 mirror_repo(
                     self.host.get_location_from_repo_name(repo_name),
                     repo_name,
