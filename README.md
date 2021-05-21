@@ -9,7 +9,7 @@
 ***Installs for the current user (or at the user level).***
 
 ```python
-git clone https://github.com/reap2sow1/pyscriptman.git
+git clone https://github.com/cavcrosby/pyscriptman.git
 cd pyscriptman
 python -m pip install -r requirements.txt
 ```
